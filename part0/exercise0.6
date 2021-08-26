@@ -1,1 +1,20 @@
+browser-->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
 
+note over browser:
+The JavaScript in spa.js is dealing with with everything simultaneously,
+without needing a response from the server to update the page.
+
+On submit of the form in the HTML, the default action is prevented
+(no redirect).
+
+Then a new note is added to the DOM directly using redrawNotes().
+
+Following this, the note is sent to the server using sendToServer().
+end note
+
+server-->browser: Status code 201, acknowledging new note was added to the server
+
+note over browser:
+Above all, the browser continues without waiting for a response from the server
+at each step when compared to the example/notes page.
+end note:
