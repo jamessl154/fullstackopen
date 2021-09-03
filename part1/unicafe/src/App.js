@@ -3,39 +3,41 @@ import React, { useState } from 'react'
 const Button = ({addReview, ...props}) => {
 
   return (
-    <div>
-      <button onClick={addReview}>{props.rating}</button>
-    </div>
+    <button onClick={addReview}>{props.rating}</button>
   )
 }
 
+const StatsLine = (props) => (
+  <tr>
+    <td>{props.text}</td>
+    <td>{props.value}</td>
+  </tr>
+)
+
 const Stats = (props) => {
-
   const averageScore = (props.score / props.all).toFixed(2)
+  const percentPositive = (props.good * 100 / props.all).toFixed(2) + "%"
 
-  const percentPositive = (props.good * 100 / props.all).toFixed(2)
-
-  if (props.all != 0) {
     return (
       <div>
         <h2>Statistics</h2>
-        <p>Good: {props.good}</p>
-        <p>Neutral: {props.neutral}</p>
-        <p>Bad: {props.bad}</p>
-        <p>Total ratings: {props.all}</p>
-        <p>Average score: {isNaN(averageScore) ? 0 : (averageScore)}</p>
-        <p>Percentage of positive ratings: {isNaN(percentPositive) ? 0 : (percentPositive)} %</p>
+        { props.all > 0 &&
+        <table>
+          <tbody>
+            <StatsLine text="Good: " value={props.good} />
+            <StatsLine text="Neutral: " value={props.neutral} />
+            <StatsLine text="Bad: " value={props.bad} />
+            <StatsLine text="Total ratings: " value={props.all} />
+            <StatsLine text="Average score: " value={averageScore} />
+            <StatsLine text="Percentage of positive ratings: " value={percentPositive} />
+          </tbody>
+        </table>
+        }
+        {props.all === 0 &&
+          <p>No Feedback Given</p>
+        }
       </div>
     )
-  }
-  else {
-    return (
-      <div>
-        <h2>Statistics</h2>
-        <p>No Feedback Given</p>
-      </div>
-    )
-  }
 }
 
 const App = () => {
@@ -50,9 +52,9 @@ const App = () => {
   return (
     <>
       <h1>Rate your experience!</h1>
-      <Button rating="good " counter={good} addReview={() => setGood(good + 1)} />
-      <Button rating="neutral " counter={neutral} addReview={() => setNeutral(neutral + 1)} />
-      <Button rating="bad " counter={bad} addReview={() => setBad(bad + 1)} />
+      <Button rating="Good " addReview={() => setGood(good + 1)} />
+      <Button rating="Neutral " addReview={() => setNeutral(neutral + 1)} />
+      <Button rating="Bad " addReview={() => setBad(bad + 1)} />
       <Stats good={good} neutral={neutral} bad={bad} all={all} score={score} />
     </>
   )
