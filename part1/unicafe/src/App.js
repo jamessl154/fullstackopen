@@ -4,8 +4,7 @@ const Button = ({addReview, ...props}) => {
 
   return (
     <div>
-      <label htmlFor={props.rating}>{props.rating}</label>
-      <button id={props.rating} onClick={addReview}>{props.counter}</button>
+      <button onClick={addReview}>{props.rating}</button>
     </div>
   )
 }
@@ -13,20 +12,33 @@ const Button = ({addReview, ...props}) => {
 const Stats = (props) => {
 
   const averageScore = (props.score / props.all).toFixed(2)
-  
+
   const percentPositive = (props.good * 100 / props.all).toFixed(2)
 
-  return (
-    <div>
-      <h2>Total ratings: {props.all}</h2>
-      <h2>Average score: {isNaN(averageScore) ? 0 : (averageScore)}</h2>
-      <h2>Percentage of positive ratings: {isNaN(percentPositive) ? 0 : (percentPositive)} %</h2>
-    </div>
-  )
+  if (props.all != 0) {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <p>Good: {props.good}</p>
+        <p>Neutral: {props.neutral}</p>
+        <p>Bad: {props.bad}</p>
+        <p>Total ratings: {props.all}</p>
+        <p>Average score: {isNaN(averageScore) ? 0 : (averageScore)}</p>
+        <p>Percentage of positive ratings: {isNaN(percentPositive) ? 0 : (percentPositive)} %</p>
+      </div>
+    )
+  }
+  else {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <p>No Feedback Given</p>
+      </div>
+    )
+  }
 }
 
 const App = () => {
-  // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
