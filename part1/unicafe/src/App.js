@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 
-const Button = ({addReview, ...props}) => {
-
-  return (
-    <button onClick={addReview}>{props.rating}</button>
-  )
-}
+// Rest syntax destructuring addReview and other props separately
+const Button = ({addReview, ...props}) => <button onClick={addReview}>{props.rating}</button>
 
 const StatsLine = (props) => (
   <tr>
@@ -16,11 +12,12 @@ const StatsLine = (props) => (
 
 const Stats = (props) => {
   const averageScore = (props.score / props.all).toFixed(2)
-  const percentPositive = (props.good * 100 / props.all).toFixed(2) + "%"
+  const percentPositive = (props.good * 100 / props.all).toFixed(2) + " %"
 
     return (
       <div>
         <h2>Statistics</h2>
+        {/* Inline if: short-circuit logical && operator */}
         { props.all > 0 &&
         <table>
           <tbody>
