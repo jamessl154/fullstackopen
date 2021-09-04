@@ -46,15 +46,22 @@ const App = () => {
       anecdote: anecdotes[selected],
       votes: 0
     })
-  
-  // We want to check for a new record each render
-  // If we used useEffect we would have to create a new state to trigger re-renders
-  // when a new record was set which would be 2 re-renders when votes change because
-  // we would put votes in the useEffect's dependency array
+
+  // We want to check for a new record when votes changes
   if (votes[selected] > record.current.votes) {
     record.current.anecdote = anecdotes[selected]
     record.current.votes = votes[selected]
   }
+
+  // If we used useEffect instead of useRef we would have to create a new state, e.g. record, to trigger re-renders
+  // when a new record was set which would be max. 2 re-renders when votes change, we would put votes in the useEffect's dependency array. 
+  
+  // Having tested implementing that, useRef seems simpler even though we are checking for a new record on each render, 
+  // including when the "selected" state changes which is irrelevant.
+
+  // The difference when switching to the useEffect approach is that we only check for a new 
+  // record when the votes state changes, and upon changing,
+  // trigger a re-render by changing record state by calling setRecord
 
   return (
     <div>
