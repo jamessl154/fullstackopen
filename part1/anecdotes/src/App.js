@@ -1,4 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
+
+const Title = (props) => <h2>{props.text}</h2>
+
+const Anecdote = (props) => <p>{props.anecdote}</p>
+
+const Counter = (props) => <p>This anecdote has {props.votes} votes</p>
 
 const Button = (props) => <button onClick={props.onClick}>{props.text}</button>
 
@@ -30,13 +36,36 @@ const App = () => {
   // which is the anecdote rendered on the page. ".map" makes a copy of the array, applies the
   // mapping function, and returns the new array which maintains the array between states
   const addVote = () => setVotes(votes.map((x, y) => (y === selected) ? x + 1 : x))
+  
+  // https://dmitripavlutin.com/react-useref-guide/
+  // Between the component re-renderings, the value of the reference is persistent.
+  // Updating a reference, contrary to updating state, doesn’t trigger component re-rendering.
+  // Initialize the ref to store the current anecdote with 0 votes
+  let record = useRef(
+    {
+      anecdote: anecdotes[selected],
+      votes: 0
+    })
+  
+  // We want to check for a new record each render
+  // If we used useEffect we would have to create a new state to trigger re-renders
+  // when a new record was set which would be 2 re-renders when votes change because
+  // we would put votes in the useEffect's dependency array
+  if (votes[selected] > record.current.votes) {
+    record.current.anecdote = anecdotes[selected]
+    record.current.votes = votes[selected]
+  }
 
   return (
     <div>
-      <h2>{anecdotes[selected]}</h2>
-      <h4>This anecdote has {votes[selected]} votes</h4>
+      <Title text="Anecdote of the day" />
+      <Anecdote anecdote={anecdotes[selected]} />
+      <Counter votes={votes[selected]} />
       <Button text="Vote" onClick={addVote} />
       <Button text="Next Anecdote" onClick={() => setSelected(anecdotesRandom)} />
+      <Title text="Anecdote with the most votes" />
+      <Anecdote anecdote={record.current.anecdote} />
+      <Counter votes={record.current.votes} />
     </div>
   )
 }
