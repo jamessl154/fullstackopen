@@ -9,14 +9,24 @@ const App = () => {
   const inputChange = (event) => setNewName(event.target.value)
 
   const submitForm = (event) => {
-   
-    const a = {
-      name: newName
-    }
 
     event.preventDefault()
-    setPersons(persons.concat(a))
-    setNewName('')
+
+    if (persons.findIndex(
+        (obj) => obj.name === newName) !== -1
+      ) {
+        alert(`${newName} is already added to the phonebook`)
+    }
+    
+    else {
+
+      const newObject = {
+        name: newName
+      }
+
+      setPersons(persons.concat(newObject))
+      setNewName('')
+    }
   }
 
   return (
