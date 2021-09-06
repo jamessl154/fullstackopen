@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -28,11 +31,13 @@ const App = () => {
   // length so that we can trigger re-renders before the full name has been 
   // typed in if they match (case-insensitive)
   useEffect(() => {
-    setSearch(persons.filter(x => 
+    setSearch(
+      persons.filter(x => 
         x.name.slice(0, filter.length).toUpperCase()
         ===
         filter.toUpperCase()
-      ))
+      )
+    )
   }
   , [filter, persons])
 
@@ -69,31 +74,34 @@ const App = () => {
     }
   }
 
+  // Logic that decides which list to render
+  let displayList = persons
+  // When search is not empty, that means there are matches between the filter
+  // state and the persons array
+  if (search !== 0) {
+    displayList = search
+  }
+
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with <input onChange={filterChange} value={filter} /></div>
+
+      <Filter onChange={filterChange} value={filter} />
       
       <h2>Add a new</h2>
-      <form onSubmit={submitForm}>
-        <div>name: <input onChange={nameChange} value={newName} /></div>
-        <div>number: <input onChange={numberChange} value={newNumber} /></div>
-        <div><button type="submit">add</button></div>
-      </form>
+
+      <PersonForm 
+        onSubmit={submitForm}
+        nameChange={nameChange}
+        numberChange={numberChange}
+        nameValue={newName}
+        numberValue={newNumber}
+      />
 
       <h2>Numbers</h2>
 
-      {
-        /* 
-        if the search state is not empty (meaning there are matches), 
-        map the search array as <p> elements in this format for the DOM
-        else (no matches)
-        map the persons array to this format for the DOM
-        */
-        search !== 0
-        ? search.map((x) => <p key={x.name}>{x.name} {x.number}</p>)
-        : persons.map((x) => <p key={x.name}>{x.name} {x.number}</p>)
-      }
+      <Persons list={displayList} />
 
     </div>
   )
