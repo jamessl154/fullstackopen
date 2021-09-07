@@ -51,10 +51,10 @@ const App = () => {
     // add it to the persons array.
     // Added toUpperCase() to make the check case insensitive
     if (persons.findIndex(
-        (obj) => obj.name.toUpperCase() === newName.toUpperCase()) !== -1
-      ) {
-        alert(`${newName} is already added to the phonebook`)
-    }
+          (obj) => obj.name.toUpperCase() === newName.toUpperCase()) !== -1
+        ) {
+            alert(`${newName} is already added to the phonebook`)
+          }
 
     else {
 
@@ -65,10 +65,9 @@ const App = () => {
       }
 
       // concatenate that new object to the end of the persons array,
-      // triggering a re-render
       // need to use concat with state here to not manipulate the previous state
       setPersons(persons.concat(newObject))
-      // Clear the states and input fields
+      // Clear the states which clears the input fields
       setNewName('')
       setNewNumber('')
     }
@@ -77,11 +76,10 @@ const App = () => {
   // Logic that decides which list to render
   let displayList = persons
   // When search is not empty, that means there are matches between the filter
-  // state and the persons array
+  // input and the phonebook (persons array) which are stored in search state
   if (search !== 0) {
     displayList = search
   }
-
 
   return (
     <div>
