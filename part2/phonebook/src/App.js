@@ -9,39 +9,26 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
-  const [ search, setSearch ] = useState([])
 
   // controlled components
   const nameChange = (event) => setNewName(event.target.value)
   const numberChange = (event) => setNewNumber(event.target.value)
   const filterChange = (event) => setFilter(event.target.value)
 
-  // useEffect only called if:
-  // 1. Person is added to persons by submitting form
-  // 2. Filter state changes by changing filter input
-  
-  // setSearch set to new array where, for each sliced name string from persons
-  // (same length as filter, case insensitive),
-  //  if matches the input filter add that person to new array
-  
-  // https://reactjs.org/docs/state-and-lifecycle.html#state-updates-may-be-asynchronous
-  // useEffect is necessary here because when we have multiple setState() calls, 
-  // React is batching our setState() calls into a single udpdate. Our setSearch
-  // is finding matches between the "old" filter state and the sliced
-  // persons strings i.e. Numbers list updating is 1 input behind
+  // On every render re-evaluating list of numbers
+  let displayList = []
 
-  useEffect(() => {
-    if (persons.length !== 0) {
-      setSearch(
-        persons.filter(x => 
-          x.name.slice(0, filter.length).toUpperCase()
-          ===
-          filter.toUpperCase()
-        )
-      )
-    }
+  // Initially used a setSearch state that was called in a useEffect dependent
+  // on persons and filter. That worked but added alot more complexity at the
+  // tradeoff of now having to re-evaluate each render.
+  // (newNumber or newName state changes too)
+  if (persons.length !== 0 && filter.length !== 0) {
+    displayList = persons.filter(
+      (x) => (x.name.slice(0, filter.length).toUpperCase() === filter.toUpperCase())
+    )
+  } else if (filter.length === 0) {
+    displayList = persons
   }
-  , [filter, persons])
 
   useEffect(() => {
     axios
@@ -78,14 +65,6 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     }
-  }
-
-  // Logic that decides which list to render
-  let displayList = persons
-  // search stores matches between the filter input and the phonebook (persons array)
-  // search not empty === matches
-  if (search.length !== 0) {
-    displayList = search
   }
 
   return (
