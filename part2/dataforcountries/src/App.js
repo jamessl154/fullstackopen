@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
-
-// const SingleCountry = (props) => {
-  
-//   const lang = props.languages.map((x) => <li>{x.name}</li>)
-  
-//   return (
-//     <div>
-//       capital: {props.capital}
-//       population: {props.population}
-//       <h2>languages</h2>
-//       <ul>
-//         {lang}
-//       </ul>
-//     </div>
-//   )
-// }
+const OneCountry = (props) => {
+  console.log(props)
+  return (
+    <div>
+      <h2>{props.name}</h2>
+      <p>Capital: {props.capital}</p>
+      <p>Population: {props.population}</p>
+      <h2>Languages</h2>
+      <ul>
+        {props.languages.map((x) => <li key={x.name}>{x.name}</li>)}
+      </ul>
+      <img style={{ maxWidth: 150 }} src={props.flag} alt={props.name} />
+    </div>
+  )
+}
 
 const App = () => {
   const [countries, setCountries] = useState('')
@@ -52,13 +51,20 @@ const App = () => {
     countryList = <p>Too many countries</p>
   }
   else if (countries.length === 1) {
-    countryList = countries.map((x) => <p key={x.name}>{x.name}</p>)
+    countryList = countries.map((x) => 
+      <OneCountry 
+        key={x.name}
+        name={x.name}
+        capital={x.capital}
+        population={x.population}
+        languages={x.languages}
+        flag={x.flag}
+      />
+    )
   }
   else {
-    countryList = countries.map((x) => <p key={x.name}>{x.name}</p>)
+        countryList = countries.map((x) => <p key={x.name}>{x.name}</p>)
   }
-
-  // <SingleCountry key={x.name} country={x} />
 
   return (
     <div>
