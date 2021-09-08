@@ -16,24 +16,30 @@ const App = () => {
   const numberChange = (event) => setNewNumber(event.target.value)
   const filterChange = (event) => setFilter(event.target.value)
 
-  // useEffect here is dependent on the filter and the persons states
-  // It only calls setSearch and rerenders if:
-  // 1.   a new person is added to persons by submitting form, if that person's
-  //      name matches the filter it will be immediately shown on screen
-  // 2.   the filter state changes (change to the filtering input field)
-  // setSearch is updating the search state to be filtered elements from
-  // the persons array only where the condition is true. We've sliced
-  // that name property of the object to be the same size as the filter input
-  // length so that we can trigger re-renders before the full name has been 
-  // typed in if they match (case-insensitive)
+  // useEffect only called if:
+  // 1. Person is added to persons by submitting form
+  // 2. Filter state changes by changing filter input
+  
+  // setSearch set to new array where, for each sliced name string from persons
+  // (same length as filter, case insensitive),
+  //  if matches the input filter add that person to new array
+  
+  // https://reactjs.org/docs/state-and-lifecycle.html#state-updates-may-be-asynchronous
+  // useEffect is necessary here because when we have multiple setState() calls, 
+  // React is batching our setState() calls into a single udpdate. Our setSearch
+  // is finding matches between the "old" filter state and the sliced
+  // persons strings i.e. Numbers list updating is 1 input behind
+
   useEffect(() => {
-    setSearch(
-      persons.filter(x => 
-        x.name.slice(0, filter.length).toUpperCase()
-        ===
-        filter.toUpperCase()
+    if (persons.length !== 0) {
+      setSearch(
+        persons.filter(x => 
+          x.name.slice(0, filter.length).toUpperCase()
+          ===
+          filter.toUpperCase()
+        )
       )
-    )
+    }
   }
   , [filter, persons])
 
@@ -49,11 +55,8 @@ const App = () => {
     
     event.preventDefault()
 
-    // findIndex returns -1 if there is no index found in the entire array
-    // so here anything that isn't -1 shows a match between the name in persons
-    // and the name in state newName which triggers an alert and doesn't
-    // add it to the persons array.
-    // Added toUpperCase() to make the check case insensitive
+    // using findIndex, -1 shows no match between each persons.name and newName
+    // Not -1 === match, trigger alert and not added to persons
     if (persons.findIndex(
           (obj) => obj.name.toUpperCase() === newName.toUpperCase()) !== -1
         ) {
@@ -79,8 +82,8 @@ const App = () => {
 
   // Logic that decides which list to render
   let displayList = persons
-  // When search is not empty, that means there are matches between the filter
-  // input and the phonebook (persons array) which are stored in search state
+  // search stores matches between the filter input and the phonebook (persons array)
+  // search not empty === matches
   if (search.length !== 0) {
     displayList = search
   }
