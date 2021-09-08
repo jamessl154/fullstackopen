@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
 const OneCountry = (props) => {
-  console.log(props)
   return (
     <div>
       <h2>{props.name}</h2>
@@ -43,7 +42,7 @@ const App = () => {
   }, [search])
 
   let countryList;
-  console.log(countries)
+
   if (countries.length === 0) {
     countryList = <p>No countries</p>
   }
