@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
-const OneCountry = (props) => {
+const OneCountry = ({ props }) => {
+  // https://www.freecodecamp.org/news/array-and-object-destructuring-in-javascript/
+  // Object destructuring, props is the key here
   return (
     <div>
       <h2>{props.name}</h2>
@@ -51,18 +53,20 @@ const App = () => {
   }
   else if (countries.length === 1) {
     countryList = countries.map((x) => 
-      <OneCountry 
-        key={x.name}
-        name={x.name}
-        capital={x.capital}
-        population={x.population}
-        languages={x.languages}
-        flag={x.flag}
-      />
+      <OneCountry key={x.name} props={x} />
     )
   }
   else {
-        countryList = countries.map((x) => <p key={x.name}>{x.name}</p>)
+    countryList = countries.map((x) => (
+        <div key={x.name}> 
+          <span>{x.name}</span>
+          <button 
+            onClick={() => 
+              setCountries(countries.filter((y) => y.name === x.name))}
+          >show</button>
+        </div>
+      )
+    )
   }
 
   return (
