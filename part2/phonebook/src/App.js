@@ -41,14 +41,20 @@ const App = () => {
 
   const addToPhonebook = (event) => {
     
+    let found = persons.find((x) => x.name.toUpperCase() === newName.toUpperCase());
+
     event.preventDefault()
-    // using findIndex, -1 shows no match between each persons.name and newName
-    // Not -1 === match, trigger alert and not added to persons
-    if (persons.findIndex((obj) => 
-          obj.name.toUpperCase() 
-          === 
-          newName.toUpperCase()) !== -1) {
-            alert(`${newName} is already added to the phonebook`)
+
+    if (found) {
+      if (window.confirm(`${newName}` +
+      " is already added to the phonebook," +
+      " replace the old number with a new one?")) {
+        let changedNumber = { ...found, number: newNumber }
+        personService
+        .update(found.id, changedNumber)
+        // need to find and replace person in persons with new number
+        .then(response => setPersons(persons.map(x => found.id !== x.id ? x : response.data)))
+      }
     }
     else {
       // create new object with the states of the input fields for name and number
