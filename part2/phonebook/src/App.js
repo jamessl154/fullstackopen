@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -31,39 +31,57 @@ const App = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    // personService object containing axios methods imported from ./services/persons
+    personService
+      .getAll()
       .then(x => {
         setPersons(x.data)
       })
   }, [])
 
-  const submitForm = (event) => {
+  const addToPhonebook = (event) => {
     
     event.preventDefault()
-
     // using findIndex, -1 shows no match between each persons.name and newName
     // Not -1 === match, trigger alert and not added to persons
-    if (persons.findIndex(
-          (obj) => obj.name.toUpperCase() === newName.toUpperCase()) !== -1
-        ) {
+    if (persons.findIndex((obj) => 
+          obj.name.toUpperCase() 
+          === 
+          newName.toUpperCase()) !== -1) {
             alert(`${newName} is already added to the phonebook`)
-          }
-
+    }
     else {
-
       // create new object with the states of the input fields for name and number
       const newObject = {
         name: newName,
         number: newNumber
       }
+      
+      personService
+      .create(newObject)
+      .then(response => {
+        // concatenate that new object to the end of the persons array,
+        // need to use concat with state here to not manipulate the previous state
+        setPersons(persons.concat(response.data))
+        // Clear the states which clears the input fields
+        setNewName('')
+        setNewNumber('')
+      })
+    }
+  }
 
-      // concatenate that new object to the end of the persons array,
-      // need to use concat with state here to not manipulate the previous state
-      setPersons(persons.concat(newObject))
-      // Clear the states which clears the input fields
-      setNewName('')
-      setNewNumber('')
+  // func expression takes id, send id delete request to server
+  // then sync setPersons state to filter out the deleted id
+  const DeleteFromPhonebook = (x) => {
+    // get name using id
+    const nameDelete = (persons.find((z) => z.id === x)).name
+    // confirm message
+    if (window.confirm(`Delete ${nameDelete}?`)) {    
+      personService
+      .goDelete(x)
+      .then(() => {
+        setPersons(persons.filter((y) => x !== y.id))
+      })
     }
   }
 
@@ -73,10 +91,10 @@ const App = () => {
 
       <Filter onChange={filterChange} value={filter} />
       
-      <h2>Add a new</h2>
+      <h2>Add new contact</h2>
 
       <PersonForm 
-        onSubmit={submitForm}
+        onSubmit={addToPhonebook}
         nameChange={nameChange}
         numberChange={numberChange}
         nameValue={newName}
@@ -85,7 +103,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons list={displayList} />
+      <Persons list={displayList} goDelete={DeleteFromPhonebook} />
 
     </div>
   )

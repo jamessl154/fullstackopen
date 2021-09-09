@@ -2,20 +2,20 @@ import React from 'react'
 
 const PersonForm = (props) => (
     <form onSubmit={props.onSubmit}>
-        <div>name: 
+        <div>Name: 
             <input 
             onChange={props.nameChange} 
             value={props.nameValue} 
             />
         </div>
-        <div>number: 
+        <div>Phone: 
             <input 
             onChange={props.numberChange} 
             value={props.numberValue} 
             />
         </div>
         <div>
-            <button type="submit">add</button>
+            <button type="submit">Add</button>
         </div>
     </form>
 )
