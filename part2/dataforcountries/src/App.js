@@ -43,6 +43,10 @@ const App = () => {
     }
   }, [search])
 
+  // setOne takes name of 1 country as argument, x, then sets the countries state
+  // to be that country
+  const setOne = (x) => setCountries(countries.filter((y) => y.name === x))
+
   let countryList;
 
   if (countries.length === 0) {
@@ -59,11 +63,8 @@ const App = () => {
   else {
     countryList = countries.map((x) => (
         <div key={x.name}> 
-          <span>{x.name}</span>
-          <button 
-            onClick={() => 
-              setCountries(countries.filter((y) => y.name === x.name))}
-          >show</button>
+          <span>{x.name}</span>{' '}
+          <button onClick={() => setOne(x.name)}>show</button>
         </div>
       )
     )
