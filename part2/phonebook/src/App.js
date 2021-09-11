@@ -3,24 +3,24 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import './App.css'
 
 const Notification = (props) => {
-  if (props.msg || props.notifType === '' ) return null
+  if (props.msg === '') {
+    return (
+      // reserved space for notification
+      <div className="empty"></div>
+    )
+  }
 
-  if (props.notifType === "success") {
-    return  (
-      <div className="success">
-        {props.message}
-      </div>
-    )
-  }
-  if (props.notifType === "error") {
-    return  (
-      <div className="error">
-        {props.message}
-      </div>
-    )
-  }
+  return  (
+    <div className="empty">
+      {props.type === "success"
+        ? <div className="notification success">{props.msg}</div>
+        : <div className="notification error">{props.msg}</div>
+      }
+    </div>
+  )
 }
 
 const App = () => {
@@ -74,6 +74,18 @@ const App = () => {
         .update(found.id, changedNumber)
         // need to find and replace person in persons with new number
         .then(response => setPersons(persons.map(x => found.id !== x.id ? x : response.data)))
+        .catch(() => {
+          // remove the person from the current render of phonebook
+          setPersons(persons.filter(y => found.id !== y.id))
+          // display error message
+          setMessage({
+            msg: `${found.name}'s records were already deleted from the server`,
+            type: "error"
+          })
+          // clear the message after 5 seconds
+          setTimeout(() => 
+            setMessage({ msg: '', type: '' }), 5000)
+        })
       }
     }
     else {
@@ -94,7 +106,7 @@ const App = () => {
           setNewNumber('')
           // Success message
           setMessage({
-            msg: `Added ${response.data.name}`,
+            msg: `Added ${response.data.name} to the Phonebook`,
             type: "success"
           })
           // Clear the message after 5 seconds
@@ -110,18 +122,16 @@ const App = () => {
     // get name using id
     const nameDelete = (persons.find((z) => z.id === x)).name
     // confirm message
-    if (window.confirm(`Delete ${nameDelete}?`)) {    
+    if (window.confirm(`Delete ${nameDelete}?`)) {
       personService
       .goDelete(x)
-      .then(() => {
-        setPersons(persons.filter((y) => x !== y.id))
-      })
+      .then(() => setPersons(persons.filter(y => x !== y.id)))
     }
   }
 
   return (
     <div>
-      <Notification notifType={message.type} message={message.msg} />
+      <Notification type={message.type} msg={message.msg} />
 
       <h2>Phonebook</h2>
 
@@ -140,7 +150,6 @@ const App = () => {
       <h2>Numbers</h2>
 
       <Persons list={displayList} goDelete={DeleteFromPhonebook} />
-
     </div>
   )
 }

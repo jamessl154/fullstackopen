@@ -1,0 +1,18 @@
+.notification {
+    font-size: 15px;
+    border: 2mm ridge;
+    padding: 5px;
+    display: inline-block;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.empty {
+    height: 25px
+}
