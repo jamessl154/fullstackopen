@@ -4,11 +4,31 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
 
+const Notification = (props) => {
+  if (props.msg || props.notifType === '' ) return null
+
+  if (props.notifType === "success") {
+    return  (
+      <div className="success">
+        {props.message}
+      </div>
+    )
+  }
+  if (props.notifType === "error") {
+    return  (
+      <div className="error">
+        {props.message}
+      </div>
+    )
+  }
+}
+
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
+  const [ message, setMessage ] = useState({ msg: '', type: '' })
 
   // controlled components
   const nameChange = (event) => setNewName(event.target.value)
@@ -66,12 +86,20 @@ const App = () => {
       personService
       .create(newObject)
       .then(response => {
-        // concatenate that new object to the end of the persons array,
-        // need to use concat with state here to not manipulate the previous state
-        setPersons(persons.concat(response.data))
-        // Clear the states which clears the input fields
-        setNewName('')
-        setNewNumber('')
+          // concatenate that new object to the end of the persons array,
+          // need to use concat with state here to not manipulate the previous state
+          setPersons(persons.concat(response.data))
+          // Clear the states which clears the input fields
+          setNewName('')
+          setNewNumber('')
+          // Success message
+          setMessage({
+            msg: `Added ${response.data.name}`,
+            type: "success"
+          })
+          // Clear the message after 5 seconds
+          setTimeout(() => 
+            setMessage({ msg: '', type: '' }), 5000)
       })
     }
   }
@@ -93,6 +121,8 @@ const App = () => {
 
   return (
     <div>
+      <Notification notifType={message.type} message={message.msg} />
+
       <h2>Phonebook</h2>
 
       <Filter onChange={filterChange} value={filter} />
