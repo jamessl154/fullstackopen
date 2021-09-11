@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Destructured into name from the prop course.name from Course
-const Header = ({ name }) => <h1>{name}</h1>
+const Header = ({ name }) => <h2>{name}</h2>
 
 const Total = ({ parts }) => {
   // Total receives 1 prop from the component Course
@@ -16,13 +16,13 @@ const Total = ({ parts }) => {
 }
 
 // Destructured part prop into a part variable where it is a single object
-const Part = ({part}) => <p>{part.name} {part.exercises}</p>
+const Part = ({ part }) => <p>{part.name} {part.exercises}</p>
 
 const Content = ({ parts }) => {
   return (
     <div>
       {/*
-        Essentially, we create a new component for each object in 
+        Create a new component for each object in 
         course.parts array and pass that object as a prop to the new Part component
         while creating a key using its id
       */}
@@ -37,10 +37,10 @@ const Content = ({ parts }) => {
 // course object or the half stack application development course object
 const Course = ({course}) => (
   <div>
-      <Header name={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
+    <Header name={course.name} />
+    <Content parts={course.parts} />
+    <Total parts={course.parts} />
+  </div>
 )
 
 export default Course

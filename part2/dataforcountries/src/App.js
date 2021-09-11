@@ -13,9 +13,9 @@ const OneCountry = ({ props, weather }) => {
       <ul>
         {props.languages.map((x) => <li key={x.name}>{x.name}</li>)}
       </ul>
-      <img style={{ maxWidth: 150 }} src={props.flag} alt={props.name} />
+      <img style={{ maxWidth: 150 }} src={props.flag} alt={`The flag of ${props.name}`} />
       <h2>Weather in {props.capital}:</h2>
-      {weather.weather_icons.map((x) => <img key={x} src={x} alt="Drawing of the current weather" />)}
+      {weather.weather_icons.map((x) => <img key={x} src={x} alt="Drawing of the weather" />)}
       {weather.weather_descriptions.map((x) => <p key={x} ><b>{x}</b></p>)}
       <p><b>Temperature:</b> {weather.temperature}° C</p>
       <p><b>Wind:</b> {weather.wind_speed} mph</p>
@@ -41,7 +41,9 @@ const App = () => {
     })
   }, [])
 
-  // our filtering input, search, sets countries where matches are found in atlas
+  // only when our filtering input search is changed, set the countries
+  // state to matches between search and 
+  // search-length-sliced-subtrings of countries in atlas
   useEffect(() => {
     if (atlas.current !== undefined) {
       setCountries(atlas.current.filter((x) =>
@@ -55,6 +57,10 @@ const App = () => {
 
   // https://egghead.io/lessons/react-make-http-requests-with-react-e06e2e96
   // need to use a state to trigger a rerender and store weather
+  // inside a useEffect because querying an API is a side effect.
+  // Dependent on countries, only calls API 
+  // when countries contains a single country
+  // we can access its properties using countries[0]
   useEffect(() => {
     if (countries.length === 1) {
       let params = {
@@ -62,6 +68,7 @@ const App = () => {
         query: countries[0].capital
       }
       axios
+      // https://weatherstack.com/documentation
       .get('http://api.weatherstack.com/current', {params})
       .then(response => {
         setWeather(response.data)
@@ -79,14 +86,15 @@ const App = () => {
   let countryList;
 
   if (search.length === 0) {
-    countryList = <p>Type the name here</p>
+    countryList = <p>Type a country name.</p>
   }
   else if (countries.length === 0) {
-    countryList = <p>No countries</p>
+    countryList = <p>No countries found.</p>
   }
   else if (countries.length > 10) {
-    countryList = <p>Too many countries</p>
+    countryList = <p>Too many countries found, specify further.</p>
   }
+  // only render once the weather API has setWeather
   else if (countries.length === 1 && weather !== '') {
     countryList = countries.map((x) => 
       <OneCountry key={x.name} props={x} weather={weather.current} />
@@ -106,7 +114,7 @@ const App = () => {
     <div>
       <h2>Find a Country:</h2>
     
-      <input 
+      <input
         onChange={(e) => setSearch(e.target.value)}
         value={search}
       />

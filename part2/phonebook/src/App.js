@@ -24,7 +24,7 @@ const Notification = (props) => {
 }
 
 const App = () => {
-  const [ persons, setPersons ] = useState([]) 
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
@@ -40,8 +40,7 @@ const App = () => {
 
   // Initially used a setSearch state that was called in a useEffect dependent
   // on persons and filter. That worked but added alot more complexity at the
-  // tradeoff of now having to re-evaluate each render.
-  // (newNumber or newName state changes too)
+  // tradeoff of now having to re-evaluate every render.
   if (persons.length !== 0 && filter.length !== 0) {
     displayList = persons.filter(
       (x) => (x.name.slice(0, filter.length).toUpperCase() === filter.toUpperCase())
@@ -65,6 +64,7 @@ const App = () => {
 
     event.preventDefault()
 
+    // The input name submitted exists in the phonebook
     if (found) {
       if (window.confirm(`${newName}` +
       " is already added to the phonebook," +
@@ -75,6 +75,7 @@ const App = () => {
         // need to find and replace person in persons with new number
         .then(response => setPersons(persons.map(x => found.id !== x.id ? x : response.data)))
         .catch(() => {
+          // update fails, 404 not found
           // remove the person from the current render of phonebook
           setPersons(persons.filter(y => found.id !== y.id))
           // display error message
@@ -84,10 +85,11 @@ const App = () => {
           })
           // clear the message after 5 seconds
           setTimeout(() => 
-            setMessage({ msg: '', type: '' }), 5000)
+            setMessage({ msg: '', type: '' }), 3000)
         })
       }
     }
+    // The input name is unique to the phonebook
     else {
       // create new object with the states of the input fields for name and number
       const newObject = {
@@ -111,12 +113,12 @@ const App = () => {
           })
           // Clear the message after 5 seconds
           setTimeout(() => 
-            setMessage({ msg: '', type: '' }), 5000)
+            setMessage({ msg: '', type: '' }), 3000)
       })
     }
   }
 
-  // func expression takes id, send id delete request to server
+  // func expression takes id param, send delete request with id to server
   // then sync setPersons state to filter out the deleted id
   const DeleteFromPhonebook = (x) => {
     // get name using id

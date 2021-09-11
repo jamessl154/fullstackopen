@@ -50,7 +50,8 @@ const App = () => {
 
   return (
     <div>
-      {/* 
+      <h1>Web Development Curriculum</h1>
+      {/*
         for each element in courses array, render a Course component
         set key equal to the course id, send that object as a prop named course
         to the course component
