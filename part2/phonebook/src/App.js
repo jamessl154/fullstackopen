@@ -73,19 +73,42 @@ const App = () => {
         personService
         .update(found.id, changedNumber)
         // need to find and replace person in persons with new number
-        .then(response => setPersons(persons.map(x => found.id !== x.id ? x : response.data)))
-        .catch(() => {
-          // update fails, 404 not found
-          // remove the person from the current render of phonebook
-          setPersons(persons.filter(y => found.id !== y.id))
-          // display error message
-          setMessage({
-            msg: `${found.name}'s records were already deleted from the server`,
-            type: "error"
-          })
-          // clear the message after 5 seconds
-          setTimeout(() => 
-            setMessage({ msg: '', type: '' }), 3000)
+        .then(response => {
+          // Was getting a 200 response from the backend for a PUT request on 
+          // a nonexistent resource which resulted in uncaught error.
+          // changed backend to respond with 404 when the response is null
+          // fixing the error
+          setPersons(persons.map(x => found.id !== x.id ? x : response.data))
+        })
+        .catch((error) => {
+          // https://stackoverflow.com/a/39153411
+          console.log("message: ", error.message)
+          // Now we can have a 404 for a deleted user (from the server but not yet rendered) 
+          // but also a 400 Validation Error from the server
+          // Separate the errors and have appropriate frontend responses
+          // Best practice would probably also have some frontend validation
+          // before interacting with the server
+          if (error.response.status === 404) {
+            // 404 not found, remove the person from the current render of phonebook
+            setPersons(persons.filter(y => found.id !== y.id))
+            // display error message
+            setMessage({
+              msg: `${found.name}'s records were already deleted from the server`,
+              type: "error"
+            })
+            // clear the message after 5 seconds
+            setTimeout(() => 
+              setMessage({ msg: '', type: '' }), 5000)
+          } else if (error.response.status === 400) {
+            // Bad Request
+            setMessage({
+              msg: error.response.data.error,
+              type: "error"
+            })
+            // clear the message
+            setTimeout(() => 
+            setMessage({ msg: '', type: '' }), 5000)
+          }
         })
       }
     }
@@ -113,7 +136,17 @@ const App = () => {
           })
           // Clear the message after 5 seconds
           setTimeout(() => 
-            setMessage({ msg: '', type: '' }), 3000)
+            setMessage({ msg: '', type: '' }), 5000)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        setMessage({
+          msg: error.response.data.error,
+          type: "error"
+        })
+        // clear the message
+        setTimeout(() => 
+          setMessage({ msg: '', type: '' }), 5000)
       })
     }
   }
