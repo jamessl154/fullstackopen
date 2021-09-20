@@ -22,4 +22,25 @@ describe('total likes', () => {
   })
 })
 
-describe('favoriteBlog')
+describe('favourite blog', () => {
+  test('of empty list to be null', () => {
+    expect(testFunctions.favBlog(testExamples.emptyBlogList))
+      .toEqual(null)
+  })
+  test('of single blog is itself', () => {
+    expect(testFunctions.favBlog(testExamples.listWithOneBlog))
+      .toEqual(testExamples.listWithOneBlog[0])
+  })
+  test('for many blogs returns the blog with most likes', () => {
+    expect(testFunctions.favBlog(testExamples.blogs))
+      .toEqual(testExamples.blogs[2])
+  })
+})
+
+describe('The author with the most blogs', () => {
+  test('for many blogs', () => {
+    console.log(testFunctions.mostBlogs(testExamples.blogs))
+    expect(testFunctions.mostBlogs(testExamples.blogs))
+      .toEqual('Robert C. Martin')
+  })
+})
