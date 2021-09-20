@@ -22,6 +22,7 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(middleware.requestLogger)
 
+// mount the route on the app
 app.use('/api/blogs', blogsRouter)
 
 app.use(middleware.unknownEndpoint)
