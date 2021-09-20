@@ -1,8 +1,10 @@
 const http = require('http')
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -13,11 +15,18 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl)
+const url = process.env.MONGODB_URI
+
+mongoose.connect(url)
 
 app.use(cors())
 app.use(express.json())
+
+morgan.token('body', function(request) {
+  return JSON.stringify(request.body, null, 2)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.get('/api/blogs', (request, response) => {
   Blog
@@ -29,7 +38,6 @@ app.get('/api/blogs', (request, response) => {
 
 app.post('/api/blogs', (request, response) => {
   const blog = new Blog(request.body)
-
   blog
     .save()
     .then(result => {
