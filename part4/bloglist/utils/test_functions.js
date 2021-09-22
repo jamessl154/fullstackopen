@@ -1,3 +1,5 @@
+// Function tests
+// https://lodash.com/docs/4.17.15
 const _ = require('lodash')
 
 const dummy = (blogs) => {
