@@ -1,10 +1,11 @@
 // api tests
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const helper = require('./test_helper')
+const helper = require('./apiTest_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+// const _ = require('lodash')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -19,21 +20,101 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test('Blogs are returned as json', async () => {
-  // console.log('test starts', mongoose.connection.readyState)
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-    // .then(console.log('Bug is here', mongoose.connection.readyState))
-  // console.log('promise chain ends', mongoose.connection.readyState)
-}, 100000)
+test('Verify blog list returns correct number of blog posts in JSON format',
+  async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-test('All blogs are returned from a get request on all', async () => {
+    const response = await helper.blogsInDb()
+    expect(response).toHaveLength(helper.initialBlogs.length)
+  }, 100000
+)
+
+test('Verify the unique identifier property of blog posts is named id', async () => {
   const response = await helper.blogsInDb()
 
-  expect(response).toHaveLength(helper.initialBlogs.length)
+  let testSubject = response[0]
+  expect(testSubject.id).toBeDefined()
 })
+
+test('post request to api/blogs creates new blog in DB and content correctly saved',
+  async () => {
+    const newBlog = {
+      title: 'Blogs r us',
+      author: 'Jack',
+      url: 'blogsr.us',
+      likes: 123
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+    // https://mongoosejs.com/docs/api.html#model_Model.exists
+    // https://jestjs.io/docs/expect#tobetruthy
+    const model = await Blog.exists({
+      title: 'Blogs r us',
+      author: 'Gill',
+      url: 'upthehill.com',
+      likes: 123
+    })
+
+    expect(model).toBeTruthy
+  }
+)
+
+test('If likes missing from post request to api/blogs, default to 0',
+  async () => {
+    const newRequest = {
+      title: 'Test123',
+      author: 'Blabla',
+      url: 'abc.com',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newRequest)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    // https://mongoosejs.com/docs/api.html#model_Model.findOne
+    const testSubject = await Blog.findOne({ title: 'Test123' })
+    expect(testSubject.likes).toBe(0)
+  }
+)
+
+test('If title + url missing from post request -> api/blogs expect status code 400',
+  async () => {
+    const blogObject = {
+      author: 'Blogger',
+      likes: 123
+    }
+
+    // Changed the Blog model's schema to require a title and url.
+    // the blogsRouter catches the ValidationError when mapping the object
+    // that doesn't match the schema which is then passed to the
+    // errorHandler which returns 400 for ValidationErrors
+    await api
+      .post('/api/blogs')
+      .send(blogObject)
+      .expect(400)
+  }
+)
+
+afterAll(() => {
+  // console.log('Afterall called', mongoose.connection.readyState)
+  mongoose.connection.close()
+  // console.log('mongoose.connection.close()', mongoose.connection.readyState)
+})
+
+/* Extra tests
 
 test('Returned blogs contains blog with title Joe Bloggs', async () => {
   const response = await api.get('/api/blogs')
@@ -85,7 +166,9 @@ test('An invalid blog (no title) is not added', async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
-/*
+*/
+
+/* Extra tests
 
 test('a specific blog can be viewed', async () => {
   const blogsAtStart = await helper.blogsInDb()
@@ -123,45 +206,43 @@ test('a blog can be deleted', async () => {
 
 */
 
-// When using promise chains instead of async await I ran into this problem:
-// "Jest did not exit one second after the test run has completed."
-// added the jest.config.js file to the root of the directory but the problem
-// persisted.
-// added a beforeAll that ensures the db is connected before starting the tests:
-// https://stackoverflow.com/a/64884634
-// "Connection not established before calling mongoose.connection.close()"
-// beforeAll If no connection to db, add event listener to
-// mongoose.connection that on 'connected' event triggers a
-// done to start the tests
+/* Debugging error when using promises
 
-// beforeAll((done) => {
-//   if(!mongoose.connection.db){
-//     mongoose.connection.on('connected', done)
-//   } else {
-//     done()
-//   }
-// })
+When using promise chains instead of async await I ran into this problem:
+"Jest did not exit one second after the test run has completed."
+added the jest.config.js file to the root of the directory but the problem
+persisted.
+added a beforeAll that ensures the db is connected before starting the tests:
+https://stackoverflow.com/a/64884634
+"Connection not established before calling mongoose.connection.close()"
+beforeAll If no connection to db, add event listener to
+mongoose.connection that on 'connected' event triggers a
+done to start the tests
 
-// https://stackoverflow.com/a/19606067
-// in afterAll() mongoose.connection.readyState returns:
-// 1 (connected) before and 3 (disconnecting) after
-// with and without the above beforeAll.
-
-afterAll(() => {
-  // console.log('Afterall called', mongoose.connection.readyState)
-  mongoose.connection.close()
-  // console.log('mongoose.connection.close()', mongoose.connection.readyState)
+beforeAll((done) => {
+  if(!mongoose.connection.db){
+    mongoose.connection.on('connected', done)
+  } else {
+    done()
+  }
 })
 
-// Overall, it does make sense that if .close() is called before the
-// database is opened. Once the database opens, it will remain
-// open and asynchronous operations in the test can persist so that could be
-// the issue
+https://stackoverflow.com/a/19606067
+in afterAll() mongoose.connection.readyState returns:
+1 (connected) before and 3 (disconnecting) after
+with and without the above beforeAll.
 
-// After multiple console.logs I think the problem is related
-// to the console.logs on line 23 and 28 that returns 2 (disconnected)
-// without the beforeAll and returns 1 (connected) with the beforeAll.
-// Furthermore, the position of the console.log 'connected to MongoDB'
-// shifts from after the request is logged to before.
-// At least we should be more certain when the
-// database is opened and closed using this method
+Overall, it does make sense that if .close() is called before the
+database is opened. Once the database opens, it will remain
+open and asynchronous operations in the test can persist so that could be
+the issue
+
+After multiple console.logs I think the problem is related
+to the console.logs on line 24 and 29 that returns 2 (disconnected)
+without the beforeAll and returns 1 (connected) with the beforeAll.
+Furthermore, the position of the console.log 'connected to MongoDB'
+shifts from after the request is logged to before.
+At least we should be more certain when the
+database is opened and closed using this method
+
+*/
