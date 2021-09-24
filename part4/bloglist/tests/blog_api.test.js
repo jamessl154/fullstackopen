@@ -112,6 +112,45 @@ test('If title + url missing from post request -> api/blogs expect status code 4
   }
 )
 
+test('When delete request sent to api/blogs/:id, that blog is removed from the database',
+  async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    // expect 1 less blog in the database
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    // findById returns null if no match with that ID
+    // expect the posted blog ID to not be in the DB after delete request
+    const finder = await Blog.findById(blogToDelete.id)
+
+    expect(finder).toEqual(null)
+  }, 10000
+)
+
+test('Sending a put request to a api/blogs/:id updates the blog in the DB to the request',
+  async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+    const updateToDB = { likes: blogToUpdate.likes += 1 }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updateToDB)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const updateFromDB = await Blog.findById(blogToUpdate.id)
+    expect(updateFromDB.likes).toBe(2)
+  }
+)
+
 afterAll(() => {
   // console.log('Afterall called', mongoose.connection.readyState)
   mongoose.connection.close()

@@ -18,6 +18,36 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 })
 
+blogsRouter.delete('/:id', async (request, response, next) => {
+  const id = request.params.id
+
+  try {
+    const result = await Blog.findByIdAndDelete(id)
+    console.log('Deleted Blog:', result)
+    response.status(204).end()
+  } catch(exception) {
+    // invalid ID 400 bad request
+    // doesn't catch non-existent resource only invalid ID format
+    next(exception)
+  }
+})
+
+blogsRouter.put('/:id', async (request, response, next) => {
+  const id  = request.params.id
+  const blog = request.body
+
+  try {
+    const result = await Blog
+      .findByIdAndUpdate(id, blog, { new: true })
+    response.json(result)
+    console.log('Updated Blog:', result)
+  } catch(exception) {
+    // invalid ID 400 bad request
+    // doesn't catch non-existent resource only invalid ID format
+    next(exception)
+  }
+})
+
 // A router object is an isolated instance of middleware and routes.
 // You can think of it as a “mini-application,” capable only of
 // performing middleware and routing functions.
