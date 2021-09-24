@@ -43,8 +43,8 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
   async () => {
     const newBlog = {
       title: 'Blogs r us',
-      author: 'Jack',
-      url: 'blogsr.us',
+      author: 'Gill',
+      url: 'upthehill.com',
       likes: 123
     }
 
@@ -55,10 +55,13 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
       .expect('Content-Type', /application\/json/)
 
     const blogsAtEnd = await helper.blogsInDb()
+    // +1 blog in the database
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
     // https://mongoosejs.com/docs/api.html#model_Model.exists
     // https://jestjs.io/docs/expect#tobetruthy
+    // Verifies that there exists a blog in the database with identical
+    // properties as the object we defined to be sent in the post request
     const model = await Blog.exists({
       title: 'Blogs r us',
       author: 'Gill',
@@ -66,7 +69,7 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
       likes: 123
     })
 
-    expect(model).toBeTruthy
+    expect(model).toBeTruthy()
   }
 )
 
@@ -85,6 +88,7 @@ test('If likes missing from post request to api/blogs, default to 0',
       .expect('Content-Type', /application\/json/)
 
     // https://mongoosejs.com/docs/api.html#model_Model.findOne
+    // https://mongoosejs.com/docs/defaults.html
     const testSubject = await Blog.findOne({ title: 'Test123' })
     expect(testSubject.likes).toBe(0)
   }

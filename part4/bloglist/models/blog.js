@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-// https://mongoosejs.com/docs/defaults.html
 const blogSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -13,6 +12,7 @@ const blogSchema = new mongoose.Schema({
   },
   likes: {
     type: Number,
+    // https://mongoosejs.com/docs/defaults.html
     default: 0
   }
 })
