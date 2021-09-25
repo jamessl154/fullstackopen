@@ -14,6 +14,10 @@ const blogSchema = new mongoose.Schema({
     type: Number,
     // https://mongoosejs.com/docs/defaults.html
     default: 0
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
