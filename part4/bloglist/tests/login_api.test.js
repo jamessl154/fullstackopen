@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
+const mongoose = require('mongoose')
 
 test('Login with correct credentials returns status code 200, token, username and name', async () => {
 
@@ -20,3 +21,5 @@ test('Login with correct credentials returns status code 200, token, username an
   expect(response.body.username).toBe('root')
   expect(response.body.name).toBe('new test subject')
 })
+
+afterAll(() => mongoose.connection.close())
