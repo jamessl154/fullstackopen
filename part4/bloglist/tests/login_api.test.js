@@ -16,7 +16,7 @@ test('Login with correct credentials returns status code 200, token, username an
     .expect(200)
     .expect('Content-type', /application\/json/)
 
-  console.log(response.body.token)
+  // console.log(response.body.token)
   expect(response.body).toHaveProperty('token')
   expect(response.body.username).toBe('root')
   expect(response.body.name).toBe('new test subject')
