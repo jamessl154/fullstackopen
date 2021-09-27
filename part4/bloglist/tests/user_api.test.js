@@ -122,7 +122,7 @@ describe('when there is initially one user in db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body).toContain('Password must contain at least 1 upper case, 1 lower case, 1 numeric and 1 symbol character')
+    expect(result.body.error).toContain('Password must contain at least 1 upper case, 1 lower case, 1 numeric and 1 symbol character')
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
