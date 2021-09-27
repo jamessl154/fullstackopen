@@ -51,7 +51,8 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
     await api
       .post('/api/blogs')
       .send(newBlog)
-      // each blog post must now come from a verified log-in
+      // each blog post is now required to be sent by a logged in user
+      // i.e. signed token in header
       .set('Authorization', await helper.getToken())
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -108,11 +109,13 @@ test('If title + url missing from post request -> api/blogs expect status code 4
     // the blogsRouter catches the ValidationError when mapping the object
     // that doesn't match the schema which is then passed to the
     // errorHandler which returns 400 for ValidationErrors
-    await api
+    const result = await api
       .post('/api/blogs')
       .send(blogObject)
       .set('Authorization', await helper.getToken())
       .expect(400)
+
+    expect(result.body.error).toContain('Path `title` is required., url: Path `url` is required')
   }
 )
 
