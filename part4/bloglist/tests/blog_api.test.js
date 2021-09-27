@@ -52,7 +52,7 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
       .post('/api/blogs')
       .send(newBlog)
       // each blog post must now come from a verified log-in
-      .set('Authorization', process.env.TEST_JWT)
+      .set('Authorization', await helper.getToken())
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -86,7 +86,7 @@ test('If likes missing from post request to api/blogs, default to 0',
     await api
       .post('/api/blogs')
       .send(newRequest)
-      .set('Authorization', process.env.TEST_JWT)
+      .set('Authorization', await helper.getToken())
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -111,7 +111,7 @@ test('If title + url missing from post request -> api/blogs expect status code 4
     await api
       .post('/api/blogs')
       .send(blogObject)
-      .set('Authorization', process.env.TEST_JWT)
+      .set('Authorization', await helper.getToken())
       .expect(400)
   }
 )
