@@ -51,6 +51,8 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
     await api
       .post('/api/blogs')
       .send(newBlog)
+      // each blog post must now come from a verified log-in
+      .set('Authorization', process.env.TEST_JWT)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -62,14 +64,14 @@ test('post request to api/blogs creates new blog in DB and content correctly sav
     // https://jestjs.io/docs/expect#tobetruthy
     // Verifies that there exists a blog in the database with identical
     // properties as the object we defined to be sent in the post request
-    const model = await Blog.exists({
+    const DocumentExistsInDB = await Blog.exists({
       title: 'Blogs r us',
       author: 'Gill',
       url: 'upthehill.com',
       likes: 123
     })
 
-    expect(model).toBeTruthy()
+    expect(DocumentExistsInDB).toBeTruthy()
   }
 )
 
@@ -84,6 +86,7 @@ test('If likes missing from post request to api/blogs, default to 0',
     await api
       .post('/api/blogs')
       .send(newRequest)
+      .set('Authorization', process.env.TEST_JWT)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -108,6 +111,7 @@ test('If title + url missing from post request -> api/blogs expect status code 4
     await api
       .post('/api/blogs')
       .send(blogObject)
+      .set('Authorization', process.env.TEST_JWT)
       .expect(400)
   }
 )
