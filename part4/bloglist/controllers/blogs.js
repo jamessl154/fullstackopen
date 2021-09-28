@@ -3,7 +3,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
 
@@ -19,16 +19,13 @@ blogsRouter.get('/', async (request, response) => {
   // The return value forms the final link in the chain.
 })
 
-blogsRouter.post('/', async (request, response, next) => {
+// register middleware exclusive to this route
+blogsRouter.post('/', middleware.userExtractor,  async (request, response, next) => {
 
   try {
     const body = request.body
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!request.token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
 
-    const user = await User.findById(decodedToken.id)
+    const user = await User.findById(request.user)
 
     const blog = new Blog({
       title: body.title,
@@ -47,27 +44,19 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 })
 
-blogsRouter.delete('/:id', async (request, response, next) => {
+// register middleware exclusive to this route
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
 
   try {
-    // the id of the resource to delete
+    // the id of the blog resource to delete
     const id = request.params.id
 
     // finds the blog in the blogs collection, so we can access its user property
     // which tells us the id of who added that blog
     const blog = await Blog.findById(id)
 
-    // the request must have a token attatched to its authorization header
-    // that verifies the user is logged in and from this we can check
-    // for a match with the id of the user sending the delete request
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
-    if (!request.token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
-    // 403 Forbidden
-    if (blog.user.toString() !== decodedToken.id.toString()) {
+    // They must be the same to proceed, else 403 Forbidden
+    if (blog.user.toString() !== request.user.toString()) {
       return response.status(403).json({ error: 'You can only delete blogs that you have created' })
     }
 

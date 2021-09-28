@@ -13,9 +13,10 @@ beforeEach(async () => {
 
   await Blog.deleteMany({})
   await User.deleteMany({})
-  // To be able to test all the functionality of the blogs api we need to
-  // add id property to each blog for which user added the blog
+  // To test all of the functionality of the blogs api we need to
+  // add an id property to each blog for which user added the blog.
   // this ID is reset every time we run user_api.test.js
+  // and the blogs lose reference to which user added them
   const passwordHash = await bcrypt.hash('sekret', 10)
   const user = new User({ username: 'root', name: 'new test subject', passwordHash })
 
@@ -167,103 +168,27 @@ test('Sending a put request to a api/blogs/:id updates the blog in the DB to the
   }
 )
 
-afterAll(() => {
-  // console.log('Afterall called', mongoose.connection.readyState)
-  mongoose.connection.close()
-  // console.log('mongoose.connection.close()', mongoose.connection.readyState)
-})
+test('Trying to add a blog without a token fails and returns the status code 401 Unauthorized',
+  async () => {
+    const newBlog = {
+      title: 'Blogs r us',
+      author: 'Gill',
+      url: 'upthehill.com',
+      likes: 123
+    }
 
-/* Extra tests
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
 
-test('Returned blogs contains blog with title Joe Bloggs', async () => {
-  const response = await api.get('/api/blogs')
-
-  const contents = response.body.map(r => r.title)
-  expect(contents).toContain(
-    'Joe Bloggs'
-  )
-})
-
-test('A valid blog can be added', async () => {
-  const newBlog = {
-    title: 'async/await simplifies making async calls',
-    author: 'Gill',
-    url: 'wentupthehill.com',
-    likes: 123456621
+    const blogsAtEnd = await helper.blogsInDb()
+    // adding a blog fails
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
   }
+)
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-
-  const contents = blogsAtEnd.map(r => r.title)
-
-  expect(contents).toContain(
-    'async/await simplifies making async calls'
-  )
-})
-
-test('An invalid blog (no title) is not added', async () => {
-  const newBlogs = {
-    author: 'Gill',
-    url: 'wentupthehill.com',
-    likes: 123456621
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlogs)
-    .expect(400)
-
-  const response = await api.get('/api/blogs')
-
-  expect(response.body).toHaveLength(helper.initialBlogs.length)
-})
-
-*/
-
-/* Extra tests
-
-test('a specific blog can be viewed', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-
-  const blogToView = blogsAtStart[0]
-
-  const resultBlog = await api
-    .get(`/api/notes/${blogToView.id}`)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-
-  const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
-
-  expect(resultBlog.body).toEqual(processedBlogToView)
-})
-
-test('a blog can be deleted', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-  const blogToDelete = blogsAtStart[0]
-
-  await api
-    .delete(`/api/blogs/${blogToDelete.id}`)
-    .expect(204)
-
-  const blogsAtEnd = await helper.blogsInDb()
-
-  expect(blogsAtEnd).toHaveLength(
-    helper.initialBlogs.length - 1
-  )
-
-  const contents = blogsAtEnd.map(r => r.content)
-
-  expect(contents).not.toContain(blogToDelete.content)
-})
-
-*/
+afterAll(() => mongoose.connection.close())
 
 /* Debugging error when using promises
 
