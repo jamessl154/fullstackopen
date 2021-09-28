@@ -9,15 +9,7 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-
-  // map initialBlogs to Mongoose objects
-  const blogObjects = helper.initialBlogs
-    .map(blog => new Blog(blog))
-  // map Mongoose objects to promises
-  const promiseArray = blogObjects.map(blog => blog.save())
-  // promiseArray transformed into single promise that is fulfilled
-  // after all promises in the promiseArray are resolved
-  await Promise.all(promiseArray)
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 test('Verify blog list returns correct number of blog posts in JSON format',
