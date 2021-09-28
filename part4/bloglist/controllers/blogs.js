@@ -48,12 +48,33 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-  const id = request.params.id
 
   try {
+    // the id of the resource to delete
+    const id = request.params.id
+
+    // finds the blog in the blogs collection, so we can access its user property
+    // which tells us the id of who added that blog
+    const blog = await Blog.findById(id)
+
+    // the request must have a token attatched to its authorization header
+    // that verifies the user is logged in and from this we can check
+    // for a match with the id of the user sending the delete request
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    // 403 Forbidden
+    if (blog.user.toString() !== decodedToken.id.toString()) {
+      return response.status(403).json({ error: 'You can only delete blogs that you have created' })
+    }
+
     await Blog.findByIdAndDelete(id)
     // console.log('Deleted Blog:', result)
     response.status(204).end()
+
   } catch(exception) {
     // invalid ID 400 bad request
     // doesn't catch non-existent resource only invalid ID format

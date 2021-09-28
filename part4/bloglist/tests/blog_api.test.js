@@ -5,10 +5,25 @@ const helper = require('./apiTest_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 // const _ = require('lodash')
 
 beforeEach(async () => {
+
   await Blog.deleteMany({})
+  await User.deleteMany({})
+  // To be able to test all the functionality of the blogs api we need to
+  // add id property to each blog for which user added the blog
+  // this ID is reset every time we run user_api.test.js
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', name: 'new test subject', passwordHash })
+
+  const rootUser = await user.save()
+
+  helper.initialBlogs[0].user = rootUser._id
+  helper.initialBlogs[1].user = rootUser._id
+
   await Blog.insertMany(helper.initialBlogs)
 })
 
@@ -115,9 +130,11 @@ test('When delete request sent to api/blogs/:id, that blog is removed from the d
   async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
+    // console.log('blogToDelete', blogToDelete)
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', await helper.getToken())
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
