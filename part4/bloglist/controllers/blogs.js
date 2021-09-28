@@ -19,7 +19,7 @@ blogsRouter.get('/', async (request, response) => {
   // The return value forms the final link in the chain.
 })
 
-// register middleware exclusive to this route
+// register middleware exclusive to the post + delete route
 blogsRouter.post('/', middleware.userExtractor,  async (request, response, next) => {
 
   try {
@@ -44,7 +44,7 @@ blogsRouter.post('/', middleware.userExtractor,  async (request, response, next)
   }
 })
 
-// register middleware exclusive to this route
+// register middleware exclusive to the post + delete route
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
 
   try {

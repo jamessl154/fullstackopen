@@ -14,9 +14,9 @@ beforeEach(async () => {
   await Blog.deleteMany({})
   await User.deleteMany({})
   // To test all of the functionality of the blogs api we need to
-  // add an id property to each blog for which user added the blog.
-  // this ID is reset every time we run user_api.test.js
-  // and the blogs lose reference to which user added them
+  // add an id property to each blog that identifies which user added the blog.
+  // this ID is reset every time we run user_api.test.js/the
+  // blogs lose reference to which user added them
   const passwordHash = await bcrypt.hash('sekret', 10)
   const user = new User({ username: 'root', name: 'new test subject', passwordHash })
 
