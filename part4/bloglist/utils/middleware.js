@@ -33,7 +33,7 @@ const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
 
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    // set custom property on the request object
+    // set the token to custom property on the request object
     request.token = authorization.substring(7)
   }
 
@@ -50,9 +50,7 @@ const userExtractor = (request, response, next) => {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
 
-  // set request.user to the ID of the logged in user
-  // performing the request which is identified by the token in the
-  // Authorization header
+  // set the ID of the logged in user making the request to request.user
   request.user = decodedToken.id
 
   next()

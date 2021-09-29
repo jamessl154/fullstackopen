@@ -23,19 +23,6 @@ const strongPassword = (password) => {
   return /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])([a-zA-Z0-9\W_]+)$/.test(password)
 }
 
-const nonExistingId = async () => {
-  const blog = new Blog({
-    title: 'delete',
-    author: 'this',
-    url: 'soon',
-    likes: 1234567
-  })
-  await blog.save()
-  await blog.remove()
-
-  return blog._id.toString()
-}
-
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
@@ -61,7 +48,6 @@ const getToken = async () => {
 
 module.exports = {
   initialBlogs,
-  nonExistingId,
   blogsInDb,
   usersInDb,
   strongPassword,

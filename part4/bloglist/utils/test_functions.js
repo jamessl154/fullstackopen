@@ -52,8 +52,8 @@ const mostBlogs = (blogs) => {
     return result
   },{})
 
-  // https://lodash.com/docs/4.17.15#keys returns an array of the objects keys
-  // reduces the hashmap which returns the key with the largest value
+  // https://lodash.com/docs/4.17.15#keys _.keys returns an array of the objects keys
+  // reduce the keys of the hashmap to find the key with the largest value
   const author = _.reduce(_.keys(hashmap), (a, b) => hashmap[a] > hashmap[b] ? a : b)
   // if value at hashmap[a] greater than at hashmap[b] then the
   // 'a' key is carried forward to evaluate against the next key

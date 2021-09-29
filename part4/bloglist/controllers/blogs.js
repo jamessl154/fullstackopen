@@ -20,6 +20,7 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 // register middleware exclusive to the post + delete route
+// that gives access to request.user which is the ID of the logged in user that sent the request
 blogsRouter.post('/', middleware.userExtractor,  async (request, response, next) => {
 
   try {
@@ -40,11 +41,15 @@ blogsRouter.post('/', middleware.userExtractor,  async (request, response, next)
     await user.save()
     response.json(savedBlog)
   } catch(exception) {
+    // If there is no token in the header or
+    // the token is invalid, it is handled by the
+    // userExtractor middleware
     next(exception)
   }
 })
 
 // register middleware exclusive to the post + delete route
+// that gives access to request.user which is the ID of the logged in user that sent the request
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
 
   try {
@@ -54,6 +59,10 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     // finds the blog in the blogs collection, so we can access its user property
     // which tells us the id of who added that blog
     const blog = await Blog.findById(id)
+
+    // request.user is from userExtractor middleware. the middleware parses the request header for
+    // the token and decodes it for the id of the logged in user that sent this request (the user
+    // must have logged in to have access to a token to send in their requests)
 
     // They must be the same to proceed, else 403 Forbidden
     if (blog.user.toString() !== request.user.toString()) {
@@ -66,7 +75,8 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
 
   } catch(exception) {
     // invalid ID 400 bad request
-    // doesn't catch non-existent resource only invalid ID format
+    // or token is from a different user 401 unauthorized
+    // doesn't catch non-existent resource
     next(exception)
   }
 })

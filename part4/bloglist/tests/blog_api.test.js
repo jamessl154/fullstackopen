@@ -9,6 +9,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 // const _ = require('lodash')
 
+// Re-initialize the database
 beforeEach(async () => {
 
   await Blog.deleteMany({})
@@ -16,7 +17,7 @@ beforeEach(async () => {
   // To test all of the functionality of the blogs api we need to
   // add an id property to each blog that identifies which user added the blog.
   // this ID is reset every time we run user_api.test.js/the
-  // blogs lose reference to which user added them
+  // blogs lose reference to a user that exists in the users collection
   const passwordHash = await bcrypt.hash('sekret', 10)
   const user = new User({ username: 'root', name: 'new test subject', passwordHash })
 
@@ -212,21 +213,4 @@ beforeAll((done) => {
 })
 
 https://stackoverflow.com/a/19606067
-in afterAll() mongoose.connection.readyState returns:
-1 (connected) before and 3 (disconnecting) after
-with and without the above beforeAll.
-
-Overall, it does make sense that if .close() is called before the
-database is opened. Once the database opens, it will remain
-open and asynchronous operations in the test can persist so that could be
-the issue
-
-After multiple console.logs I think the problem is related
-to the console.logs on line 24 and 29 that returns 2 (disconnected)
-without the beforeAll and returns 1 (connected) with the beforeAll.
-Furthermore, the position of the console.log 'connected to MongoDB'
-shifts from after the request is logged to before.
-At least we should be more certain when the
-database is opened and closed using this method
-
 */
