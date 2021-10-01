@@ -25,6 +25,8 @@ const App = () => {
     if (loggedInUserJSON) {
       const user = JSON.parse(loggedInUserJSON)
       setUser(user)
+      // Re-save the token to a variable for the blogService
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -41,6 +43,10 @@ const App = () => {
         'loggedInBloglistUser',
         JSON.stringify(user)
       )
+      
+      // Save the token in a variable for the blogService
+      blogService.setToken(user.token)
+      // user contains the name, username and token of the logged in user
       setUser(user)
       setUsername('')
       setPassword('')
@@ -57,15 +63,18 @@ const App = () => {
   const addBlog = async (event) => {
     event.preventDefault()
 
-    // TODO create blogService.post and use here
-
-    let newBlog = () => {
-      <div>
-       {title} {author}
-      </div>
+    let newBlog = {
+      "title" : title,
+      "author" : author,
+      "url" : url
     }
 
-    setBlogs(blogs.concat(newBlog))
+    // Successful addBlog responds with the blog that was added
+    let response = await blogService.addBlog(newBlog)
+    // state 'blog' array of blog objects gets passed down
+    // through component BlogDisplay to Blog where the array is mapped
+    // on the html in a div of blog.title blog.author
+    setBlogs(blogs.concat(response))
   }
 
   return (
