@@ -4,3 +4,22 @@
     width: 250px;
     grid-template-columns: 1fr 3fr;
 }
+
+.notification {
+    font-size: 15px;
+    border: 2mm ridge;
+    padding: 5px;
+    display: inline-block;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.empty {
+    visibility: hidden;
+}

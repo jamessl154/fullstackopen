@@ -3,6 +3,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogDisplay from './components/BlogDisplay'
+import Notification from './components/Notification'
 import './App.css'
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     blogService
@@ -30,6 +32,15 @@ const App = () => {
     }
   }, [])
 
+  // https://studies.cs.helsinki.fi/stats/courses/fullstackopen/solutions/2
+  // default type="success"
+  const notifyWith = (message, type="success") => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('Logging in with...', username, password)
@@ -43,7 +54,7 @@ const App = () => {
         'loggedInBloglistUser',
         JSON.stringify(user)
       )
-      
+      notifyWith(`${username} logged in successfuly!`)
       // Save the token in a variable for the blogService
       blogService.setToken(user.token)
       // user contains the name, username and token of the logged in user
@@ -51,6 +62,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
+      notifyWith('Wrong username or password.', 'error')
       console.log(exception)
     }
   }
@@ -75,10 +87,14 @@ const App = () => {
     // through component BlogDisplay to Blog where the array is mapped
     // on the html in a div of blog.title blog.author
     setBlogs(blogs.concat(response))
+    notifyWith(`${newBlog.title} by ${newBlog.author} added`)
   }
 
   return (
     <div>
+      
+      <Notification notification={notification} />
+
       { user === null 
         ? <LoginForm
             username={username} 
