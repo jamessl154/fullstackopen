@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import LoginForm from './components/LoginForm'
+import BlogDisplay from './components/BlogDisplay'
 import './App.css'
 
 const App = () => {
@@ -14,9 +15,9 @@ const App = () => {
   const [url, setUrl] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    blogService
+      .getAll()
+      .then(blogs => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -67,67 +68,28 @@ const App = () => {
     setBlogs(blogs.concat(newBlog))
   }
 
-  const loginForm = () => {
-    return (
-      <div>
-        <h2>Log in to the Application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            Username{' '}
-              <input
-                type="text"
-                value={username}
-                name="Username"
-                onChange={({ target }) => setUsername(target.value)}
-              />
-          </div>
-          <div>
-            Password{' '}
-              <input
-                type="password"
-                value={password}
-                name="Password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    )
-  }
-
-  const blogDisplay = () => {
-    return (
-      <div>
-        <h1>Blogs</h1>
-        <span>{user.username} is logged in {' '}
-          <button onClick={handleLogout}>Logout</button>
-        </span>
-
-        <h3>Add a new blog</h3>
-        <form onSubmit={addBlog}>
-          <div className='container'>
-            <label htmlFor='title'>Title:</label>
-            <input id='title' type="text" value={title} onChange={({ target }) => setTitle(target.value)}/>
-            <label htmlFor='author'>Author:</label>
-            <input id='author' type="text" value={author} onChange={({ target }) => setAuthor(target.value)}/>
-            <label htmlFor='url'>Url:</label>
-            <input id='url' type="text" value={url} onChange={({ target }) => setUrl(target.value)}/>
-          </div>
-          <button type="submit" >Add</button>
-        </form>
-
-        <h3>Existing blogs</h3>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
-      </div>
-    )
-  }
-
   return (
     <div>
       { user === null 
-        ? loginForm()
-        : blogDisplay()
+        ? <LoginForm
+            username={username} 
+            password={password} 
+            handleLogin={handleLogin}
+            setPassword={setPassword}
+            setUsername={setUsername}
+          />
+        : <BlogDisplay
+            username={user.username}
+            handleLogout={handleLogout}
+            addBlog={addBlog}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+            blogs={blogs}
+          />
       }
     </div>
   )
