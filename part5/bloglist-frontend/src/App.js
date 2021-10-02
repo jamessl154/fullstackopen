@@ -35,6 +35,7 @@ const App = () => {
   // https://studies.cs.helsinki.fi/stats/courses/fullstackopen/solutions/2
   // default type="success"
   const notifyWith = (message, type="success") => {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer
     setNotification({ message, type })
     setTimeout(() => {
       setNotification(null)
@@ -69,6 +70,7 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInBloglistUser')
+    notifyWith(`${user.username} logged out successfuly!`)
     setUser(null)
   }
 
