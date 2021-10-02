@@ -14,7 +14,7 @@ const App = () => {
   // This runs once on page load
   useEffect(() => {
     axios
-    .get("https://restcountries.eu/rest/v2/all")
+    .get("https://restcountries.com/v3.1/all")
     .then(x => {
       atlas.current = x.data
     })
@@ -26,7 +26,7 @@ const App = () => {
   useEffect(() => {
     if (atlas.current !== undefined) {
       setCountries(atlas.current.filter((x) =>
-        x.name.slice(0, search.length).toUpperCase()
+        x.name.common.slice(0, search.length).toUpperCase()
         ===
         search.toUpperCase()
         )
@@ -44,7 +44,7 @@ const App = () => {
     if (countries.length === 1) {
       let params = {
         access_key: process.env.REACT_APP_API_KEY,
-        query: countries[0].capital
+        query: countries[0].capital[0]
       }
       axios
       // https://weatherstack.com/documentation
@@ -60,7 +60,7 @@ const App = () => {
 
   // setOne takes name of 1 country as argument, x, then sets the countries state
   // to be that country
-  const setOne = (x) => setCountries(countries.filter((y) => y.name === x))
+  const setOne = (x) => setCountries(countries.filter((y) => y.name.common === x))
 
   let countryList;
 
@@ -75,14 +75,21 @@ const App = () => {
   }
   // only render once the weather API has setWeather
   else if (countries.length === 1 && weather !== '') {
-    countryList = countries.map((x) => 
-      <OneCountry key={x.name} props={x} weather={weather.current} />
-    )
+    countryList = <OneCountry 
+                    key={countries[0].name.common}
+                    country={countries[0]}
+                    weather={weather.current} 
+                  />
   }
   else {
     countryList = countries.map((x) => (
-        // each component mapped will be passed an onClick that references their object name in countries
-        <Country key={x.name} name={x.name} onClick={() => setOne(x.name)} />
+        // each component mapped will be passed an onClick 
+        // that references their object name in countries
+        <Country 
+          key={x.name.common}
+          name={x.name.common}
+          onClick={() => setOne(x.name.common)}
+        />
       )
     )
   }
