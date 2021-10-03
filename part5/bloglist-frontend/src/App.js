@@ -11,9 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
@@ -74,15 +71,7 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-
-    let newBlog = {
-      "title" : title,
-      "author" : author,
-      "url" : url
-    }
-
+  const addBlog = async (newBlog) => {
     // Successful addBlog responds with the blog that was added
     let response = await blogService.addBlog(newBlog)
     // state 'blog' array of blog objects gets passed down
@@ -108,14 +97,8 @@ const App = () => {
         : <BlogDisplay
             username={user.username}
             handleLogout={handleLogout}
-            addBlog={addBlog}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
             blogs={blogs}
+            addBlog={addBlog}
           />
       }
     </div>

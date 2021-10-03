@@ -3,8 +3,7 @@ import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 
-const BlogDisplay = ({ username, handleLogout, addBlog, title, 
-    setTitle, author, setAuthor, url, setUrl, blogs }) => {
+const BlogDisplay = ({ username, handleLogout, blogs, addBlog }) => {
 
     return (
       <div>
@@ -13,16 +12,8 @@ const BlogDisplay = ({ username, handleLogout, addBlog, title,
           <button onClick={handleLogout}>Logout</button>
         </span>
 
-        <Togglable buttonLabel="New Blog">
-          <AddBlogForm 
-              addBlog={addBlog}
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
-          />
+        <Togglable buttonLabel="Add a new Blog">
+          <AddBlogForm addBlog={addBlog} />
         </Togglable>
 
         <h3>Existing blogs</h3>
