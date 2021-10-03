@@ -1,6 +1,7 @@
 import React from 'react'
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
+import Togglable from './Togglable'
 
 const BlogDisplay = ({ username, handleLogout, addBlog, title, 
     setTitle, author, setAuthor, url, setUrl, blogs }) => {
@@ -12,15 +13,17 @@ const BlogDisplay = ({ username, handleLogout, addBlog, title,
           <button onClick={handleLogout}>Logout</button>
         </span>
 
-        <AddBlogForm 
-            addBlog={addBlog}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-        />
+        <Togglable buttonLabel="New Blog">
+          <AddBlogForm 
+              addBlog={addBlog}
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              url={url}
+              setUrl={setUrl}
+          />
+        </Togglable>
 
         <h3>Existing blogs</h3>
         {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
