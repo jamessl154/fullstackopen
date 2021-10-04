@@ -29,6 +29,7 @@
     line-height: 1.5rem;
     display: inline-block;
     width: 250px;
+    padding: 10px;
 }
 
 .bloglist {

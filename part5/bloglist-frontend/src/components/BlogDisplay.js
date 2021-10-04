@@ -22,7 +22,7 @@ const BlogDisplay = ({ username, handleLogout, blogs, addBlog }) => {
         <AddBlogForm addBlog={addBlog} toggleRef={toggleRef} />
       </Togglable>
 
-      <h3>Existing blogs</h3>
+      <h2>Existing blogs</h2>
       {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
     </div>
   )
