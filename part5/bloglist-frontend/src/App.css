@@ -23,3 +23,14 @@
 .empty {
     visibility: hidden;
 }
+
+.blog {
+    border: 0.5rem outset rgb(134, 134, 134);
+    line-height: 1.5rem;
+    display: inline-block;
+    width: 250px;
+}
+
+.bloglist {
+    width: 400px;
+}

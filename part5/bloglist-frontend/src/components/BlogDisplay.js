@@ -8,11 +8,11 @@ const BlogDisplay = ({ username, handleLogout, blogs, addBlog }) => {
   const toggleRef = useRef()
 
   return (
-    <div>
+    <div className='bloglist'>
       <h1>Blogs</h1>
-      <span>{username} is logged in {' '}
+      <p>{username} is logged in {' '}
         <button onClick={handleLogout}>Logout</button>
-      </span>
+      </p>
 
       <Togglable buttonLabel="Add a new Blog" ref={toggleRef}>
         {/* 
