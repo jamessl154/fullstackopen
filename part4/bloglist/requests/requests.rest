@@ -35,3 +35,12 @@ Content-type: application/json
     "username": "root",
     "password": "S1!lainen"
 }
+
+###
+
+PUT http://localhost:3003/api/blogs/6156fe1ff5a7455e7a423567
+Content-type: application/json
+
+{
+    "likes": 0
+}
