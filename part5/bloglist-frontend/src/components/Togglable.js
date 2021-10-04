@@ -1,6 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react'
 
 // https://reactjs.org/docs/forwarding-refs.html
+// forwardRef => the component can access the ref passed to it
 const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
