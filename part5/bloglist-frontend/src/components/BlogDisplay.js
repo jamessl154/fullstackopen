@@ -1,25 +1,31 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 
 const BlogDisplay = ({ username, handleLogout, blogs, addBlog }) => {
 
-    return (
-      <div>
-        <h1>Blogs</h1>
-        <span>{username} is logged in {' '}
-          <button onClick={handleLogout}>Logout</button>
-        </span>
+  const toggleRef = useRef()
 
-        <Togglable buttonLabel="Add a new Blog">
-          <AddBlogForm addBlog={addBlog} />
-        </Togglable>
+  return (
+    <div>
+      <h1>Blogs</h1>
+      <span>{username} is logged in {' '}
+        <button onClick={handleLogout}>Logout</button>
+      </span>
 
-        <h3>Existing blogs</h3>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
-      </div>
-    )
+      <Togglable buttonLabel="Add a new Blog" ref={toggleRef}>
+        {/* 
+          pass toggleRef as a ref to Togglable
+          but as a prop to AddBlogForm
+        */}
+        <AddBlogForm addBlog={addBlog} toggleRef={toggleRef} />
+      </Togglable>
+
+      <h3>Existing blogs</h3>
+      {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+    </div>
+  )
 }
 
 export default BlogDisplay

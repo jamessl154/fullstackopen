@@ -1,31 +1,32 @@
 import React, { useState } from 'react'
 
-const AddBlogForm = ({ addBlog }) => {
-        const [title, setTitle] = useState('')
-        const [author, setAuthor] = useState('')
-        const [url, setUrl] = useState('')
+const AddBlogForm = ({ addBlog, toggleRef }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
-        const createBlog = (event) => {
-            // first creating the blog object,
-            // then calling addBlog, sending it to the DB via the backend
-            // finally clearing the controlled inputs
-            event.preventDefault()
+  const createBlog = (event) => {
+    // first creating the blog object,
+    // then calling addBlog, sending it to the DB via the backend
+    // finally clearing the controlled inputs
+    event.preventDefault()
 
-            addBlog({
-              "title" : title,
-              "author" : author,
-              "url" : url
-            })
+    addBlog({
+        "title" : title,
+        "author" : author,
+        "url" : url
+    })
 
-            setTitle('')
-            setAuthor('')
-            setUrl('')
-          }
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    toggleRef.current.toggleVisibility()
+    }
         
     return (
-        <div>
-            <h3>New blog</h3>
-            <form onSubmit={createBlog}>
+      <div>
+        <h3>New blog</h3>
+        <form onSubmit={createBlog}>
             <div className='container'>
                 <label htmlFor='title'>Title:</label>
                 <input
@@ -50,8 +51,8 @@ const AddBlogForm = ({ addBlog }) => {
                 />
             </div>
             <button type="submit" >Add</button>
-            </form>
-        </div>
+        </form>
+      </div>
     )
 }
 
