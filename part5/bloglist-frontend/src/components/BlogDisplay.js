@@ -3,7 +3,7 @@ import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 
-const BlogDisplay = ({ username, handleLogout, blogs, addBlog, setBlogs }) => {
+const BlogDisplay = ({ username, handleLogout, blogs, addBlog, setBlogs, user }) => {
 
   const toggleRef = useRef()
 
@@ -29,6 +29,7 @@ const BlogDisplay = ({ username, handleLogout, blogs, addBlog, setBlogs }) => {
           blog={blog}
           blogs={blogs}
           setBlogs={setBlogs}
+          user={user}
         />)}
     </div>
   )

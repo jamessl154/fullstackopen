@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, user }) => {
   const [toggle, setToggle] = useState(true)
   const [likes, setlikes] = useState(blog.likes)
 
@@ -64,7 +64,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
               Total Likes: {likes}{' '}
               <button onClick={handleLike}>Like</button><br />
               Url: {blog.url}<br />
-              <button onClick={handleRemove}>Remove</button>
+              { /* conditional render */
+              blog.user.username === user.username
+              ? <button onClick={handleRemove}>Remove</button>
+              : null}
             </div>
           </div>
       }

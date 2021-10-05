@@ -82,7 +82,7 @@ const App = () => {
     // through component BlogDisplay to Blog where the array is mapped
     // on the html in a div of blog.title blog.author
     setBlogs(blogs.concat(response))
-    notifyWith(`${newBlog.title} by ${newBlog.author} added`)
+    notifyWith(`"${newBlog.title}" by ${newBlog.author} added`)
   }
 
   return (
@@ -104,6 +104,7 @@ const App = () => {
             blogs={blogs}
             addBlog={addBlog}
             setBlogs={setBlogs}
+            user={user}
           />
       }
     </div>
