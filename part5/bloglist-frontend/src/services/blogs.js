@@ -17,7 +17,7 @@ const addBlog = async (newBlog) => {
 
   // https://github.com/axios/axios#instance-methods
   const config = {
-    headers: { Authorization: token},
+    headers: { Authorization: token },
   }
 
   const response = await axios.post(baseUrl, newBlog, config)
@@ -29,6 +29,17 @@ const addLikes = async (id, update) => {
   return response.data
 }
 
-const blogService = { getAll, addBlog, setToken, addLikes }
+const removeBlog = async (id) => {
+
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+
+  return response
+}
+
+const blogService = { getAll, addBlog, setToken, addLikes, removeBlog }
 
 export default blogService

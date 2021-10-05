@@ -37,8 +37,14 @@ blogsRouter.post('/', middleware.userExtractor,  async (request, response, next)
     })
 
     const savedBlog = await blog.save()
+
+    // populate the returned object
+    await savedBlog.populate('user', { username: 1, name: 1 })
+
+    // Concatenate the blog id to the blogs array of the user in users
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
+
     response.json(savedBlog)
   } catch(exception) {
     // If there is no token in the header or

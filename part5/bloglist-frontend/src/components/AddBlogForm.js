@@ -14,7 +14,7 @@ const AddBlogForm = ({ addBlog, toggleRef }) => {
     addBlog({
         "title" : title,
         "author" : author,
-        "url" : url
+        "url" : url,
     })
 
     setTitle('')
