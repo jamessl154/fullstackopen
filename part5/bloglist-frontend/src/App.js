@@ -17,7 +17,7 @@ const App = () => {
     blogService
       .getAll()
       .then(blogs => {
-        // First get request renders all blogs sorted by likes
+        // On first render send getAll request then render all blogs sorted by likes
         blogs.sort((a, b) => b.likes - a.likes)
         setBlogs(blogs)
       })
