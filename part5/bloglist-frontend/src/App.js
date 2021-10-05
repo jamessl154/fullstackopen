@@ -16,7 +16,11 @@ const App = () => {
   useEffect(() => {
     blogService
       .getAll()
-      .then(blogs => setBlogs(blogs))
+      .then(blogs => {
+        // First get request renders all blogs sorted by likes
+        blogs.sort((a, b) => b.likes - a.likes)
+        setBlogs(blogs)
+      })
   }, [])
 
   useEffect(() => {
@@ -99,6 +103,7 @@ const App = () => {
             handleLogout={handleLogout}
             blogs={blogs}
             addBlog={addBlog}
+            setBlogs={setBlogs}
           />
       }
     </div>
