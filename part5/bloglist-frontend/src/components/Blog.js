@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, blogs, setBlogs, user }) => {
   const [toggle, setToggle] = useState(true)
@@ -8,12 +9,12 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   const buttonToggle = () => setToggle(!toggle)
 
   const handleRemove = async () => {
-  
+
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
       // send the delete request to the backend
       await blogService.removeBlog(blog.id)
 
-      // Maybe need to notify later 
+      // Maybe need to notify later
       // when users trying to delete blogs they didnt add
       // console.log(response)
 
@@ -26,13 +27,13 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   const handleLike = async () => {
 
     let updatedBlog = {
-        author: blog.author,
-        id: blog.id,
-        title: blog.title,
-        likes: likes + 1,
-        url: blog.url,
-        user: blog.user.id
-      }
+      author: blog.author,
+      id: blog.id,
+      title: blog.title,
+      likes: likes + 1,
+      url: blog.url,
+      user: blog.user.id
+    }
 
     setlikes(likes + 1)
 
@@ -52,27 +53,36 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     <div className='blog'>
       {/* if toggle true or false */}
       { toggle
-        ? <div>
-            "{blog.title}" by {blog.author}{' '}
-            <button onClick={buttonToggle}>View</button>
-          </div>
-        : <div>
-            "{blog.title}" by {blog.author}{' '}
-            <button onClick={buttonToggle}>Hide</button>
-            <div>
+        ?
+        <div>
+          &quot;{blog.title}&quot; by {blog.author}{' '}
+          <button onClick={buttonToggle}>View</button>
+        </div>
+        :
+        <div>
+          &quot;{blog.title}&quot; by {blog.author}{' '}
+          <button onClick={buttonToggle}>Hide</button>
+          <div>
               Added by: {blog.user.username}<br />
               Total Likes: {likes}{' '}
-              <button onClick={handleLike}>Like</button><br />
+            <button onClick={handleLike}>Like</button><br />
               Url: {blog.url}<br />
-              { /* conditional render */
+            { /* conditional render */
               blog.user.username === user.username
-              ? <button onClick={handleRemove}>Remove</button>
-              : null}
-            </div>
+                ? <button onClick={handleRemove}>Remove</button>
+                : null}
           </div>
+        </div>
       }
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  blogs: PropTypes.array.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 export default Blog

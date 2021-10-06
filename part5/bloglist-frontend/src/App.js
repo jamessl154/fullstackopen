@@ -34,8 +34,8 @@ const App = () => {
   }, [])
 
   // https://studies.cs.helsinki.fi/stats/courses/fullstackopen/solutions/2
-  // default type="success"
-  const notifyWith = (message, type="success") => {
+  // default type='success'
+  const notifyWith = (message, type='success') => {
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer
     setNotification({ message, type })
     setTimeout(() => {
@@ -87,25 +87,27 @@ const App = () => {
 
   return (
     <div>
-      
+
       <Notification notification={notification} />
 
-      { user === null 
-        ? <LoginForm
-            username={username} 
-            password={password} 
-            handleLogin={handleLogin}
-            setPassword={setPassword}
-            setUsername={setUsername}
-          />
-        : <BlogDisplay
-            username={user.username}
-            handleLogout={handleLogout}
-            blogs={blogs}
-            addBlog={addBlog}
-            setBlogs={setBlogs}
-            user={user}
-          />
+      { user === null
+        ?
+        <LoginForm
+          username={username}
+          password={password}
+          handleLogin={handleLogin}
+          setPassword={setPassword}
+          setUsername={setUsername}
+        />
+        :
+        <BlogDisplay
+          username={user.username}
+          handleLogout={handleLogout}
+          blogs={blogs}
+          addBlog={addBlog}
+          setBlogs={setBlogs}
+          user={user}
+        />
       }
     </div>
   )

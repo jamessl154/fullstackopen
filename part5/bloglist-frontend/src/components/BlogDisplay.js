@@ -3,7 +3,8 @@ import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 
-const BlogDisplay = ({ username, handleLogout, blogs, addBlog, setBlogs, user }) => {
+const BlogDisplay = ({ username, handleLogout, blogs,
+  addBlog, setBlogs, user }) => {
 
   const toggleRef = useRef()
 
@@ -15,17 +16,17 @@ const BlogDisplay = ({ username, handleLogout, blogs, addBlog, setBlogs, user })
       </p>
 
       <Togglable buttonLabel="Add a new Blog" ref={toggleRef}>
-        {/* 
+        {/*
           pass toggleRef as a ref to Togglable
           but as a prop to AddBlogForm
         */}
         <AddBlogForm addBlog={addBlog} toggleRef={toggleRef} />
       </Togglable>
-      
+
       <h2>Existing blogs</h2>
-      {blogs.map(blog => 
-        <Blog 
-          key={blog.id} 
+      {blogs.map(blog =>
+        <Blog
+          key={blog.id}
           blog={blog}
           blogs={blogs}
           setBlogs={setBlogs}
