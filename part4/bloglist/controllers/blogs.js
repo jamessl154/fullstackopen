@@ -4,6 +4,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const middleware = require('../utils/middleware')
+// const mongoose = require('mongoose')
 
 blogsRouter.get('/', async (request, response) => {
 
@@ -38,14 +39,21 @@ blogsRouter.post('/', middleware.userExtractor,  async (request, response, next)
 
     const savedBlog = await blog.save()
 
+    // https://masteringjs.io/tutorials/mongoose/save
+    // mongoose.set('debug', true)
+    // console.log('user before concat', user)
+    // user.blogs = user.blogs.concat(savedBlog._id)
+    // console.log('user after concat', user)
+    // await user.save()
+
+    // Concatenate the blog id to the blogs array of the user in users
+    await user.updateOne({ blogs: user.blogs.concat(savedBlog._id) })
+
     // populate the returned object
     await savedBlog.populate('user', { username: 1, name: 1 })
 
-    // Concatenate the blog id to the blogs array of the user in users
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
-
     response.json(savedBlog)
+
   } catch(exception) {
     // If there is no token in the header or
     // the token is invalid, it is handled by the
