@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
-describe('On first render', () => {
+describe('On first render,', () => {
 
   test('Blog component renders a blog`s title and author,' +
   ' but not url or likes by default', () => {
@@ -28,7 +28,7 @@ describe('On first render', () => {
   })
 })
 
-describe('When View button is clicked for a blog', () => {
+describe('When View button is clicked for a blog,', () => {
   let component
   let mockLikes = jest.fn()
 
@@ -60,7 +60,7 @@ describe('When View button is clicked for a blog', () => {
     expect(component.container.querySelector('.expandedBlog')).toBeDefined()
   })
 
-  test('If like button is clicked twice, the event handler from' +
+  test('If the like button is clicked twice, the event handler from' +
   ' its props is called twice', () => {
 
     const likeButton = component.getByText('Like')

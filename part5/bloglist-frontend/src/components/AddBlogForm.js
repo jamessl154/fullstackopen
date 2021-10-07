@@ -31,6 +31,7 @@ const AddBlogForm = ({ addBlog, toggleRef }) => {
         <div className='container'>
           <label htmlFor='title'>Title:</label>
           <input
+            className='title'
             id='title'
             type='text'
             value={title}
@@ -38,6 +39,7 @@ const AddBlogForm = ({ addBlog, toggleRef }) => {
           />
           <label htmlFor='author'>Author:</label>
           <input
+            className='author'
             id='author'
             type='text'
             value={author}
@@ -45,6 +47,7 @@ const AddBlogForm = ({ addBlog, toggleRef }) => {
           />
           <label htmlFor='url'>Url:</label>
           <input
+            className='url'
             id='url'
             type='text'
             value={url}
