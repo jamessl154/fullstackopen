@@ -30,6 +30,7 @@ describe('On first render', () => {
 
 describe('When View button is clicked for a blog', () => {
   let component
+  let mockLikes = jest.fn()
 
   beforeEach(() => {
 
@@ -48,7 +49,7 @@ describe('When View button is clicked for a blog', () => {
     }
 
     component = render(
-      <Blog blog={blog} user={user} />
+      <Blog blog={blog} user={user} handleLike={mockLikes}/>
     )
 
     const viewButton = component.getByText('View')
@@ -59,16 +60,14 @@ describe('When View button is clicked for a blog', () => {
     expect(component.container.querySelector('.expandedBlog')).toBeDefined()
   })
 
-  // test('If like button is clicked twice, the event handler from' +
-  // ' its props is called twice', async () => {
+  test('If like button is clicked twice, the event handler from' +
+  ' its props is called twice', () => {
 
-  //   component.debug()
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
 
-  //   const likeButton = component.getByText('Like')
-  //   await fireEvent.click(likeButton)
-  //   await fireEvent.click(likeButton)
-
-  //   expect(mockHandler.mock.calls).toHaveLength(2)
-  // })
+    expect(mockLikes.mock.calls).toHaveLength(2)
+  })
 })
 
