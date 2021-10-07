@@ -58,7 +58,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
           <button onClick={buttonToggle}>View</button>
         </div>
         :
-        <div>
+        <div className='expandedBlog'>
           &quot;{blog.title}&quot; by {blog.author}{' '}
           <button onClick={buttonToggle}>Hide</button>
           <div>
