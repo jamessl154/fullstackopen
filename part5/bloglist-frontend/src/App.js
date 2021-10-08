@@ -56,7 +56,7 @@ const App = () => {
         'loggedInBloglistUser',
         JSON.stringify(user)
       )
-      notifyWith(`${username} logged in successfuly!`)
+      notifyWith(`${username} logged in successfully!`)
       // Save the token in a variable for the blogService
       blogService.setToken(user.token)
       // user contains the name, username and token of the logged in user
