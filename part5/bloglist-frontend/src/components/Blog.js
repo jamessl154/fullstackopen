@@ -21,7 +21,7 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
           <div>
               Added by: {blog.user.username}<br />
               Total Likes: {blog.likes}{' '}
-            <button onClick={handleLike}>Like</button><br />
+            <button data-cy='likeButton' onClick={handleLike}>Like</button><br />
               Url: {blog.url}<br />
             { /* conditional render */
               blog.user.username === user.username

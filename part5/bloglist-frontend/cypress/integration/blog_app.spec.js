@@ -42,7 +42,7 @@ describe('On visit to the blog app,', function() {
       cy.get('.notification').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
 
-    describe('When logged in', function() {
+    describe('When logged in,', function() {
       beforeEach(function() {
         // log in user
         cy.login({ username: 'mluukkai', password: 'S1!lainen' })
@@ -61,6 +61,24 @@ describe('On visit to the blog app,', function() {
         cy.get('.bloglist')
           .contains('cypressTestTitle')
           .contains('cypressTestAuthor')
+      })
+
+      describe('When a blog is created and expanded,', function() {
+        beforeEach(function() {
+          const blog = {
+            title: 'cypressTestTitle',
+            author: 'cypressTestAuthor',
+            url: 'cypressTestUrl'
+          }
+          cy.createBlog(blog)
+          cy.visit('http://localhost:3000')
+          cy.contains('View').click()
+        })
+
+        it('clicking the like button increments total likes by 1', function() {
+          cy.get('[data-cy=likeButton]').click()
+          cy.get('.blog').contains('Total Likes: 1')
+        })
       })
     })
   })
