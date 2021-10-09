@@ -57,7 +57,6 @@ describe('On visit to the blog app,', function() {
         }
 
         cy.createBlog(blog)
-        cy.visit('http://localhost:3000')
         cy.get('.bloglist')
           .contains('cypressTestTitle')
           .contains('cypressTestAuthor')
@@ -71,7 +70,6 @@ describe('On visit to the blog app,', function() {
             url: 'cypressTestUrl'
           }
           cy.createBlog(blog)
-          cy.visit('http://localhost:3000')
           cy.contains('View').click()
         })
 
@@ -117,6 +115,72 @@ describe('On visit to the blog app,', function() {
         })
       })
     })
+  })
+})
+
+describe('When adding likes to blogs,', function() {
+  beforeEach(function() {
+    // reset the DB
+    cy.request('POST', 'http://localhost:3003/api/testing/reset')
+    const user = {
+      name: 'Matti Luukkainen',
+      username: 'mluukkai',
+      password: 'S1!lainen'
+    }
+    cy.request('POST', 'http://localhost:3003/api/users/', user)
+    cy.login({ username: 'mluukkai', password: 'S1!lainen' })
+    cy.visit('http://localhost:3000')
+
+    const blog1 = {
+      title: 'cypressTestTitle',
+      author: 'cypressTestAuthor',
+      url: 'cypressTestUrl'
+    }
+
+    const blog2 = {
+      title: 'sardiniaTestTitle',
+      author: 'sardiniaTestAuthor',
+      url: 'sardiniaTestUrl'
+    }
+
+    cy.createBlog(blog1)
+    cy.createBlog(blog2)
+    cy.contains('View').click()
+    // first view disappears
+    cy.contains('View').click()
+  })
+
+  it('blogs are re-sorted by number of likes', function() {
+
+    // getting the first element with .blog class on the page
+    cy.get('.blog:first')
+      .contains('cypressTestTitle')
+      .contains('Total Likes: 0')
+
+    // sardinia blog is initially underneath cypress blog
+
+    // add like to sardinia blog, expect it to now be on top
+    cy.get('[data-cy=sardiniaTestTitle]').find('[data-cy=likeButton]').click()
+    // wait 1 second after clicks
+    cy.wait(100)
+    cy.get('.blog:first')
+      .contains('sardiniaTestTitle')
+      .contains('Total Likes: 1')
+
+    // After liking the cypress blog twice, it goes on top again
+    // which confirms that blogs are being re-sorted by most number of likes
+    cy.get('[data-cy=cypressTestTitle]').find('[data-cy=likeButton]').click()
+    cy.wait(100)
+    // blogs with the same likes are not re-sorted
+    cy.get('.blog:first')
+      .contains('sardiniaTestTitle')
+      .contains('Total Likes: 1')
+    cy.get('[data-cy=cypressTestTitle]').find('[data-cy=likeButton]').click()
+    cy.wait(100)
+    // cypress has 2 likes and sardinia has 1, cypress is on top
+    cy.get('.blog:first')
+      .contains('cypressTestTitle')
+      .contains('Total Likes: 2')
   })
 })
 

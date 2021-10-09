@@ -6,7 +6,7 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
   const buttonToggle = () => setToggle(!toggle)
 
   return (
-    <div className='blog'>
+    <div data-cy={blog.title} className='blog'>
       {/* if toggle true or false */}
       { toggle
         ?
