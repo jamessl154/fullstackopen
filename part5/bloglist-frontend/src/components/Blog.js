@@ -25,7 +25,7 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
               Url: {blog.url}<br />
             { /* conditional render */
               blog.user.username === user.username
-                ? <button onClick={handleRemove}>Remove</button>
+                ? <button data-cy='removeButton' onClick={handleRemove}>Remove</button>
                 : null}
           </div>
         </div>

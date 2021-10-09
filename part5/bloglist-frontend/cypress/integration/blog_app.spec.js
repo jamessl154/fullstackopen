@@ -13,7 +13,7 @@ describe('On visit to the blog app,', function() {
   })
 
   // https://docs.cypress.io/guides/getting-started/testing-your-app#Fully-test-the-login-flow-but-only-once
-  describe('When logging in,',function() {
+  describe('When logging in,', function() {
 
     beforeEach(function() {
       // create user, bypass UI because we currently have no UI to register new users
@@ -42,7 +42,7 @@ describe('On visit to the blog app,', function() {
       cy.get('.notification').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
 
-    describe('When logged in,', function() {
+    describe('When logged in as mluukkai,', function() {
       beforeEach(function() {
         // log in user
         cy.login({ username: 'mluukkai', password: 'S1!lainen' })
@@ -63,7 +63,7 @@ describe('On visit to the blog app,', function() {
           .contains('cypressTestAuthor')
       })
 
-      describe('When a blog is created and expanded,', function() {
+      describe('When mluukkai creates a blog and expands it,', function() {
         beforeEach(function() {
           const blog = {
             title: 'cypressTestTitle',
@@ -78,6 +78,42 @@ describe('On visit to the blog app,', function() {
         it('clicking the like button increments total likes by 1', function() {
           cy.get('[data-cy=likeButton]').click()
           cy.get('.blog').contains('Total Likes: 1')
+        })
+
+        it('mluukkai has the option to remove the blog', function() {
+          cy.get('[data-cy=removeButton]').contains('Remove')
+        })
+
+        it('deletion succeeds', function() {
+          cy.get('[data-cy=removeButton]').click()
+          // https://stackoverflow.com/a/60862270
+          cy.on('window:confirm', () => true)
+          cy.get('.bloglist')
+            .should('not.contain', 'cypressTestTitle')
+            .should('not.contain', 'cypressTestAuthor')
+        })
+
+        describe('When logged in as boot,', function() {
+          beforeEach(function() {
+            const user = {
+              name: 'Bradley Oot',
+              username: 'boot',
+              password: 'S1!lainen'
+            }
+
+            cy.request('POST', 'http://localhost:3003/api/users/', user)
+            cy.login({ username: 'boot', password: 'S1!lainen' })
+          })
+
+          describe('When boot expands a blog added by mluukkai,', function() {
+
+            beforeEach(function() {
+              cy.contains('View').click()
+            })
+            it('he has no option to remove it', function() {
+              cy.get('[data-cy=removeButton]').should('not.exist')
+            })
+          })
         })
       })
     })
