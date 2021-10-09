@@ -40,9 +40,12 @@ const BlogDisplay = ({ username, handleLogout, blogs,
 
     let sortedBlogs =
       blogs
-        // filter returns a new array
+        // filter returns a new array where the blog with
+        // the old number of likes is removed
         .filter((x) => x.id !== blog.id)
+        // concatenate blog with updated likes
         .concat(response)
+        // sort by highest likes
         .sort((a, b) => b.likes - a.likes)
 
     setBlogs(sortedBlogs)

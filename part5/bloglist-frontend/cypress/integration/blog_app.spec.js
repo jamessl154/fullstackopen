@@ -129,7 +129,6 @@ describe('When adding likes to blogs,', function() {
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user)
     cy.login({ username: 'mluukkai', password: 'S1!lainen' })
-    cy.visit('http://localhost:3000')
 
     const blog1 = {
       title: 'cypressTestTitle',
