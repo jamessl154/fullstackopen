@@ -1,21 +1,18 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addVote, addAnecdote, sortAnecdotes } from './reducers/anecdoteReducer'
+import { addVote, sortAnecdotes } from './reducers/anecdoteReducer'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
+
   const anecdotes = useSelector(state => state)
+
   const dispatch = useDispatch()
 
   const vote = (id) => {
     console.log('vote', id)
     dispatch(addVote(id))
     dispatch(sortAnecdotes())
-  }
-
-  const createAnecdote = (event) => {
-    event.preventDefault()
-    console.log('event', event)
-    dispatch(addAnecdote(event.target.anecdote.value))
   }
 
   return (
@@ -32,11 +29,7 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>create new</h2>
-      <form onSubmit={createAnecdote}>
-        <div><input name='anecdote' /></div>
-        <button>create</button>
-      </form>
+      <AnecdoteForm />
     </div>
   )
 }
