@@ -34,6 +34,9 @@ const reducer = (state = initialState, action) => {
       // console.log(action.data)
       let mappedNewAnecdote = action.data.map(asObject)
       return state.concat(mappedNewAnecdote)
+    case 'SORT_ANECDOTES':
+      state.sort((a, b) => b.votes - a.votes)
+      return state
     default:
       return state
   }
@@ -50,6 +53,12 @@ export const addAnecdote = (anecdote) => {
   return {
     type: 'NEW_ANECDOTE',
     data: [anecdote]
+  }
+}
+
+export const sortAnecdotes = () => {
+  return {
+    type: 'SORT_ANECDOTES'
   }
 }
 
