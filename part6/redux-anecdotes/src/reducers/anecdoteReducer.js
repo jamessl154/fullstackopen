@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
   // console.log('action', action)
   switch (action.type) {
     case 'VOTE':
-      const idOfVotedAnecdote = action.data.id
+      const idOfVotedAnecdote = action.id
       let votedAnecdote = state.find((x) => x.id === idOfVotedAnecdote)
       votedAnecdote = { ...votedAnecdote, votes: votedAnecdote.votes + 1 }
       let newAnecdotes = state.filter((x) => x.id !== idOfVotedAnecdote)
@@ -32,7 +32,7 @@ const reducer = (state = initialState, action) => {
       return newAnecdotes
     case 'NEW_ANECDOTE':
       // console.log(action.data)
-      let mappedNewAnecdote = action.data.map(asObject)
+      let mappedNewAnecdote = action.anecdote.map(asObject)
       return state.concat(mappedNewAnecdote)
     case 'SORT_ANECDOTES':
       state.sort((a, b) => b.votes - a.votes)
@@ -45,14 +45,14 @@ const reducer = (state = initialState, action) => {
 export const addVote = (id) => {
   return {
     type: 'VOTE',
-    data: { id }
+    id
   }
 }
 
 export const addAnecdote = (anecdote) => {
   return {
     type: 'NEW_ANECDOTE',
-    data: [anecdote]
+    anecdote: [anecdote]
   }
 }
 
