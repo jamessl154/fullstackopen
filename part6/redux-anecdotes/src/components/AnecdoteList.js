@@ -4,7 +4,25 @@ import { addVote, sortAnecdotes } from '../reducers/anecdoteReducer'
 import { setNotification, removeNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
-    const anecdotes = useSelector(state => state.anecdotes)
+    const anecdotes = useSelector(state => {
+      // state.filter is initialized as the empty string
+      if (state.filter.length) {
+        // .filter() filters in elements if the callback executed 
+        // returns true
+        return state.anecdotes.filter((x) => {
+          return (
+            x.content
+            // make case insensitive string comparison
+            .toUpperCase()
+            // .indexOf() returns -1 if not found or the positive index
+            // of the character,
+            .indexOf(state.filter.toUpperCase()) >= 0)
+        })
+      }
+
+      return state.anecdotes
+    })
+
     const dispatch = useDispatch()
 
     const vote = (anecdote) => {
