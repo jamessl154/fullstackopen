@@ -17,7 +17,7 @@ const notificationReducer = (state = notificationAtStart, action) => {
 export const setNotification = (text) => {
     return {
         type: 'NOTIFY',
-        text: text
+        text
     }
 }
 
