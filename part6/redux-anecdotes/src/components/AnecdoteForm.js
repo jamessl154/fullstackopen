@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification, removeNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
 
@@ -13,8 +13,7 @@ const AnecdoteForm = () => {
         event.target.anecdote.value = ''
         // dispatch actions to stores (update state) asynchronously with thunk
         dispatch(addAnecdote(anecdote))
-        dispatch(setNotification(`You added the anecdote "${anecdote}"`))
-        setTimeout(() => dispatch(removeNotification()), 5000)
+        dispatch(setNotification(`You added the anecdote "${anecdote}"`, 5))
     }
 
     return (
