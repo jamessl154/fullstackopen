@@ -11,7 +11,11 @@ const AnecdoteForm = (props) => {
         event.target.anecdote.value = ''
         // dispatch actions to stores (update state) asynchronously with thunk
         props.addAnecdote(anecdote)
-        props.setNotification(`You added the anecdote "${anecdote}"`, 5)
+        props.setNotification(
+            `You added the anecdote "${anecdote}"`,
+            5,
+            props.timeoutID
+        )
     }
 
     return (
@@ -25,10 +29,16 @@ const AnecdoteForm = (props) => {
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        timeoutID: state.notification.timeoutID
+    }
+}
+
 // exported connected component has access to the store through its props
 export default connect(
     // mapStateToProps first argument should be declared null if no state to map
-    null,
+    mapStateToProps,
     // mapDispatchToProps consisting of imported action creators
     { addAnecdote, setNotification }
 )(AnecdoteForm)

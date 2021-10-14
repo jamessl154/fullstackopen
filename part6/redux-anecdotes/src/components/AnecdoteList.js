@@ -22,13 +22,20 @@ const AnecdoteForm = () => {
 
     return anecdotes
   })
+  const timeoutID = useSelector(({anecdotes, notification}) => {
+    return notification.timeoutID
+  })
 
   const dispatch = useDispatch()
 
   const vote = (anecdote) => {
     // console.log('vote', anecdote.id)
     dispatch(addVote(anecdote))
-    dispatch(setNotification(`You voted for "${anecdote.content}"`, 5))
+    dispatch(setNotification(
+      `You voted for "${anecdote.content}"`,
+      5,
+      timeoutID
+    ))
   }
 
   return (
