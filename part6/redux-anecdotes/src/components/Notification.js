@@ -1,21 +1,28 @@
-import { useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import React from 'react'
 
-const Notification = () => {
-  const notification = useSelector(state => state.notification)
+const Notification = (props) => {
 
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1,
-    visibility: notification.visibility
+    visibility: props.notification.visibility
   }
 
   return (
     <div style={style}>
-      {notification.text}
+      {props.notification.text}
     </div>
   )
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
+// connect Notification to the redux store,
+// which returns a connected component that is immediately exported
+export default connect(mapStateToProps)(Notification)
