@@ -6,10 +6,9 @@ const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
     case 'VOTE':
       let anecdote = action.anecdoteFromServer
-      let filteredAnecdotes = 
-      state.filter((x) => x.id !== anecdote.id)
-      let newAnecdotes = filteredAnecdotes.concat(anecdote)
-      // new state sorted by votes
+      // map a new array only replacing the updated anecdote
+      let newAnecdotes = state.map(a => a.id === anecdote.id ? anecdote : a)
+      // sort new state by most votes
       newAnecdotes.sort((a, b) => b.votes - a.votes)
       return newAnecdotes
     case 'NEW_ANECDOTE':
