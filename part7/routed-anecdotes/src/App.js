@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useField } from './hooks'
 import {
   BrowserRouter as Router,
   Switch, Route, Link,
@@ -70,25 +71,24 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  // Since the state in the custom hook is initialized in this component,
+  // none of the component's local state is maintained between routes 
+  // which remove components to render others
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
   const history = useHistory()
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
-    props.notify(`A new anecdote: "${content}" created!`)
+    props.notify(`A new anecdote: "${content.value}" created!`)
     setTimeout(() => props.notify(null), 10000)
-    setContent('')
-    setAuthor('')
-    setInfo('')
     history.push('/')
   }
 
@@ -97,16 +97,16 @@ const CreateNew = (props) => {
       <h2>Create A New Anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          Content
+          <input {...content} />
         </div>
         <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          Author
+          <input {...author} />
         </div>
         <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          Url for more info
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
