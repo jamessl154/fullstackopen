@@ -1,4 +1,9 @@
 import React, { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link,
+  useParams, useHistory
+} from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -6,9 +11,23 @@ const Menu = () => {
   }
   return (
     <div>
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a>
+      <Link style={padding} to='/'>Anecdotes</Link>
+      <Link style={padding} to='/create'>Create New</Link>
+      <Link style={padding} to='/about'>About</Link>
+    </div>
+  )
+}
+
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(n => n.id === id)
+  return (
+    <div>
+      <p>Content: {anecdote.content}</p>
+      <p>Author: {anecdote.author}</p>
+      <p>Info: {anecdote.info}</p>
+      <p>Votes: {anecdote.votes}</p>
+      <p>ID: {anecdote.id}</p>
     </div>
   )
 }
@@ -17,7 +36,13 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => 
+        <li key={anecdote.id} >
+          <Link to={`/anecdotes/${anecdote.id}`}>
+            {anecdote.content}
+          </Link>
+        </li>
+      )}
     </ul>
   </div>
 )
@@ -48,6 +73,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+  const history = useHistory()
 
 
   const handleSubmit = (e) => {
@@ -58,6 +84,10 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    setContent('')
+    setAuthor('')
+    setInfo('')
+    history.push('/')
   }
 
   return (
@@ -123,14 +153,27 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer />
-    </div>
+    <Router>
+      <div>
+        <h1>Software anecdotes</h1>
+        <Menu />
+        <Switch>
+          <Route exact path='/anecdotes/:id'>
+            <Anecdote anecdotes={anecdotes} />
+          </Route>
+          <Route exact path='/'>
+            <AnecdoteList anecdotes={anecdotes} />
+          </Route>
+          <Route path='/about'>
+            <About />
+          </Route>
+          <Route path='/create'>
+            <CreateNew addNew={addNew} />
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
+    </Router>
   )
 }
 
