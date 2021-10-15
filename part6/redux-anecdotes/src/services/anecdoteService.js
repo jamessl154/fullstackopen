@@ -10,6 +10,7 @@ const getAll = async () => {
 const createNew = async (content) => {
   const object = { content, votes: 0 }
   const response = await axios.post(baseUrl, object)
+  // the json-server assigns the resource an ID
   return response.data
 }
 

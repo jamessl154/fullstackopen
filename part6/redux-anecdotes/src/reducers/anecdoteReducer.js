@@ -13,6 +13,7 @@ const anecdoteReducer = (state = [], action) => {
       return newAnecdotes
     case 'NEW_ANECDOTE':
       // console.log(action.data)
+      // anecdote now has likes and an ID from the anecdoteService
       return state.concat(action.anecdoteObject)
     case 'INITIALIZE_ANECDOTES':
       // initially sort on load

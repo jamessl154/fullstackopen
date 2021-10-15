@@ -24,14 +24,14 @@ export const setNotification = (text, seconds, prevID) => {
         // setTimeout. We can cancel prematurely by calling clearTimeout(ID).
         let timeoutID = setTimeout(() => dispatch({ type: 'RESET' })
         , seconds * 1000)
-        // We can dispatch an action to save this variable to the store
-        // and then, on each call to to setNotification, clear the
-        // previous setTimeout, stopping the RESET action from being dispatched.
+        // We then dispatch an action to save this variable to the store
+        // and then, on each call to to the next setNotification, clear the
+        // previous setTimeout stopping the RESET action from being dispatched.
         
         // Important: need to maintain order of dispatches,
         // this is the last dispatch to the store (before asynchronous dispatch)
-        // which leaves the notification state in store with the timeoutID
-        // needed to stop the RESET
+        // which leaves the notification state (in store) with the timeoutID
+        // needed to stop the previous RESET action from being dispatched
         dispatch({ type: 'SET_TIMEOUTID', timeoutID })
 
         // Solves the issue by essentially resetting the timer for the notification

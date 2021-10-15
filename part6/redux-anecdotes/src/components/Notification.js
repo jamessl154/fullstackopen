@@ -25,4 +25,5 @@ const mapStateToProps = (state) => {
 
 // connect Notification to the redux store,
 // which returns a connected component that is immediately exported
+// mapDispatchToProps null second argument
 export default connect(mapStateToProps)(Notification)

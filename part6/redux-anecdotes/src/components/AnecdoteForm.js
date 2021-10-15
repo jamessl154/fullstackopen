@@ -5,7 +5,7 @@ import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
 
-    const createAnecdote = async (event) => {
+    const createAnecdote = (event) => {
         event.preventDefault()
         let anecdote = event.target.anecdote.value
         event.target.anecdote.value = ''
