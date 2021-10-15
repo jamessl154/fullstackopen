@@ -49,7 +49,7 @@ const AnecdoteList = ({ anecdotes }) => (
 
 const About = () => (
   <div>
-    <h2>About anecdote app</h2>
+    <h2>About Anecdote App</h2>
     <p>According to Wikipedia:</p>
 
     <em>An anecdote is a brief, revealing account of an individual person or an incident.
@@ -84,6 +84,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.notify(`A new anecdote: "${content}" created!`)
+    setTimeout(() => props.notify(null), 10000)
     setContent('')
     setAuthor('')
     setInfo('')
@@ -92,7 +94,7 @@ const CreateNew = (props) => {
 
   return (
     <div>
-      <h2>create a new anecdote</h2>
+      <h2>Create A New Anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
@@ -110,8 +112,9 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
+
+const Notification = ({ text }) => <div>{text}</div>
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -155,8 +158,9 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h1>Software anecdotes</h1>
+        <h1>Software Anecdotes</h1>
         <Menu />
+        <Notification text={notification} />
         <Switch>
           <Route exact path='/anecdotes/:id'>
             <Anecdote anecdotes={anecdotes} />
@@ -168,7 +172,7 @@ const App = () => {
             <About />
           </Route>
           <Route path='/create'>
-            <CreateNew addNew={addNew} />
+            <CreateNew notify={setNotification} addNew={addNew} />
           </Route>
         </Switch>
         <Footer />
