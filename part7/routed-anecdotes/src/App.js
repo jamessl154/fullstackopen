@@ -33,7 +33,7 @@ const Anecdote = ({ anecdotes }) => {
   )
 }
 
-const AnecdoteList = ({ anecdotes }) => (
+const AnecdoteList = ({ anecdotes, vote }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
@@ -42,6 +42,8 @@ const AnecdoteList = ({ anecdotes }) => (
           <Link to={`/anecdotes/${anecdote.id}`}>
             {anecdote.content}
           </Link>
+          {' '}{anecdote.votes}{' '}
+          <button onClick={() => vote(anecdote.id)}>Vote</button>
         </li>
       )}
     </ul>
@@ -179,7 +181,7 @@ const App = () => {
             <Anecdote anecdotes={anecdotes} />
           </Route>
           <Route exact path='/'>
-            <AnecdoteList anecdotes={anecdotes} />
+            <AnecdoteList anecdotes={anecdotes} vote={vote} />
           </Route>
           <Route path='/about'>
             <About />
