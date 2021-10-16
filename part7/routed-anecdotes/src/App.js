@@ -91,24 +91,37 @@ const CreateNew = (props) => {
     setTimeout(() => props.notify(null), 10000)
     history.push('/')
   }
+  
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
+  // https://dmitripavlutin.com/javascript-object-destructuring/#5-aliases
+  // rest destructuring to remove property + give unique alias
+  let { reset: aliasReset1, ...newContent } = content
+  let { reset: aliasReset2, ...newAuthor } = author
+  let { reset: aliasReset3, ...newInfo } = info
 
   return (
     <div>
       <h2>Create A New Anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          Content
-          <input {...content} />
+          Content:{' '}
+          <input {...newContent} />
         </div>
         <div>
-          Author
-          <input {...author} />
+          Author:{' '}
+          <input {...newAuthor} />
         </div>
         <div>
-          Url for more info
-          <input {...info} />
+          Url for more info:{' '}
+          <input {...newInfo} />
         </div>
-        <button>create</button>
+        <button type='submit'>Create</button>
+        <button type='button' onClick={handleReset}>Reset</button>
       </form>
     </div>
   )
