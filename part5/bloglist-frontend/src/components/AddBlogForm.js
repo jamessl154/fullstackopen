@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const AddBlogForm = ({ addBlog, toggleRef }) => {
+const AddBlogForm = ({ handleAdd, toggleRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -12,7 +12,7 @@ const AddBlogForm = ({ addBlog, toggleRef }) => {
     // finally clearing the controlled inputs
     event.preventDefault()
 
-    addBlog({
+    handleAdd({
       'title' : title,
       'author' : author,
       'url' : url,
@@ -61,7 +61,7 @@ const AddBlogForm = ({ addBlog, toggleRef }) => {
 }
 
 AddBlogForm.propTypes = {
-  addBlog: PropTypes.func.isRequired,
+  handleAdd: PropTypes.func.isRequired,
   toggleRef: PropTypes.object.isRequired
 }
 

@@ -6,14 +6,14 @@ import AddBlogForm from './AddBlogForm'
 test('The event handler passed as a prop receives the correct ' +
 'details when a new blog is created', () => {
 
-  const addBlog = jest.fn()
+  const handleAdd = jest.fn()
 
   const toggleRef = {
     current: { toggleVisibility: () => null }
   }
 
   const component = render(
-    <AddBlogForm addBlog={addBlog} toggleRef={toggleRef}/>
+    <AddBlogForm handleAdd={handleAdd} toggleRef={toggleRef}/>
   )
 
   const form = component.container.querySelector('form')
@@ -32,9 +32,9 @@ test('The event handler passed as a prop receives the correct ' +
   })
 
   fireEvent.submit(form)
-  expect(addBlog.mock.calls).toHaveLength(1)
-  // single blog object passed as argument to addBlog
-  expect(addBlog.mock.calls[0][0].title).toBe('testTitle')
-  expect(addBlog.mock.calls[0][0].author).toBe('testAuthor')
-  expect(addBlog.mock.calls[0][0].url).toBe('testUrl')
+  expect(handleAdd.mock.calls).toHaveLength(1)
+  // single blog object passed as argument to handleAdd
+  expect(handleAdd.mock.calls[0][0].title).toBe('testTitle')
+  expect(handleAdd.mock.calls[0][0].author).toBe('testAuthor')
+  expect(handleAdd.mock.calls[0][0].url).toBe('testUrl')
 })

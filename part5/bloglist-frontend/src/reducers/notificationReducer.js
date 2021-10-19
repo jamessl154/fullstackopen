@@ -15,7 +15,7 @@ const notificationReducer = (state = null, action) => {
 let timeoutID
 
 export const notifyWith = (notification, messageType) => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch({
       type: 'NOTIFY',
       message: notification,

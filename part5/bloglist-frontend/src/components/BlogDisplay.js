@@ -2,53 +2,35 @@ import React, { useRef } from 'react'
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
-import blogService from '../services/blogService'
+import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
+import { notifyWith } from '../reducers/notificationReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
-const BlogDisplay = ({ username, handleLogout, blogs,
-  addBlog, setBlogs, user }) => {
-
+const BlogDisplay = ({ username, handleLogout, user }) => {
+  const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
   const toggleRef = useRef()
 
-  const handleRemove = async (blog) => {
-
+  const handleRemove = (blog) => {
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
-      // send the delete request to the backend
-      await blogService.removeBlog(blog.id)
-
-      // Maybe need to notify later
-      // when users trying to delete blogs they didnt add
-      // console.log(response)
-
-      // remove the blog from the render
-      let filteredBlogs = blogs.filter(x => x.id !== blog.id)
-      setBlogs(filteredBlogs)
+      dispatch(deleteBlog(blog))
+      dispatch(notifyWith(`"${blog.title}" removed from the blogs list!`, 'success'))
     }
   }
 
-  const handleLike = async (blog) => {
+  const handleAdd = (newBlog) => {
+    dispatch(postBlog(newBlog))
+    dispatch(notifyWith(`"${newBlog.title}" by ${newBlog.author} added`, 'success'))
+  }
 
-    let updatedBlog = {
-      author: blog.author,
-      id: blog.id,
-      title: blog.title,
-      likes: blog.likes + 1,
-      url: blog.url,
-      user: blog.user.id
-    }
-
-    const response = await blogService.addLikes(blog.id, updatedBlog)
-
-    let sortedBlogs =
-      blogs
-        // filter returns a new array where the blog with
-        // the old number of likes is removed
-        .filter((x) => x.id !== blog.id)
-        // concatenate blog with updated likes
-        .concat(response)
-        // sort by highest likes
-        .sort((a, b) => b.likes - a.likes)
-
-    setBlogs(sortedBlogs)
+  const handleLike = (blog) => {
+    // The backend returns a populated user field (mongoose method)
+    // when we send GET requests to api/blogs.
+    // However, when we send PUT request we need to omit those
+    // populated fields or we get 400 Bad requests
+    let updatedBlog = { ...blog, likes: blog.likes + 1 , user: blog.user.id }
+    dispatch(likeBlog(updatedBlog))
+    dispatch(notifyWith(`Liked "${blog.title}"!`, 'success'))
   }
 
   return (
@@ -63,7 +45,7 @@ const BlogDisplay = ({ username, handleLogout, blogs,
           pass toggleRef as a ref to Togglable
           but as a prop to AddBlogForm
         */}
-        <AddBlogForm addBlog={addBlog} toggleRef={toggleRef} />
+        <AddBlogForm handleAdd={handleAdd} toggleRef={toggleRef} />
       </Togglable>
 
       <h2>Existing blogs</h2>
@@ -71,8 +53,6 @@ const BlogDisplay = ({ username, handleLogout, blogs,
         <Blog
           key={blog.id}
           blog={blog}
-          blogs={blogs}
-          setBlogs={setBlogs}
           user={user}
           handleLike={() => handleLike(blog)}
           handleRemove={() => handleRemove(blog)}

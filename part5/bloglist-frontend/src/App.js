@@ -7,23 +7,17 @@ import Notification from './components/Notification'
 import { notifyWith } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import './App.css'
+import { initializeBlogs } from './reducers/blogsReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(blogs => {
-        // On first render send getAll request then render all blogs sorted by likes
-        blogs.sort((a, b) => b.likes - a.likes)
-        setBlogs(blogs)
-      })
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInBloglistUser')
@@ -67,16 +61,6 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (newBlog) => {
-    // Successful addBlog responds with the blog that was added
-    let response = await blogService.addBlog(newBlog)
-    // state 'blog' array of blog objects gets passed down
-    // through component BlogDisplay to Blog where the array is mapped
-    // on the html in a div of blog.title blog.author
-    setBlogs(blogs.concat(response))
-    dispatch(notifyWith(`"${newBlog.title}" by ${newBlog.author} added`, 'success'))
-  }
-
   return (
     <div>
 
@@ -95,9 +79,6 @@ const App = () => {
         <BlogDisplay
           username={user.username}
           handleLogout={handleLogout}
-          blogs={blogs}
-          addBlog={addBlog}
-          setBlogs={setBlogs}
           user={user}
         />
       }
