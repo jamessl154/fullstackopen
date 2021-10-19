@@ -4,6 +4,8 @@ import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogDisplay from './components/BlogDisplay'
 import Notification from './components/Notification'
+import { notifyWith } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 import './App.css'
 
 const App = () => {
@@ -11,7 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService
@@ -33,16 +35,6 @@ const App = () => {
     }
   }, [])
 
-  // https://studies.cs.helsinki.fi/stats/courses/fullstackopen/solutions/2
-  // default type='success'
-  const notifyWith = (message, type='success') => {
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer
-    setNotification({ message, type })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('Logging in with...', username, password)
@@ -56,7 +48,7 @@ const App = () => {
         'loggedInBloglistUser',
         JSON.stringify(user)
       )
-      notifyWith(`${username} logged in successfully!`)
+      dispatch(notifyWith(`${username} logged in successfully!`, 'success'))
       // Save the token in a variable for the blogService
       blogService.setToken(user.token)
       // user contains the name, username and token of the logged in user
@@ -64,14 +56,14 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      notifyWith('Wrong username or password.', 'error')
+      dispatch(notifyWith('Wrong username or password.', 'error'))
       console.log(exception)
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInBloglistUser')
-    notifyWith(`${user.username} logged out successfuly!`)
+    dispatch(notifyWith(`${user.username} logged out successfuly!`, 'success'))
     setUser(null)
   }
 
@@ -82,13 +74,13 @@ const App = () => {
     // through component BlogDisplay to Blog where the array is mapped
     // on the html in a div of blog.title blog.author
     setBlogs(blogs.concat(response))
-    notifyWith(`"${newBlog.title}" by ${newBlog.author} added`)
+    dispatch(notifyWith(`"${newBlog.title}" by ${newBlog.author} added`, 'success'))
   }
 
   return (
     <div>
 
-      <Notification notification={notification} />
+      <Notification />
 
       { user === null
         ?
