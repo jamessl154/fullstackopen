@@ -5,6 +5,10 @@ import Togglable from './Togglable'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from 'react-router-dom'
 
 const BlogDisplay = ({ username, handleLogout, user }) => {
   const dispatch = useDispatch()
@@ -35,28 +39,36 @@ const BlogDisplay = ({ username, handleLogout, user }) => {
 
   return (
     <div className='bloglist'>
-      <h1>Blogs</h1>
+      <h1>Blog List Application</h1>
       <p>{username} is logged in {' '}
         <button onClick={handleLogout}>Logout</button>
       </p>
-
-      <Togglable buttonLabel="Add a new Blog" ref={toggleRef}>
-        {/*
-          pass toggleRef as a ref to Togglable
-          but as a prop to AddBlogForm
-        */}
-        <AddBlogForm handleAdd={handleAdd} toggleRef={toggleRef} />
-      </Togglable>
-
-      <h2>Existing blogs</h2>
-      {blogs.map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          user={user}
-          handleLike={() => handleLike(blog)}
-          handleRemove={() => handleRemove(blog)}
-        />)}
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Link to="/users"><p>Users</p></Link>
+            <Togglable buttonLabel="Add a new Blog" ref={toggleRef}>
+              {/*
+                pass toggleRef as a ref to Togglable
+                but as a prop to AddBlogForm
+              */}
+              <AddBlogForm handleAdd={handleAdd} toggleRef={toggleRef} />
+            </Togglable>
+            <h2>Existing blogs</h2>
+            {blogs.map(blog =>
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user}
+                handleLike={() => handleLike(blog)}
+                handleRemove={() => handleRemove(blog)}/>)}
+          </Route>
+          <Route path="/users">
+            <Link to="/"><p>Blogs</p></Link>
+            <h1>Users</h1>
+          </Route>
+        </Switch>
+      </Router>
     </div>
   )
 }
