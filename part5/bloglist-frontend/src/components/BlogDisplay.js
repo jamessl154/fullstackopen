@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
-import blogService from '../services/blogs'
+import blogService from '../services/blogService'
 
 const BlogDisplay = ({ username, handleLogout, blogs,
   addBlog, setBlogs, user }) => {
