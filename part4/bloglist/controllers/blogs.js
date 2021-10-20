@@ -84,6 +84,15 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     }
 
     await Blog.findByIdAndDelete(id)
+
+    const user = await User.findById(request.user)
+
+    // remove the blog from blogs array in users document
+    let newBlogs = user.blogs.filter((x) => x.toString() !== blog._id.toString())
+
+    // console.log(newBlogs)
+    await user.updateOne({ blogs: newBlogs })
+
     // console.log('Deleted Blog:', result)
     response.status(204).end()
 
