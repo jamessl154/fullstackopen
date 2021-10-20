@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
+import UserDisplay from './UserDisplay'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers } from '../reducers/usersReducer'
@@ -76,28 +77,7 @@ const BlogDisplay = ({ handleLogout }) => {
           </Route>
           <Route path="/users">
             <Link to="/">Blogs</Link>
-            <h1>Users</h1>
-            {users
-              ?
-              <table>
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Blogs Added</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map(x =>
-                    <tr key={x.id}>
-                      <td>{x.username}</td>
-                      <td>{x.blogs.length}</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-              :
-              null
-            }
+            <UserDisplay users={users}/>
           </Route>
         </Switch>
       </Router>
