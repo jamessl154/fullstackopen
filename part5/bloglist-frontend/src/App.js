@@ -78,9 +78,7 @@ const App = () => {
         />
         :
         <BlogDisplay
-          username={user.username}
           handleLogout={handleLogout}
-          user={user}
         />
       }
     </div>

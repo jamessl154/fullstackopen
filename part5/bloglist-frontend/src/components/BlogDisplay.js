@@ -1,19 +1,27 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
+import { initializeUsers } from '../reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BrowserRouter as Router,
   Switch, Route, Link
 } from 'react-router-dom'
 
-const BlogDisplay = ({ username, handleLogout, user }) => {
+const BlogDisplay = ({ handleLogout }) => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
+  const users = useSelector(state => state.users)
   const toggleRef = useRef()
+  // console.log(users)
+
+  useEffect(() => {
+    dispatch(initializeUsers())
+  }, [dispatch])
 
   const handleRemove = (blog) => {
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
@@ -40,14 +48,17 @@ const BlogDisplay = ({ username, handleLogout, user }) => {
   return (
     <div className='bloglist'>
       <h1>Blog List Application</h1>
-      <p>{username} is logged in {' '}
+      <p>{user.username} is logged in {' '}
         <button onClick={handleLogout}>Logout</button>
       </p>
       <Router>
         <Switch>
           <Route exact path="/">
-            <Link to="/users"><p>Users</p></Link>
-            <Togglable buttonLabel="Add a new Blog" ref={toggleRef}>
+            <Link to="/users">Users</Link>
+            <Togglable
+              buttonLabel="Add a new Blog"
+              ref={toggleRef}
+            >
               {/*
                 pass toggleRef as a ref to Togglable
                 but as a prop to AddBlogForm
@@ -64,8 +75,29 @@ const BlogDisplay = ({ username, handleLogout, user }) => {
                 handleRemove={() => handleRemove(blog)}/>)}
           </Route>
           <Route path="/users">
-            <Link to="/"><p>Blogs</p></Link>
+            <Link to="/">Blogs</Link>
             <h1>Users</h1>
+            {users
+              ?
+              <table>
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Blogs Added</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map(x =>
+                    <tr key={x.id}>
+                      <td>{x.username}</td>
+                      <td>{x.blogs.length}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              :
+              null
+            }
           </Route>
         </Switch>
       </Router>
