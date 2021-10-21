@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, user, handleLike, handleRemove }) => {
   const [toggle, setToggle] = useState(true)
@@ -11,12 +12,12 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
       { toggle
         ?
         <div>
-          &quot;{blog.title}&quot; by {blog.author}{' '}
+          <Link to={`blogs/${blog.id}`}>&quot;{blog.title}&quot; by {blog.author}</Link>{' '}
           <button onClick={buttonToggle}>View</button>
         </div>
         :
         <div className='expandedBlog'>
-          &quot;{blog.title}&quot; by {blog.author}{' '}
+          <Link to={`blogs/${blog.id}`}>&quot;{blog.title}&quot; by {blog.author}</Link>{' '}
           <button onClick={buttonToggle}>Hide</button>
           <div>
               Added by: {blog.user.username}<br />

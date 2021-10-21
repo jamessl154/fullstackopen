@@ -7,19 +7,21 @@ const User = ({ users }) => {
   if (users) {
     const id = useParams().id
     let selectedUser = users.filter((x) => x.id === id)
-
     return (
       <>
         <Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link>
-        <h2>{selectedUser[0].username}</h2>
-        <h3>Blogs added</h3>
-        <ul>
-          {selectedUser[0].blogs.map(x =>
-            <li key={x.id}>
+        <h2>User: {selectedUser[0].username}</h2>
+        <h3>Blogs added:</h3>
+        {selectedUser[0].blogs.length ?
+          <ul>
+            {selectedUser[0].blogs.map(x =>
+              <li key={x.id}>
               &quot;{x.title}&quot;
-            </li>
-          )}
-        </ul>
+              </li>
+            )}
+          </ul>
+          : 'None found...'
+        }
       </>
     )
   }

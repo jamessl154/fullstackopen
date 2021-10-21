@@ -4,6 +4,7 @@ import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 import UserDisplay from './UserDisplay'
 import User from './User'
+import SingleBlog from './SingleBlog'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
@@ -77,6 +78,9 @@ const BlogDisplay = ({ handleLogout }) => {
                 handleLike={() => handleLike(blog)}
                 handleRemove={() => handleRemove(blog)}
               />)}
+          </Route>
+          <Route exact path='/blogs/:id'>
+            <SingleBlog blogs={blogs} handleLike={handleLike} />
           </Route>
           <Route exact path="/users">
             <Link to="/">Blogs</Link>{' '}<span>Users</span>
