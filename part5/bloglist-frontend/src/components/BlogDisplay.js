@@ -3,6 +3,7 @@ import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
 import UserDisplay from './UserDisplay'
+import User from './User'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers } from '../reducers/usersReducer'
@@ -75,9 +76,12 @@ const BlogDisplay = ({ handleLogout }) => {
                 handleLike={() => handleLike(blog)}
                 handleRemove={() => handleRemove(blog)}/>)}
           </Route>
-          <Route path="/users">
+          <Route exact path="/users">
             <Link to="/">Blogs</Link>
             <UserDisplay users={users}/>
+          </Route>
+          <Route exact path="/users/:id">
+            <User users={users} />
           </Route>
         </Switch>
       </Router>
