@@ -57,7 +57,7 @@ const BlogDisplay = ({ handleLogout }) => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Link to="/users">Users</Link>
+            <span>Blogs</span>{' '}<Link to="/users">Users</Link>
             <Togglable
               buttonLabel="Add a new Blog"
               ref={toggleRef}
@@ -79,7 +79,7 @@ const BlogDisplay = ({ handleLogout }) => {
               />)}
           </Route>
           <Route exact path="/users">
-            <Link to="/">Blogs</Link>
+            <Link to="/">Blogs</Link>{' '}<span>Users</span>
             <UserDisplay users={users}/>
           </Route>
           <Route exact path="/users/:id">
