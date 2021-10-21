@@ -6,7 +6,7 @@ import UserDisplay from './UserDisplay'
 import User from './User'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
-import { initializeUsers } from '../reducers/usersReducer'
+import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BrowserRouter as Router,
@@ -29,6 +29,7 @@ const BlogDisplay = ({ handleLogout }) => {
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
       dispatch(deleteBlog(blog))
       dispatch(notifyWith(`"${blog.title}" removed from the blogs list!`, 'success'))
+      dispatch(removeFromBlogsArray(blog))
     }
   }
 
@@ -74,7 +75,8 @@ const BlogDisplay = ({ handleLogout }) => {
                 blog={blog}
                 user={user}
                 handleLike={() => handleLike(blog)}
-                handleRemove={() => handleRemove(blog)}/>)}
+                handleRemove={() => handleRemove(blog)}
+              />)}
           </Route>
           <Route exact path="/users">
             <Link to="/">Blogs</Link>

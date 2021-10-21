@@ -1,4 +1,5 @@
 import blogService from '../services/blogService'
+import { addToBlogsArray } from './usersReducer'
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
@@ -37,6 +38,7 @@ export const likeBlog = (blog) => {
 export const postBlog = (blog) => {
   return async (dispatch) => {
     const addedBlog = await blogService.addBlog(blog)
+    dispatch(addToBlogsArray(addedBlog))
     dispatch({
       type: 'ADD_BLOG',
       addedBlog

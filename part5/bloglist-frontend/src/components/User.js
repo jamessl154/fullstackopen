@@ -10,7 +10,7 @@ const User = ({ users }) => {
 
     return (
       <>
-        <Link to='/users'>Users</Link>
+        <Link to='/users'>Users</Link>{' '}<Link to="/">Blogs</Link>
         <h2>{selectedUser[0].username}</h2>
         <h3>Blogs added</h3>
         <ul>
