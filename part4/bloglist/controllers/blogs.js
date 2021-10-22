@@ -121,6 +121,25 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 })
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+
+  const id = request.params.id
+  const comment = request.body.comment
+
+  try {
+    const blog = await Blog.findById(id)
+    const result = await Blog
+      .findByIdAndUpdate(
+        id,
+        { comments: blog.comments.concat(comment) },
+        { new: true }
+      )
+    response.json(result)
+  } catch(exception) {
+    next(exception)
+  }
+})
+
 // A router object is an isolated instance of middleware and routes.
 // You can think of it as a “mini-application,” capable only of
 // performing middleware and routing functions.

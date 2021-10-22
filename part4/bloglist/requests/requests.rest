@@ -44,3 +44,11 @@ Content-type: application/json
 {
     "likes": 0
 }
+
+###
+POST http://localhost:3003/api/blogs/617294b0f0aba859ff90b65c/comments
+Content-type: application/json
+
+{
+    "comment": "newcomment"
+}
