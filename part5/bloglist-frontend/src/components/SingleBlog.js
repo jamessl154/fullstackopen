@@ -17,6 +17,18 @@ const SingleBlog = ({ blogs, handleLike }) => {
         <button onClick={() => handleLike(blog)}>Like</button>
         <br />
         <span>added by {blog.user.username}</span><br />
+        <h4>Comments</h4>
+        {blog.comments.length ?
+          <ul>
+            {blog.comments.map((x) =>
+              // generate unique key
+              <li key={x + Math.round(Math.random() * 100000)}>
+                {x}
+              </li>
+            )}
+          </ul>
+          : <p>No comments found...</p>
+        }
       </>
     )
   } else {

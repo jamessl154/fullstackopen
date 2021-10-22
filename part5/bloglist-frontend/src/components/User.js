@@ -22,7 +22,7 @@ const User = ({ users }) => {
               </li>
             )}
           </ul>
-          : 'None found...'
+          : <p>No blogs found...</p>
         }
       </>
     )
