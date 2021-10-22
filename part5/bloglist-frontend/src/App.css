@@ -39,3 +39,9 @@
 .addBlogButton {
     margin-top: 20px;
 }
+
+.navigationBar {
+    background-color: rgb(202, 202, 202);
+    display: inline;
+    padding: 10px 10px 10px 10px;
+}

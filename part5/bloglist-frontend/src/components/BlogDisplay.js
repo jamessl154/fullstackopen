@@ -5,6 +5,7 @@ import Togglable from './Togglable'
 import UserDisplay from './UserDisplay'
 import User from './User'
 import SingleBlog from './SingleBlog'
+import LoggedIn from './LoggedIn'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
@@ -52,13 +53,13 @@ const BlogDisplay = ({ handleLogout }) => {
   return (
     <div className='bloglist'>
       <h1>Blog List Application</h1>
-      <p>{user.username} is logged in {' '}
-        <button onClick={handleLogout}>Logout</button>
-      </p>
+      <LoggedIn username={user.username} handleLogout={handleLogout} />
       <Router>
         <Switch>
           <Route exact path="/">
-            <span>Blogs</span>{' '}<Link to="/users">Users</Link>
+            <div className='navigationBar'>
+              <b>Blogs{' '}<Link to="/users">Users</Link></b>
+            </div>
             <Togglable
               buttonLabel="Add a new Blog"
               ref={toggleRef}
@@ -83,7 +84,9 @@ const BlogDisplay = ({ handleLogout }) => {
             <SingleBlog blogs={blogs} handleLike={handleLike} />
           </Route>
           <Route exact path="/users">
-            <Link to="/">Blogs</Link>{' '}<span>Users</span>
+            <div className='navigationBar'>
+              <b><Link to="/">Blogs</Link>{' '}Users</b>
+            </div>
             <UserDisplay users={users}/>
           </Route>
           <Route exact path="/users/:id">

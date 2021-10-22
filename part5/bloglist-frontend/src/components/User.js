@@ -9,7 +9,9 @@ const User = ({ users }) => {
     let selectedUser = users.filter((x) => x.id === id)
     return (
       <>
-        <Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link>
+        <div className='navigationBar'>
+          <b><Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link></b>
+        </div>
         <h2>User: {selectedUser[0].username}</h2>
         <h3>Blogs added:</h3>
         {selectedUser[0].blogs.length ?

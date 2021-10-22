@@ -7,22 +7,26 @@ const SingleBlog = ({ blogs, handleLike }) => {
   let blog = blogs.find((x) => x.id === id)
   if (blogs && blog) {
     return (
-      <div>
-        <Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link>
+      <>
+        <div className='navigationBar'>
+          <b><Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link></b>
+        </div>
         <h2>Blog: &quot;{blog.title}&quot; by {blog.author}</h2>
         Url:{' '}<a href={blog.url}>{blog.url}</a><br />
         Total Likes: {blog.likes}{' '}
         <button onClick={() => handleLike(blog)}>Like</button>
         <br />
         <span>added by {blog.user.username}</span><br />
-      </div>
+      </>
     )
   } else {
     return (
-      <div>
-        <Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link>
+      <>
+        <div className='navigationBar'>
+          <b><Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link></b>
+        </div>
         <p>{id} is not a valid blog id</p>
-      </div>
+      </>
     )
   }
 }
