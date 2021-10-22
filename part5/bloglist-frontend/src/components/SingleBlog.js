@@ -1,10 +1,18 @@
 import React from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
+import blogService from '../services/blogService'
 
 const SingleBlog = ({ blogs, handleLike }) => {
   let id = useParams().id
   let blog = blogs.find((x) => x.id === id)
+
+  const handleAddComment = (event) => {
+    event.preventDefault()
+    let comment = event.target.comment.value
+    blogService.addComment(blog.id, comment)
+  }
+
   if (blogs && blog) {
     return (
       <>
@@ -18,6 +26,10 @@ const SingleBlog = ({ blogs, handleLike }) => {
         <br />
         <span>added by {blog.user.username}</span><br />
         <h4>Comments</h4>
+        <form onSubmit={handleAddComment}>
+          <input name="comment" />
+          <button type="submit">Add Comment</button>
+        </form>
         {blog.comments.length ?
           <ul>
             {blog.comments.map((x) =>
