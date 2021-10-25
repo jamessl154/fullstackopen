@@ -1,24 +1,30 @@
 import React from 'react'
+import { TextField, Button } from '@material-ui/core'
 
 const LoginForm = ({ username, password, handleLogin,
   setPassword, setUsername }) => {
 
   return (
     <div>
-      <h1>Log in to the Application</h1>
+      <h1>
+        Welcome!
+      </h1>
       <form data-cy='loginForm' onSubmit={handleLogin}>
-        <div className='container'>
-          <label htmlFor='username'>Username:</label>
-          <input
+        <div>
+          <TextField
+            variant="standard"
             id='username'
+            label='Username'
             type="text"
             value={username}
             name="Username"
             onChange={({ target }) => setUsername(target.value)}
           />
-          <label htmlFor='password'>Password:</label>
-          <input
+          <br />
+          <TextField
+            variant="standard"
             id='password'
+            label='Password'
             type="password"
             value={password}
             name="Password"
@@ -26,7 +32,8 @@ const LoginForm = ({ username, password, handleLogin,
           />
         </div>
         <br />
-        <button data-cy='loginButton' type="submit">Login</button>
+        <br />
+        <Button color='primary' size='large' data-cy='loginButton' type="submit">Login</Button>
       </form>
     </div>
   )

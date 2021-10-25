@@ -31,15 +31,14 @@ describe('On visit to the blog app,', function() {
       cy.get('#username').type('mluukkai')
       cy.get('#password').type('S1!lainen')
       cy.get('[data-cy=loginButton]').click()
-      cy.get('.notification').contains('mluukkai logged in successfully!')
+      cy.get('.MuiAlert-message').contains('mluukkai logged in successfully!')
     })
 
     it('fails with wrong credentials', function() {
       cy.get('#username').type('mluukkai')
       cy.get('#password').type('wrong password')
       cy.get('[data-cy=loginButton]').click()
-      cy.get('.notification').contains('Wrong username or password.')
-      cy.get('.notification').should('have.css', 'color', 'rgb(255, 0, 0)')
+      cy.get('.MuiAlert-message').contains('Wrong username or password.')
     })
 
     describe('When logged in as mluukkai,', function() {
@@ -151,9 +150,10 @@ describe('When adding likes to blogs,', function() {
 
   it('blogs are re-sorted by number of likes', function() {
 
-    // getting the first element with .blog class on the page
-    cy.get('.blog:first')
+    // getting the first element with .blogClass class on the page
+    cy.get('.blogClass:first')
       .contains('cypressTestTitle')
+    cy.get('.blogClass2:first')
       .contains('Total Likes: 0')
 
     // sardinia blog is initially underneath cypress blog
@@ -162,8 +162,9 @@ describe('When adding likes to blogs,', function() {
     cy.get('[data-cy=sardiniaTestTitle]').find('[data-cy=likeButton]').click()
     // wait 1 second after clicks
     cy.wait(100)
-    cy.get('.blog:first')
+    cy.get('.blogClass:first')
       .contains('sardiniaTestTitle')
+    cy.get('.blogClass2:first')
       .contains('Total Likes: 1')
 
     // After liking the cypress blog twice, it goes on top again
@@ -171,14 +172,16 @@ describe('When adding likes to blogs,', function() {
     cy.get('[data-cy=cypressTestTitle]').find('[data-cy=likeButton]').click()
     cy.wait(100)
     // blogs with the same likes are not re-sorted
-    cy.get('.blog:first')
+    cy.get('.blogClass:first')
       .contains('sardiniaTestTitle')
+    cy.get('.blogClass2:first')
       .contains('Total Likes: 1')
     cy.get('[data-cy=cypressTestTitle]').find('[data-cy=likeButton]').click()
     cy.wait(100)
     // cypress has 2 likes and sardinia has 1, cypress is on top
-    cy.get('.blog:first')
+    cy.get('.blogClass:first')
       .contains('cypressTestTitle')
+    cy.get('.blogClass2:first')
       .contains('Total Likes: 2')
   })
 })

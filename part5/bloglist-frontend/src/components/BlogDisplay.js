@@ -6,13 +6,15 @@ import UserDisplay from './UserDisplay'
 import User from './User'
 import SingleBlog from './SingleBlog'
 import LoggedIn from './LoggedIn'
+import NavLink from './NavLink'
+import { Typography } from '@material-ui/core'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route
 } from 'react-router-dom'
 
 const BlogDisplay = ({ handleLogout }) => {
@@ -21,7 +23,6 @@ const BlogDisplay = ({ handleLogout }) => {
   const user = useSelector(state => state.user)
   const users = useSelector(state => state.users)
   const toggleRef = useRef()
-  // console.log(users)
 
   useEffect(() => {
     dispatch(initializeUsers())
@@ -52,14 +53,21 @@ const BlogDisplay = ({ handleLogout }) => {
 
   return (
     <div className='bloglist'>
-      <h1>Blog List Application</h1>
+      <Typography variant='h2' className='mainTitle'>BlogList App</Typography>
       <LoggedIn username={user.username} handleLogout={handleLogout} />
       <Router>
         <Switch>
           <Route exact path="/">
-            <div className='navigationBar'>
-              <b>Blogs{' '}<Link to="/users">Users</Link></b>
-            </div>
+            <NavLink disabledButton='/' />
+            <Typography variant='h3' className='pageTitle'>Blogs</Typography>
+            {blogs.map(blog =>
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user}
+                handleLike={() => handleLike(blog)}
+                handleRemove={() => handleRemove(blog)}
+              />)}
             <Togglable
               buttonLabel="Add a new Blog"
               ref={toggleRef}
@@ -70,23 +78,12 @@ const BlogDisplay = ({ handleLogout }) => {
               */}
               <AddBlogForm handleAdd={handleAdd} toggleRef={toggleRef} />
             </Togglable>
-            <h2>Existing blogs</h2>
-            {blogs.map(blog =>
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user}
-                handleLike={() => handleLike(blog)}
-                handleRemove={() => handleRemove(blog)}
-              />)}
           </Route>
           <Route exact path='/blogs/:id'>
             <SingleBlog blogs={blogs} handleLike={handleLike} />
           </Route>
           <Route exact path="/users">
-            <div className='navigationBar'>
-              <b><Link to="/">Blogs</Link>{' '}Users</b>
-            </div>
+            <NavLink disabledButton='/users' />
             <UserDisplay users={users}/>
           </Route>
           <Route exact path="/users/:id">

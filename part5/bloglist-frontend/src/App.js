@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import './App.css'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setUser, resetUser } from './reducers/userReducer'
+import Container from '@material-ui/core/Container'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -63,8 +64,7 @@ const App = () => {
   }
 
   return (
-    <div>
-
+    <Container>
       <Notification />
 
       { user === null
@@ -81,7 +81,7 @@ const App = () => {
           handleLogout={handleLogout}
         />
       }
-    </div>
+    </Container>
   )
 }
 

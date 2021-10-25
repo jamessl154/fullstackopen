@@ -1,24 +1,4 @@
 /* https://stackoverflow.com/a/45271587 */
-.container {
-    display: grid;
-    width: 250px;
-    grid-template-columns: 1fr 3fr;
-}
-
-.notification {
-    font-size: 15px;
-    border: 2mm ridge;
-    padding: 5px;
-    display: inline-block;
-}
-
-.success {
-    color: green;
-}
-
-.error {
-    color: red;
-}
 
 .empty {
     visibility: hidden;
@@ -41,7 +21,25 @@
 }
 
 .navigationBar {
-    background-color: rgb(202, 202, 202);
+    background-color: rgb(158, 158, 158);
     display: inline;
     padding: 10px 10px 10px 10px;
+}
+
+.rightAlignButton {
+    float: right;
+}
+
+.mainTitle {
+    padding: 40px 20px 40px 20px;
+    background-color: rgb(27, 26, 26);
+    color: white
+}
+
+.pageTitle {
+    padding: 50px 0 50px 0;
+}
+
+html * {
+    font-family: Roboto;
 }

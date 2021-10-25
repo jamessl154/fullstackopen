@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from '@material-ui/core'
+import { Link as HyperLink } from '@mui/material'
 
 const Blog = ({ blog, user, handleLike, handleRemove }) => {
   const [toggle, setToggle] = useState(true)
@@ -9,27 +11,34 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
   return (
     <div data-cy={blog.title} className='blog'>
       {/* if toggle true or false */}
+      <HyperLink
+        className='blogClass'
+        underline='hover'
+        color='inherit'
+        variant='button'
+        component={Link}
+        to={`blogs/${blog.id}`}
+      >
+        {`"${blog.title}" by ${blog.author}`}
+      </HyperLink>{' '}
       { toggle
         ?
-        <div>
-          <Link to={`blogs/${blog.id}`}>&quot;{blog.title}&quot; by {blog.author}</Link>{' '}
-          <button onClick={buttonToggle}>View</button>
-        </div>
+        <Button className="rightAlignButton" size='small' onClick={buttonToggle}>View</Button>
         :
-        <div className='expandedBlog'>
-          <Link to={`blogs/${blog.id}`}>&quot;{blog.title}&quot; by {blog.author}</Link>{' '}
-          <button onClick={buttonToggle}>Hide</button>
-          <div>
+        // https://stackoverflow.com/a/59187804
+        <>
+          <Button size='small' className="rightAlignButton" onClick={buttonToggle}>Hide</Button>
+          <div className='blogClass2'>
               Added by: {blog.user.username}<br />
               Total Likes: {blog.likes}{' '}
             <button data-cy='likeButton' onClick={handleLike}>Like</button><br />
-              Url: {blog.url}<br />
+              Url: <HyperLink href={`/blogs/${blog.id}`}>{blog.url}</HyperLink><br />
             { /* conditional render */
               blog.user.username === user.username
                 ? <button data-cy='removeButton' onClick={handleRemove}>Remove</button>
                 : null}
           </div>
-        </div>
+        </>
       }
     </div>
   )

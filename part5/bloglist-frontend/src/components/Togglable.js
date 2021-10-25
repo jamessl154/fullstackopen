@@ -1,5 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from '@material-ui/core'
 
 // https://reactjs.org/docs/forwarding-refs.html
 // forwardRef => the component can access the ref passed to it
@@ -26,11 +27,11 @@ const Togglable = React.forwardRef((props, ref) => {
   return (
     <div>
       <div className='addBlogButton' style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button size="large" onClick={toggleVisibility}>{props.buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>Cancel</button>
+        <Button color='secondary' variant='contained' onClick={toggleVisibility}>Cancel</Button>
       </div>
     </div>
   )

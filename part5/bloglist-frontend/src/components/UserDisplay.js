@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Typography } from '@material-ui/core'
 
 const UserDisplay = (props) => {
   // UserDisplay, like Blog, is a presentational component
   // so we want to exclude state management, pass users as a prop
   return (
     <>
-      <h2>Users</h2>
+      <Typography variant='h3' className='pageTitle'>Users</Typography>
       {props.users
         ?
         <table>

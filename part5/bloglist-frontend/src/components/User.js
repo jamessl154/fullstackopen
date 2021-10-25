@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
+import NavLink from './NavLink'
 
 const User = ({ users }) => {
   // conditionally render the component
@@ -9,11 +9,9 @@ const User = ({ users }) => {
     let selectedUser = users.filter((x) => x.id === id)
     return (
       <>
-        <div className='navigationBar'>
-          <b><Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link></b>
-        </div>
+        <NavLink />
         <h2>User: {selectedUser[0].username}</h2>
-        <h3>Blogs added:</h3>
+        <h3>Blogs added</h3>
         {selectedUser[0].blogs.length ?
           <ul>
             {selectedUser[0].blogs.map(x =>

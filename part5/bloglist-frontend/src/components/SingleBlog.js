@@ -1,8 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addComment } from '../reducers/blogsReducer'
+import NavLink from './NavLink'
 
 const SingleBlog = ({ blogs, handleLike }) => {
   const dispatch = useDispatch()
@@ -11,14 +11,13 @@ const SingleBlog = ({ blogs, handleLike }) => {
   const handleAddComment = (event) => {
     event.preventDefault()
     dispatch(addComment(blog.id, event.target.comment.value))
+    event.target.comment.value = ''
   }
 
   if (blogs && blog) {
     return (
       <>
-        <div className='navigationBar'>
-          <b><Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link></b>
-        </div>
+        <NavLink />
         <h2>Blog: &quot;{blog.title}&quot; by {blog.author}</h2>
         Url:{' '}<a href={blog.url}>{blog.url}</a><br />
         Total Likes: {blog.likes}{' '}
@@ -46,9 +45,7 @@ const SingleBlog = ({ blogs, handleLike }) => {
   } else {
     return (
       <>
-        <div className='navigationBar'>
-          <b><Link to="/">Blogs</Link>{' '}<Link to='/users'>Users</Link></b>
-        </div>
+        <NavLink />
         <p>{id} is not a valid blog id</p>
       </>
     )
