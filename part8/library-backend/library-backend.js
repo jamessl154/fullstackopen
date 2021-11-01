@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
 // const JWT_SECRET = process.env.SECRET_KEY
 const mongoose = require('mongoose')
 const Book = require('./models/book')
@@ -97,20 +97,35 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      // Find author ID from name
+      // Find author ID from string args.author
       let author = await Author.findOne({ name: args.author })
       // Append author ID to document
       let book = new Book({ ...args, author: author._id.toString() })
       // save document
-      let savedBook = await book.save()
+      try {
+        await book.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+
       // populate author field
-      return savedBook.populate('author')
+      return book.populate('author')
     },
-    addAuthor: (root, args) => {
+    addAuthor: async (root, args) => {
       
       const author = new Author({ ...args })
-      
-      return author.save()
+
+      try {
+        await author.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidaArgs: args
+        })
+      }
+
+      return author
     },
     editAuthor: async (root, args) => {
       
