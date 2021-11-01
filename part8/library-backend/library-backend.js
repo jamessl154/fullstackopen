@@ -1,9 +1,12 @@
 require('dotenv').config()
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
-// const JWT_SECRET = process.env.SECRET_KEY
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const Book = require('./models/book')
 const Author = require('./models/author')
+const User = require('./models/user')
+
+const JWT_SECRET = process.env.SECRET_KEY
 
 console.log('connecting to', process.env.MONGODB_URI)
 
@@ -31,6 +34,16 @@ const typeDefs = gql`
     bookCount: Int
   }
 
+  type Token {
+    value: String!
+  }
+
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
   type Mutation {
     addBook(
       title: String!
@@ -46,6 +59,14 @@ const typeDefs = gql`
       name: String!
       born: Int!
     ): Author
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
 
   type Query {
@@ -53,6 +74,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    me: User
   }
 `
 
@@ -93,10 +115,14 @@ const resolvers = {
       })
 
       return bookCountAuthors
+    },
+    me: (root, args, context) => {
+      return context.currentUser
     }
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      if(!context.currentUser) throw new UserInputError('You must be logged in to add a book')
       // Find author ID from string args.author
       let author = await Author.findOne({ name: args.author })
       // Append author ID to document
@@ -129,13 +155,40 @@ const resolvers = {
     },
     editAuthor: async (root, args) => {
       
+      if (!context.currentUser) throw new UserInputError('You must be logged in to edit an Author')
+
       let author = await Author.findOne({ name: args.name })
 
-      if (!author) return null
+      if (!author) throw new UserInputError('that Author does not exist in the database')
 
       let editedAuthor = { ...author._doc, born: args.setBornTo }
 
       return await Author.findByIdAndUpdate(author._id, editedAuthor, { new: true })
+    },
+    createUser: (root, args) => {
+
+      const user = new User({ ...args })
+
+      return user.save()
+      .catch(error => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      })
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if (!user || args.password !== 'secret') {
+        throw new UserInputError("wrong credentials")
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id
+      }
+
+      return { value: jwt.sign(userForToken, JWT_SECRET) }
     }
   }
 }
@@ -143,6 +196,14 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {
+      const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
+      const currentUser = await User.findById(decodedToken.id)
+      return { currentUser }
+    }
+  }
 })
 
 server.listen().then(({ url }) => {
