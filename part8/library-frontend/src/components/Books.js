@@ -5,6 +5,7 @@ import { ALL_BOOKS } from '../queries'
 const Books = (props) => {
   const [books, setBooks] = useState(null)
   const [filteredBooks, setFilteredBooks] = useState(null)
+  const [genre, setGenre] = useState(null)
   const result = useQuery(ALL_BOOKS)
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Books = (props) => {
   books.forEach((x) => x.genres.forEach((x) => genres.add(x)))
 
   const handleGenreFilter = (genre) => {
+    setGenre(genre)
     setFilteredBooks(
       books.filter(x => x.genres.includes(genre))
     )
@@ -31,7 +33,7 @@ const Books = (props) => {
 
   return (
     <div>
-      <h2>books</h2>
+      <h2>books { genre ? <span> {'=>'} genre: {genre}</span> : null}</h2>
       <table>
         <tbody>
           <tr>
@@ -51,7 +53,12 @@ const Books = (props) => {
       {[...genres].map(genre =>
         <button key={genre} onClick={() => handleGenreFilter(genre)}>{genre}</button>
         )}
-        <button onClick={() => setFilteredBooks(books)}>All</button>
+        <button 
+          onClick={() => {
+            setFilteredBooks(books)
+            setGenre(null)
+          }}
+        >All</button>
     </div>
   )
 }
