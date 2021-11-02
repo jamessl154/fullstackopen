@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { ApolloServer, gql, UserInputError } = require('apollo-server')
+const { ApolloServer, gql, UserInputError, AuthenticationError } = require('apollo-server')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const Book = require('./models/book')
@@ -122,7 +122,8 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
-      if(!context.currentUser) throw new UserInputError('You must be logged in to add a book')
+
+      if (!context.currentUser) throw new AuthenticationError('You must be logged in to add a book')
       // Find author ID from string args.author
       let author = await Author.findOne({ name: args.author })
       // Append author ID to document
@@ -153,9 +154,9 @@ const resolvers = {
 
       return author
     },
-    editAuthor: async (root, args) => {
-      
-      if (!context.currentUser) throw new UserInputError('You must be logged in to edit an Author')
+    editAuthor: async (root, args, context) => {
+
+      if (!context.currentUser) throw new AuthenticationError('You must be logged in to edit an Author')
 
       let author = await Author.findOne({ name: args.name })
 

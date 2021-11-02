@@ -3,16 +3,35 @@ import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import LoginForm from './components/LoginForm'
+import { useApolloClient } from '@apollo/client'
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [token, setToken] = useState(null)
+  const client = useApolloClient()
+
+  const logOut = () => {
+    // remove token from local state to reset view
+    setToken(null)
+    // clear local storage
+    localStorage.clear()
+    // clear cache
+    client.resetStore()
+  }
 
   return (
     <div>
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        { token
+          ? <>
+              <button onClick={() => setPage('add')}>add book</button>
+              <button onClick={logOut}>logout</button>
+            </>
+          : <button onClick={() => setPage('login')}>login</button>
+        }
       </div>
 
       <Authors
@@ -25,6 +44,12 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+      />
+      
+      <LoginForm 
+        show={page === 'login'}
+        setToken={setToken}
+        setPage={setPage}
       />
 
     </div>

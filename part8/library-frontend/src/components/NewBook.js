@@ -4,6 +4,9 @@ import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 
 const NewBook = (props) => {
   const [addBook] = useMutation(ADD_BOOK, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message)
+    },
     refetchQueries: [ { query: ALL_BOOKS }, { query: ALL_AUTHORS } ]
   })
   const [title, setTitle] = useState('')
@@ -16,7 +19,7 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    
+
     addBook({ variables: { title, published, author, genres } })
 
     setTitle('')

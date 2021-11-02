@@ -9,7 +9,9 @@ const Authors = (props) => {
   const [selectedName, setSelectedName] = useState(null)
   const [year, setYear] = useState('')
   const result = useQuery(ALL_AUTHORS)
-  const [changeBirthYear] = useMutation(SET_BIRTHYEAR)
+  const [changeBirthYear] = useMutation(SET_BIRTHYEAR, {
+    onError: (error) => console.log(error.graphQLErrors[0].message)
+  })
 
   if (!props.show) return null
 
@@ -66,7 +68,7 @@ const Authors = (props) => {
             onChange={setSelectedName}
             options={options}
           />
-          Born: <input value={year} onChange={(event) => setYear(event.target.value)} /><br />
+          Born: <input value={year} type="number" onChange={(event) => setYear(event.target.value)} /><br />
           <button type="submit">Update Author</button>
         </form>
       </div>
