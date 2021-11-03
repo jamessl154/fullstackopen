@@ -30,6 +30,7 @@ const client = new ApolloClient({
 })
 
 ReactDOM.render(
+    // wrap all components so they have access to the client
     <ApolloProvider client={client}>
         <App />
     </ApolloProvider>,

@@ -20,6 +20,7 @@ const Books = (props) => {
   if (result.loading) return <div>Loading...</div>
 
   // https://stackoverflow.com/a/9229821
+  // filter out duplicate genres
   let genres = new Set()
 
   books.forEach((x) => x.genres.forEach((x) => genres.add(x)))

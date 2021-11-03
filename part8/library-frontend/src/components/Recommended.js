@@ -4,7 +4,7 @@ import { useLazyQuery } from '@apollo/client'
 
 const Recommended = ({ show, token }) => {
     const [meQuery, meQueryResult] = useLazyQuery(ME, {
-        fetchPolicy: "no-cache"
+        fetchPolicy: "network-only"
     })
     const [allBooksQuery, allBooksQueryResult] = useLazyQuery(ALL_BOOKS)
 
@@ -16,7 +16,8 @@ const Recommended = ({ show, token }) => {
 
     useEffect(() => {
         // short circuit logical AND, if data.me property doesn't exist yet it is ignored.
-        // When data.me exists and the cache gets cleared, the property exists but value is null
+        // The property data.me persists when client.resetStore() is called but value is null
+        // which causes this useEffect to run when like this: if (meQueryResult.data)
         if (meQueryResult.data && meQueryResult.data.me) {
             allBooksQuery({
                 variables: { genre: meQueryResult.data.me.favoriteGenre }
@@ -26,14 +27,12 @@ const Recommended = ({ show, token }) => {
 
     if (!show) return null
 
-    if (meQueryResult.loading) return <div>Loading...</div>
-
     let favGenre = meQueryResult.data.me.favoriteGenre
     let recommendedBooks = allBooksQueryResult.data.allBooks
 
     return (
         <div>
-            <h2>personal recommendations</h2>
+            <h2>recommendations</h2>
             <p>These books are recommended to you because your 
             favorite genre is: <b>{favGenre}</b></p>
             <table>
