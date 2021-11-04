@@ -58,6 +58,10 @@ const typeDefs = gql`
     allAuthors: [Author!]!
     me: User
   }
+
+  type Subscription {
+    bookAdded: Book
+  }
 `
 
 module.exports = typeDefs

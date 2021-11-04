@@ -3,6 +3,8 @@ const Author = require('./models/author')
 const User = require('./models/user')
 const jwt = require('jsonwebtoken')
 const { UserInputError, AuthenticationError } = require('apollo-server-express')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 const JWT_SECRET = process.env.SECRET_KEY
 
 const resolvers = {
@@ -63,9 +65,13 @@ const resolvers = {
             invalidArgs: args
           })
         }
-  
+
+        let populatedBook = await book.populate('author')
+
+        pubsub.publish('BOOK_ADDED', { bookAdded: populatedBook })
+
         // populate author field
-        return book.populate('author')
+        return populatedBook
       },
       addAuthor: async (root, args) => {
         
@@ -117,6 +123,11 @@ const resolvers = {
         }
   
         return { value: jwt.sign(userForToken, JWT_SECRET) }
+      }
+    },
+    Subscription: {
+      bookAdded: {
+        subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
       }
     }
 }
