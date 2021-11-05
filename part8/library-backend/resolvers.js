@@ -29,7 +29,15 @@ const resolvers = {
       },
       
       // solved n + 1 select problem by modifying the schema to accomodate join query (populate)
-      allAuthors: async () => await Author.find({}).populate('books'),
+      allAuthors: async () => {
+        let authors = await Author.find({}).populate('books')
+        return authors.map((x) => {
+          return {
+            ...x._doc,
+            bookCount: x.books.length
+          }
+        })
+      },
       
       me: (root, args, context) => context.currentUser
     },

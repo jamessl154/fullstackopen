@@ -14,6 +14,7 @@ const typeDefs = gql`
     id: ID!
     born: Int!
     books: [Book]!
+    bookCount: Int
   }
 
   type Token {
