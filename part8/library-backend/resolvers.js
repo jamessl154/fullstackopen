@@ -33,7 +33,10 @@ const resolvers = {
         let authors = await Author.find({}).populate('books')
         return authors.map((x) => {
           return {
-            ...x._doc,
+            name: x.name,
+            born: x.born,
+            books: x.books,
+            id: x._id,
             bookCount: x.books.length
           }
         })
