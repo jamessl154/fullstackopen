@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS, ME } from '../queries'
 
-const NewBook = (props) => {
+const NewBook = ({ show, updateCacheWith }) => {
   const [addBook] = useMutation(ADD_BOOK, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message)
@@ -43,7 +43,7 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
-  if (!props.show) return null
+  if (!show) return null
 
   const submit = async (event) => {
     event.preventDefault()

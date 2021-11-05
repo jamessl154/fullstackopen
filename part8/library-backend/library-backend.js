@@ -16,6 +16,8 @@ const JWT_SECRET = process.env.SECRET_KEY
 
 console.log('connecting to', process.env.MONGODB_URI)
 
+// mongoose.set('debug', true);
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('🚀 connected to MongoDB')

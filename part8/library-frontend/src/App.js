@@ -7,19 +7,38 @@ import LoginForm from './components/LoginForm'
 import Recommended from './components/Recommended'
 import { useApolloClient } from '@apollo/client'
 import { useSubscription } from '@apollo/client'
-import { BOOK_ADDED } from './queries'
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
   const client = useApolloClient()
 
+  const updateCacheWith = (addedBook) => {
+    // returns boolean depending on whether any of the objects in the 1st param "array" match
+    // the 2nd param "object" 's id
+    const includedIn = (array, object) => array.map(x => x.id).includes(object.id)
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+
+    // only if we don't find the id of the addedBook in the cache
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+  
   // useSubscription hook
   // https://www.apollographql.com/docs/react/data/subscriptions/#executing-a-subscription
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       console.log(subscriptionData)
-      window.alert(`${subscriptionData.data.bookAdded.title} has been added`)
+      const addedBook = subscriptionData.data.bookAdded
+      window.alert(`${addedBook.title} has been added`)
+      // on receiving subscription, update the cache with the new book, that updates the views
+      updateCacheWith(addedBook)
     }
   })
 
@@ -58,6 +77,7 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        updateCacheWith={updateCacheWith}
       />
       
       <LoginForm 

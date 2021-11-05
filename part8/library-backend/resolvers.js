@@ -27,27 +27,11 @@ const resolvers = {
   
         else return await Book.find({}).populate('author')
       },
-      allAuthors: async () => {
-  
-        let authors = await Author.find({})
-  
-        let bookCountAuthors = authors.map( async (x) => {
-          // map each author in authors to object in the type format we expressed
-          // for each author asynchronously count the books that they have
-          let bookCount = await Book.countDocuments({ author: x._id })
-          return { 
-            id: x._id.toString(),
-            bookCount,
-            name: x.name,
-            born: x.born
-          }
-        })
-  
-        return bookCountAuthors
-      },
-      me: (root, args, context) => {
-        return context.currentUser
-      }
+      
+      // solved n + 1 select problem by modifying the schema to accomodate join query (populate)
+      allAuthors: async () => await Author.find({}).populate('books'),
+      
+      me: (root, args, context) => context.currentUser
     },
     Mutation: {
       addBook: async (root, args, context) => {
@@ -57,9 +41,12 @@ const resolvers = {
         let author = await Author.findOne({ name: args.author })
         // Append author ID to document
         let book = new Book({ ...args, author: author._id.toString() })
-        // save document
+
         try {
+          // save book document
           await book.save()
+          // update author document, append saved book ID to author's books array
+          await author.updateOne({ books: author.books.concat(book._id) })
         } catch (error) {
           throw new UserInputError(error.message, {
             invalidArgs: args
