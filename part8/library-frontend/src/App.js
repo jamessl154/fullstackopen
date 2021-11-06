@@ -7,7 +7,7 @@ import LoginForm from './components/LoginForm'
 import Recommended from './components/Recommended'
 import { useApolloClient } from '@apollo/client'
 import { useSubscription } from '@apollo/client'
-import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { ALL_BOOKS, BOOK_ADDED, ALL_AUTHORS, ME } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -15,18 +15,69 @@ const App = () => {
   const client = useApolloClient()
 
   const updateCacheWith = (addedBook) => {
-    // returns boolean depending on whether any of the objects in the 1st param "array" match
-    // the 2nd param "object" 's id
+    // Ensure that the cache is updated correctly when this book is added
+    // which means only modifying the cached queries where the book (ID) is not found
+
+    // returns boolean depending on whether any of the
+    // objects in the 1st param "array" match the 2nd param "object" 's id
     const includedIn = (array, object) => array.map(x => x.id).includes(object.id)
 
-    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    // Books view
+    const allBookStore = client.readQuery({ query: ALL_BOOKS })
 
-    // only if we don't find the id of the addedBook in the cache
-    if (!includedIn(dataInStore.allBooks, addedBook)) {
+    // only if we don't find the ID of the addedBook in the cache
+    if (!includedIn(allBookStore.allBooks, addedBook)) {
       client.writeQuery({
         query: ALL_BOOKS,
-        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+        data: { allBooks: allBookStore.allBooks.concat(addedBook) }
       })
+    }
+
+    // Author view
+    const allAuthorStore = client.readQuery({ query: ALL_AUTHORS })
+
+    // find the matching author object of the addedBook in cache
+    let foundAuthor = allAuthorStore.allAuthors.find((x) => x.name === addedBook.author.name)
+    // proceed only if the addedBook ID is not yet in the author's books array
+    if (!foundAuthor.books.map((x) => x.id).includes(addedBook.id)) {
+      client.writeQuery({
+        query: ALL_AUTHORS,
+        data: {
+          // rewrite cached query. In allAuthors array, only modify the
+          // correct author object with the up-to-date books array
+          allAuthors: allAuthorStore.allAuthors
+            .map((x) => x.id === foundAuthor.id
+              ? { ...x, books: x.books.concat(addedBook) }
+              : x
+            )
+        }
+      })
+    }
+
+    // Recommended View
+
+    // only if logged in user
+    if (token) {
+      const meStore = client.readQuery({ query: ME })
+
+      const recommendedStore = client.readQuery({
+        query: ALL_BOOKS,
+        variables: {
+          genre: meStore.me.favoriteGenre
+        }
+      })
+
+      if (!recommendedStore.allBooks.map((x) => x.id).includes(addedBook.id)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          variables: {
+            genre: meStore.me.favoriteGenre
+          },
+          data: {
+            allBooks: recommendedStore.allBooks.concat(addedBook)
+          }
+        })
+      }
     }
   }
   
@@ -34,7 +85,7 @@ const App = () => {
   // https://www.apollographql.com/docs/react/data/subscriptions/#executing-a-subscription
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      console.log(subscriptionData)
+      // console.log("subscriptionData", subscriptionData)
       const addedBook = subscriptionData.data.bookAdded
       window.alert(`${addedBook.title} has been added`)
       // on receiving subscription, update the cache with the new book, that updates the views

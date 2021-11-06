@@ -2,35 +2,43 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS, ME } from '../queries'
 
-const NewBook = ({ show, updateCacheWith }) => {
+const NewBook = ({ show }) => {
   const [addBook] = useMutation(ADD_BOOK, {
-    onError: (error) => {
-      console.log(error.graphQLErrors[0].message)
-    },
-    // Updating 3 views: Author, Book and Recommended
+    onError: (error) => console.log(error),
+
+    // When using this mutation,
+    // we need to maintain the cache for 3 views: Author, Book and Recommended
     // the authors view is dependent on bookCount
+
+    // Since we refetch these queries on adding a book from the frontend
+    // we don't need to check for double writes from subscription
     refetchQueries: [ { query: ALL_BOOKS }, { query: ALL_AUTHORS } ],
     // https://www.apollographql.com/docs/react/caching/cache-interaction/#readquery
     update: (store, response) => {
-      const meDataInStore = store.readQuery({ query: ME })
+      const meStore = store.readQuery({ query: ME })
+
       // this is the 2nd lazyQuery that runs in Recommended component
-      const recommendedDataInStore = store.readQuery({
+      const recommendedStore = store.readQuery({
         query: ALL_BOOKS,
         variables: {
-          genre: meDataInStore.me.favoriteGenre,
+          genre: meStore.me.favoriteGenre,
         },
       })
+
       // Only modify the recommended query if the book added has the current
       // users favoriteGenre in its genres array
-      if (response.data.addBook.genres.includes(meDataInStore.me.favoriteGenre)) {
+      if (response.data.addBook.genres.includes(meStore.me.favoriteGenre) &&
+          // avoiding possible double write from subscription
+         !recommendedStore.allBooks.map((x) => x.id).includes(response.data.addBook.id)
+      ) {
         store.writeQuery({
           query: ALL_BOOKS,
           data: {
-            ...recommendedDataInStore,
-            allBooks: [ ...recommendedDataInStore.allBooks, response.data.addBook ]
+            ...recommendedStore,
+            allBooks: [ ...recommendedStore.allBooks, response.data.addBook ]
           },
           variables: {
-            genre: meDataInStore.me.favoriteGenre
+            genre: meStore.me.favoriteGenre
           }
         })
       }
