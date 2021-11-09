@@ -7,7 +7,7 @@ const calculateBmi = (height: number, weight: number) => {
         "height in centimetres, weight in kilograms")
     }
     
-    if (isNaN(Number(process.argv[3])) ||
+    if (isNaN(Number(process.argv[2])) ||
         isNaN(Number(process.argv[3]))) {
         throw new Error("Invalid inputs, height and weight must be integer symbols")
     }
@@ -21,7 +21,7 @@ const calculateBmi = (height: number, weight: number) => {
 }
 
 try {
-    calculateBmi(Number(process.argv[3]), Number(process.argv[4]))
+    calculateBmi(Number(process.argv[2]), Number(process.argv[3]))
 } catch (error: unknown) {
     if (error instanceof Error) console.log(error.message)
 }
