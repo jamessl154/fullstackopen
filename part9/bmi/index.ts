@@ -1,5 +1,5 @@
 import express from 'express';
-import { apiBmi } from './bmiCalculator'
+import { apiBmi } from './bmiCalculator';
 const app = express();
 
 app.get('/hello', (_req, res) => {

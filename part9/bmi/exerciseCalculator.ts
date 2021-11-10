@@ -6,17 +6,17 @@ interface exerciseReport {
     ratingDescription: string;
     target: number;
     average: number;
-};
+}
 
 interface exerciseInput {
     target: number;
     hoursPerDay: Array<number>;
-};
+}
 
 const calculateExercises = (target: number, hoursPerDay: Array<number>): exerciseReport => {
 
-    let rating;
-    let ratingDescription;
+    let rating = 1;
+    let ratingDescription = "Default";
 
     const sum = hoursPerDay.reduce((a, b) => a + b, 0);
     const average = (sum / hoursPerDay.length);
@@ -31,7 +31,7 @@ const calculateExercises = (target: number, hoursPerDay: Array<number>): exercis
     } else if (Math.round(average) < target) {
         rating = 1;
         ratingDescription = 'You missed your target.';
-    };
+    }
 
     return {
         periodLength: hoursPerDay.length,
@@ -50,12 +50,12 @@ const parseArguments = (args: Array<string>): exerciseInput => {
     "npm run calculateExercises <target hours> <hours day 1> <hours day 2> e.t.c...\n" + 
     "npm run calculateExercises 2 1 0 2 4.5 0 3 1 0 4\n");
 
-    let hoursPerDay = [];
+    const hoursPerDay = [];
 
     for (let i = 2; i < args.length; i++) {
         if (isNaN(Number(args[i]))) throw new Error("Invalid inputs, all hours must be integer symbols");
         if (i >= 3) hoursPerDay.push(Number(args[i]));
-    };
+    }
 
     return {
         target: Number(args[2]),
@@ -68,4 +68,4 @@ try {
     console.log(calculateExercises(target, hoursPerDay));
 } catch (error: unknown) {
     if (error instanceof Error) console.log(error.message);
-};
+}

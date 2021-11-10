@@ -1,6 +1,6 @@
 const calculateBmi = (height: number, weight: number): string => {
 
-    let bmi: number = weight / (height / 100) ** 2;
+    const bmi: number = weight / (height / 100) ** 2;
 
     if (bmi <= 18.4) return("Underweight");
     else if (bmi > 18.4 && bmi < 25) return("Normal range");
@@ -15,13 +15,13 @@ const cliBmi = (height: number, weight: number) => {
         "npm run calculateBmi <height> <weight>\n" +
         "npm run calculateBmi 180 74\n" +
         "height in centimetres, weight in kilograms");
-    };
+    }
     
     if (isNaN(Number(process.argv[2])) || isNaN(Number(process.argv[3]))) {
         throw new Error("Invalid inputs, height and weight must be integer symbols");
-    };
+    }
     
-    console.log(calculateBmi(height, weight))
+    console.log(calculateBmi(height, weight));
 };
 
 const apiBmi = (height: number, weight: number) => {
@@ -29,7 +29,7 @@ const apiBmi = (height: number, weight: number) => {
     if (isNaN(Number(height)) || isNaN(Number(weight))) {
         return {
             error: "malformatted parameters"
-        }
+        };
     }
 
     const result = calculateBmi(Number(height), Number(weight));
