@@ -1,6 +1,7 @@
 {
     "eslint.workingDirectories": [
         "./part9/bmi",
-        "./part9/patientor-backend"
+        "./part9/patientor-backend",
+        "./part9/patientor"
     ]
 }
