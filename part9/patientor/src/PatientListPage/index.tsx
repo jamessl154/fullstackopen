@@ -30,9 +30,15 @@ const PatientListPage = () => {
       );
       dispatch({ type: "ADD_PATIENT", payload: newPatient });
       closeModal();
-    } catch (e) {
-      console.error(e.response?.data || 'Unknown Error');
-      setError(e.response?.data?.error || 'Unknown error');
+    } catch (e: unknown) {
+      // https://github.com/axios/axios/issues/3612
+      if (axios.isAxiosError(e)) {
+        console.error(e.response?.data);
+        setError(e.response?.data?.error);
+      } else {
+        console.log("Unknown error");
+        setError('Unknown error');
+      }
     }
   };
 

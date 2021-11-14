@@ -1,0 +1,13 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "Bernie Sanders",
+    "dateOfBirth": "1850-01-03",
+    "gender": "male",
+    "occupation": "politician"
+}
+### Empty req.body test
+
+POST http://localhost:3001/api/patients
+Content-Type: application/json

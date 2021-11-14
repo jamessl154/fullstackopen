@@ -10,3 +10,8 @@ ReactDOM.render(
   </StateProvider>,
   document.getElementById('root')
 );
+
+/*
+  https://github.com/webpack/webpack/issues/14532
+  workaround for broken webpack
+*/
