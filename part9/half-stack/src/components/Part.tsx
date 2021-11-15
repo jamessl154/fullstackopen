@@ -45,6 +45,22 @@ const Part = ({ part }: { part: CoursePart }) => {
                         </ul>
                     </>
                 )
+            case "special":
+                return (
+                    <>
+                        <h3>{part.name}</h3>
+                        <ul>
+                            <li><b>Exercise Count:</b> {part.exerciseCount}</li>
+                            <li><b>Description: </b>{part.description}</li>
+                            <li><b>Type: </b>{part.type}</li>
+                            <li><b>Requirements: </b></li>
+                                <ul>{part.requirements.map((requirement) =>
+                                        <li key={requirement}>{requirement}</li>
+                                    )}
+                                </ul>
+                        </ul>
+                    </>
+                )
             default:
                 return assertNever(part)
     }

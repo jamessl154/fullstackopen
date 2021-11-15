@@ -9,6 +9,11 @@ interface CoursePartWithDescription extends CoursePartBase {
     description: string
 }
 
+interface CourseSpecialPart extends CoursePartWithDescription {
+    requirements: string[];
+    type: "special";
+}
+
 interface CourseNormalPart extends CoursePartWithDescription {
     type: "normal";
 }
@@ -23,4 +28,4 @@ interface CourseSubmissionPart extends CoursePartWithDescription {
     exerciseSubmissionLink: string;
 }
 
-export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
+export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart | CourseSpecialPart;
