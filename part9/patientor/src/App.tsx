@@ -6,7 +6,7 @@ import { apiBaseUrl } from "./constants";
 import { useStateValue, setPatientList } from "./state";
 import { Patient } from "./types";
 import PatientListPage from "./PatientListPage";
-import SinglePatient from "./components/SinglePatient";
+import SinglePatientPage from "./SinglePatientPage";
 
 const App = () => {
   const [, dispatch] = useStateValue();
@@ -41,7 +41,7 @@ const App = () => {
               <PatientListPage />
             </Route>
             <Route path="/patients/:id">
-              <SinglePatient />
+              <SinglePatientPage />
             </Route>
           </Switch>
         </Container>
