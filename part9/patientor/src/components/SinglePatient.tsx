@@ -5,6 +5,7 @@ import { apiBaseUrl } from "../constants";
 import { PatientPrivateInfoIncluded } from '../types';
 import { useStateValue } from '../state';
 import { Icon } from "semantic-ui-react";
+import { updatePatient } from '../state';
 
 const SinglePatient = () => {
     const [{ patients }, dispatch] = useStateValue();
@@ -19,7 +20,7 @@ const SinglePatient = () => {
             `${apiBaseUrl}/patients/${id}`
           );
 
-          dispatch({ type: "UPDATE_PATIENT", payload: patientPrivateInfo });
+          dispatch(updatePatient(patientPrivateInfo));
         } catch (e) {
           console.error(e);
         }
