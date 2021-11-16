@@ -16,6 +16,7 @@ const App = () => {
 
     const fetchPatientList = async () => {
       try {
+        // https://dmitripavlutin.com/javascript-object-destructuring/#5-aliases
         const { data: patientListFromApi } = await axios.get<Patient[]>(
           `${apiBaseUrl}/patients`
         );
