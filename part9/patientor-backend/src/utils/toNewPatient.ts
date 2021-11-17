@@ -1,4 +1,4 @@
-import { NewPatient, Gender, Fields } from "../types";
+import { NewPatient, Gender, NewPatientFields } from "../types";
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -31,7 +31,7 @@ const parseSSN = (ssn: unknown): string | undefined => {
 const isGender = (param: any): param is Gender => {
 
     /*
-        // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+        https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
         Ignore warnings, custom type guard which returns type predicate.
         We know that .includes(param) only returns true if
         it's one of the strings specified in the Gender enum: male, female or other
@@ -51,7 +51,7 @@ const parseOccupation = (occupation: unknown): string => {
     return occupation;
 };
 
-const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatient => {
+const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: NewPatientFields): NewPatient => {
 
     const newPatient: NewPatient = {
         name: parseName(name),
