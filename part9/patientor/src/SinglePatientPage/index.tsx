@@ -9,6 +9,7 @@ import { updatePatient } from '../state';
 import HospitalEntry from './HospitalComponent';
 import HealthCheckEntry from './HealthCheckComponent';
 import OccupationalHealthcareEntry from './OccupationalHealthcareComponent';
+import AddEntryForm from './AddEntryForm';
 
 const SinglePatient = () => {
     const [{ patients }, dispatch] = useStateValue();
@@ -104,6 +105,7 @@ const SinglePatient = () => {
           {patients[id].entries.map((entry) =>
             <EntryDetails key={entry.id} entry={entry} />
           )}
+          <AddEntryForm />
         </div>
       );
     } else return null;
