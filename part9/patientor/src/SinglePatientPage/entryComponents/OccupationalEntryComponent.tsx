@@ -21,7 +21,8 @@ const OccupationalHealthcareComponent = ({ date, specialist, description, employ
             </>
           : null
         }
-        {sickLeave
+        {sickLeave && sickLeave.startDate && sickLeave.endDate
+          // All fields must be truthy to render
           ? <>
               <h4>Sick Leave: </h4>
                 <ul>
