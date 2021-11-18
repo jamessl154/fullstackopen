@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Segment } from 'semantic-ui-react';
-import { HospitalEntry } from '../types';
+import { HospitalEntry } from '../../types';
 
 const HospitalComponent = ({ date, specialist, description, discharge, diagnosisCodes }: HospitalEntry) => {
     return(

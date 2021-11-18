@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Segment } from 'semantic-ui-react';
-import { OccupationalHealthcareEntry } from '../types';
+import { OccupationalHealthcareEntry } from '../../types';
 
 const OccupationalHealthcareComponent = ({ date, specialist, description, employerName, diagnosisCodes, sickLeave }: OccupationalHealthcareEntry) => {
   return(

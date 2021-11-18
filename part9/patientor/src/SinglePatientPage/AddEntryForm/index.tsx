@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Entry, Patient } from '../types';
+import { Entry, Patient } from '../../types';
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
-import { DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
-import { apiBaseUrl } from '../constants';
-import { addEntryToPatient, useStateValue } from '../state';
+import { DiagnosisSelection, TextField } from '../../AddPatientModal/FormField';
+import { apiBaseUrl } from '../../constants';
+import { addEntryToPatient, useStateValue } from '../../state';
 import { useParams } from 'react-router';
 import { EntryTypeOption, SelectField } from './FormField';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Icon } from 'semantic-ui-react';
-import { HealthCheckEntry } from '../types';
+import { HealthCheckEntry } from '../../types';
 import { SemanticCOLORS } from 'semantic-ui-react/dist/commonjs/generic';
 
 const HealthCheckComponent = ({ date, specialist, description, healthCheckRating, diagnosisCodes }: HealthCheckEntry) => {

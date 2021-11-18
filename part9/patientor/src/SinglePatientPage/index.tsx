@@ -6,9 +6,9 @@ import { PatientPrivateInfoIncluded, Entry } from '../types';
 import { useStateValue } from '../state';
 import { Icon } from "semantic-ui-react";
 import { updatePatient } from '../state';
-import HospitalEntry from './HospitalComponent';
-import HealthCheckEntry from './HealthCheckComponent';
-import OccupationalHealthcareEntry from './OccupationalHealthcareComponent';
+import HospitalEntry from './entryComponents/HospitalEntryComponent';
+import HealthCheckEntry from './entryComponents/HealthEntryComponent';
+import OccupationalHealthcareEntry from './entryComponents/OccupationalEntryComponent';
 import AddEntryForm from './AddEntryForm';
 
 const SinglePatient = () => {
