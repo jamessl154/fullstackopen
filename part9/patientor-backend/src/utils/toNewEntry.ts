@@ -34,12 +34,18 @@ const parseEmployerName = (employerName: unknown) => {
     return employerName;
 };
 
+// Not complete validation, we're assuming the fields have correct types
+// based solely on whether the required fields for a corresponding type exist
+// e.g. HealthCheckEntry type: if all non-optional properties of the BaseEntry
+// + healthCheckRating properties exist (not undefined) => we continue execution
+// by asserting types as valid
 const toNewEntry = (object: NewEntryFields): Entry => {
 
     // checking required fields for HealthCheckEntry are given
     switch (object.type) {
         case "HealthCheck":
             const Health = {
+                ...object,
                 type: "HealthCheck",
                 id: parseID(object.id),
                 description: parseDescription(object.description),
@@ -51,6 +57,7 @@ const toNewEntry = (object: NewEntryFields): Entry => {
             return Health as HealthCheckEntry;
         case "OccupationalHealthcare":
             const Occupational = {
+                ...object,
                 type: "OccupationalHealthcare",
                 id: parseID(object.id),
                 description: parseDescription(object.description),
@@ -61,6 +68,7 @@ const toNewEntry = (object: NewEntryFields): Entry => {
             return Occupational as OccupationalHealthcareEntry;
         case "Hospital":
             const Hospital = {
+                ...object,
                 type: "Hospital",
                 id: parseID(object.id),
                 description: parseDescription(object.description),

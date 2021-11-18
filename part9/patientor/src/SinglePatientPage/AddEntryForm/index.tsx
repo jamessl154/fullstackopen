@@ -28,6 +28,7 @@ const AddEntryForm = () => {
                 `${apiBaseUrl}/patients/${id}/entries`,
                 entry
             );
+
             dispatch(addEntryToPatient(patientWithNewEntry));
         } catch (e) {
             console.log(e);
@@ -43,8 +44,7 @@ const AddEntryForm = () => {
                 description: "",
                 date: "",
                 specialist: "",
-                // not sure how to deal with this
-                diagnosisCodes: [""],
+                diagnosisCodes: undefined,
                 employerName: ""
             }}
             onSubmit={submitNewEntry}
