@@ -1,56 +1,28 @@
 import React from 'react';
 import axios from 'axios';
 import { Entry, Patient } from '../types';
-import { Grid, Button, Form } from "semantic-ui-react";
-import { Field, Formik } from "formik";
+import { Grid, Button } from "semantic-ui-react";
+import { Field, Formik, Form } from "formik";
 import { DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { apiBaseUrl } from '../constants';
 import { addEntryToPatient, useStateValue } from '../state';
 import { useParams } from 'react-router';
-
-
-// structure of a single option
-type EntryTypeOption = {
-    value: "Hospital" | "OccupationalHealthcare" | "HealthCheck" ;
-    label: string;
-};
-  
-  // props for select field component
-type SelectFieldProps = {
-    name: string;
-    label: string;
-    options: EntryTypeOption[];
-};
-
-const SelectField = ({
-    name,
-    label,
-    options
-}: SelectFieldProps) => (
-    <Form.Field>
-      <label>{label}</label>
-      <Field as="select" name={name} className="ui dropdown">
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label || option.value}
-          </option>
-        ))}
-      </Field>
-    </Form.Field>
-);
+import { EntryTypeOption, SelectField } from './FormField';
 
 const entryOptions: EntryTypeOption[] = [
-    { value: "Hospital", label: "Hospital Admission" },
     { value: "OccupationalHealthcare", label: "Occupational Health Visit" },
+    { value: "Hospital", label: "Hospital Admission" },
     { value: "HealthCheck", label: "Health Checkup" }
 ];
 
 // maybe a reset button to clear all fields
 const AddEntryForm = () => {
     const [{ diagnoses }, dispatch] = useStateValue();
+
     const { id } = useParams<{ id: string }>();
 
     const submitNewEntry = async (entry: Entry) => {
+
         try {
             const { data: patientWithNewEntry } = await axios.post<Patient>(
                 `${apiBaseUrl}/patients/${id}/entries`,
@@ -114,7 +86,7 @@ const AddEntryForm = () => {
                             name="description"
                             component={TextField}
                         />
-                        <Field 
+                        <Field
                             label="Specialist"
                             placeholder="MD House"
                             name="specialist"
@@ -122,9 +94,6 @@ const AddEntryForm = () => {
                         />
                         <DiagnosisSelection
                             // TODO Optional Field
-                            // no select values present
-                            // maybe initialize diagnosis codes from
-                            // /api/diagnoses
                             setFieldValue={setFieldValue}
                             setFieldTouched={setFieldTouched}
                             diagnoses={Object.values(diagnoses)}

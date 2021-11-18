@@ -3,8 +3,8 @@ import axios from "axios";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
 import { apiBaseUrl } from "./constants";
-import { useStateValue, setPatientList } from "./state";
-import { Patient } from "./types";
+import { useStateValue, setPatientList, setDiagnosisList } from "./state";
+import { Patient, Diagnosis } from "./types";
 import PatientListPage from "./PatientListPage";
 import SinglePatientPage from "./SinglePatientPage";
 
@@ -21,9 +21,22 @@ const App = () => {
         );
         dispatch(setPatientList(patientListFromApi));
       } catch (e) {
-        console.error(e);
+        console.log(e);
       }
     };
+
+    const fetchDiagnosisList = async () => {
+      try {
+        const { data : diagnosisListFromApi } = await axios.get<Diagnosis[]>(
+          `${apiBaseUrl}/diagnoses`
+        );
+        dispatch(setDiagnosisList(diagnosisListFromApi));
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    void fetchDiagnosisList();
     void fetchPatientList();
   }, [dispatch]);
 
