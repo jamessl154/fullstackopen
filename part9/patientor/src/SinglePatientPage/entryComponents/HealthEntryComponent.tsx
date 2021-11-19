@@ -2,8 +2,10 @@ import React from 'react';
 import { Segment, Icon } from 'semantic-ui-react';
 import { HealthCheckEntry } from '../../types';
 import { SemanticCOLORS } from 'semantic-ui-react/dist/commonjs/generic';
+import { useStateValue } from '../../state';
 
 const HealthCheckComponent = ({ date, specialist, description, healthCheckRating, diagnosisCodes }: HealthCheckEntry) => {
+    const [{ diagnoses }] = useStateValue();
 
     let color: SemanticCOLORS;
 
@@ -36,7 +38,7 @@ const HealthCheckComponent = ({ date, specialist, description, healthCheckRating
                     <h4>Diagnosis Codes:</h4>
                     <ul>
                         {diagnosisCodes.map((code) =>
-                        <li key={code}>{code}</li>
+                        <li key={code}>{code} {diagnoses[code].name}</li>
                         )}
                     </ul>
                   </>

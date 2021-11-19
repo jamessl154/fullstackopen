@@ -1,8 +1,10 @@
 import React from 'react';
 import { Icon, Segment } from 'semantic-ui-react';
+import { useStateValue } from '../../state';
 import { OccupationalHealthcareEntry } from '../../types';
 
 const OccupationalHealthcareComponent = ({ date, specialist, description, employerName, diagnosisCodes, sickLeave }: OccupationalHealthcareEntry) => {
+  const [{diagnoses}] = useStateValue();
   return(
     <Segment>
       <h4 className="inline" >{date}</h4>
@@ -15,7 +17,7 @@ const OccupationalHealthcareComponent = ({ date, specialist, description, employ
               <h4>Diagnosis Codes:</h4>
               <ul>
                 {diagnosisCodes.map((code) =>
-                  <li key={code}>{code}</li>
+                  <li key={code}>{code} {diagnoses[code].name}</li>
                 )}
               </ul>
             </>

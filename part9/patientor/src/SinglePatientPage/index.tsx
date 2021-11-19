@@ -91,15 +91,14 @@ const SinglePatient = () => {
       return (
         <div>
           <h2 className="inline" >{patients[id].name}</h2>
-          {patients[id].gender === "male"
-            ?  <Icon className="icon" name="mars" size="big"/>
-            :  <Icon className="icon" name="venus" size="big"/>
-          }
+            {patients[id].gender === "male" ? <Icon className="icon" name="mars" size="big"/> : null}
+            {patients[id].gender === "female" ? <Icon className="icon" name="venus" size="big"/> : null}
+            {patients[id].gender === "other" ? <Icon className="icon" name="genderless" size="big"/> : null}
           <ul>
-            <li><b>DoB</b>: {patients[id].dateOfBirth}</li>
+            <li><b>Date of Birth</b>: {patients[id].dateOfBirth}</li>
             <li><b>Occupation</b>: {patients[id].occupation}</li>
             <li><b>SSN</b>: {patients[id].ssn}</li>
-            <li><b>ID</b>: {patients[id].id}</li>
+            <li><b>Patient ID</b>: {patients[id].id}</li>
           </ul>
           <h3>Entries: </h3>
           {patients[id].entries
