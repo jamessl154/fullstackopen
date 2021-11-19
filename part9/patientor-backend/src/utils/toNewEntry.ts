@@ -21,6 +21,8 @@ const parseSpecialist = (specialist: unknown) => {
 };
 
 const parseHealthCheckRating = (rating: unknown) => {
+    // 0 is falsy so must deal with this first
+    if (rating === 0) return rating;
     if (!rating) throw new Error("Missing rating on entry");
     return rating;
 };
@@ -45,36 +47,37 @@ const toNewEntry = (object: NewEntryFields): Entry => {
     switch (object.type) {
         case "HealthCheck":
             const Health = {
-                ...object,
                 type: "HealthCheck",
                 id: parseID(object.id),
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
                 specialist: parseSpecialist(object.specialist),
-                healthCheckRating: parseHealthCheckRating(object.healthCheckRating)
+                healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
+                diagnosisCodes: object.diagnosisCodes
             };
             // and once passed the checks, asserting that the object is HealthCheckEntryType
             return Health as HealthCheckEntry;
         case "OccupationalHealthcare":
             const Occupational = {
-                ...object,
                 type: "OccupationalHealthcare",
                 id: parseID(object.id),
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
                 specialist: parseSpecialist(object.specialist),
-                employerName: parseEmployerName(object.employerName)
+                employerName: parseEmployerName(object.employerName),
+                sickLeave: object.sickLeave,
+                diagnosisCodes: object.diagnosisCodes
             };
             return Occupational as OccupationalHealthcareEntry;
         case "Hospital":
             const Hospital = {
-                ...object,
                 type: "Hospital",
                 id: parseID(object.id),
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
                 specialist: parseSpecialist(object.specialist),
-                discharge: parseDischarge(object.discharge)
+                discharge: parseDischarge(object.discharge),
+                diagnosisCodes: object.diagnosisCodes
             };
             return Hospital as HospitalEntry;
         default:
