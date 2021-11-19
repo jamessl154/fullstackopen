@@ -72,6 +72,12 @@ const AddEntryForm = () => {
         healthCheckRating: 0
     };
 
+    function requiredValidation (value: unknown) {
+        let error;
+        if (!value) error = "Field is required";
+        return error;
+    }
+
     return (
         <Formik
             enableReinitialize={true}
@@ -85,8 +91,7 @@ const AddEntryForm = () => {
                 if (!values.description) errors.description = requiredError;
                 if (!values.date) errors.date = requiredError;
                 if (!values.specialist) errors.specialist = requiredError;
-                // Deep nesting for validating with state
-                // if (state === "hospital" && !values.healthCheckRating) ...
+                if (entryType === "OccupationalHealthcare" && !values.employerName) errors.employerName = requiredError;
                 return errors;
             }}
         >
@@ -170,6 +175,7 @@ const AddEntryForm = () => {
                                     placeholder="12-20-12"
                                     name="discharge.date"
                                     component={TextField}
+                                    validate={requiredValidation}
                                 />
                                 <Field
                                     // Optional field
@@ -177,6 +183,7 @@ const AddEntryForm = () => {
                                     placeholder="Patient is already at full health"
                                     name="discharge.criteria"
                                     component={TextField}
+                                    validate={requiredValidation}
                                 />
                               </div>
                             : null}

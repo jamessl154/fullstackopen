@@ -41,7 +41,7 @@ const SinglePatient = () => {
 
     const keys = Object.keys(patients);
 
-    if (keys.length && patients[id].entries) {
+    if (keys.length && patients[id]) {
       
       const assertNever = (value: never): never => {
         throw new Error(
@@ -102,9 +102,12 @@ const SinglePatient = () => {
             <li><b>ID</b>: {patients[id].id}</li>
           </ul>
           <h3>Entries: </h3>
-          {patients[id].entries.map((entry) =>
-            <EntryDetails key={entry.id} entry={entry} />
-          )}
+          {patients[id].entries
+            ? patients[id].entries.map((entry) =>
+              <EntryDetails key={entry.id} entry={entry} />
+              )
+            : null
+          }
           <AddEntryForm />
         </div>
       );
