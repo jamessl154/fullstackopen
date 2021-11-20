@@ -1,10 +1,5 @@
 import { NewEntryFields, Entry, HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry } from "../types";
 
-const parseID = (id: unknown) => {
-    if (!id) throw new Error("Missing ID on entry");
-    return id;
-};
-
 const parseDescription = (description: unknown) => {
     if (!description) throw new Error("Missing description on entry");
     return description;
@@ -48,7 +43,6 @@ const toNewEntry = (object: NewEntryFields): Entry => {
         case "HealthCheck":
             const Health = {
                 type: "HealthCheck",
-                id: parseID(object.id),
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
                 specialist: parseSpecialist(object.specialist),
@@ -60,7 +54,6 @@ const toNewEntry = (object: NewEntryFields): Entry => {
         case "OccupationalHealthcare":
             const Occupational = {
                 type: "OccupationalHealthcare",
-                id: parseID(object.id),
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
                 specialist: parseSpecialist(object.specialist),
@@ -72,7 +65,6 @@ const toNewEntry = (object: NewEntryFields): Entry => {
         case "Hospital":
             const Hospital = {
                 type: "Hospital",
-                id: parseID(object.id),
                 description: parseDescription(object.description),
                 date: parseDate(object.date),
                 specialist: parseSpecialist(object.specialist),

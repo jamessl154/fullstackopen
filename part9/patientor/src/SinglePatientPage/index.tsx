@@ -29,7 +29,7 @@ const SinglePatient = () => {
           console.error(e);
         }
       };
-
+      // if no private patient info (ssn), go fetch private info and update state with the result
       try {
         // https://dmitripavlutin.com/check-if-object-has-property-javascript/
         if (!("ssn" in patients[id])) throw new Error ('no ssn property found on patients[id]');
@@ -39,54 +39,53 @@ const SinglePatient = () => {
 
     }, []);
 
+    const assertNever = (value: never): never => {
+      throw new Error(
+        `Unhandled discriminated union member: ${JSON.stringify(value)}`
+      );
+    };
+
+    const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+      switch (entry.type) {
+        case "Hospital":
+          return <HospitalEntry
+            date={entry.date}
+            specialist={entry.specialist}
+            description={entry.description}
+            discharge={entry.discharge}
+            diagnosisCodes={entry.diagnosisCodes}
+            type={entry.type}
+            id={entry.id}
+          />;
+        case "OccupationalHealthcare":
+          return <OccupationalHealthcareEntry
+            date={entry.date}
+            specialist={entry.specialist}
+            description={entry.description}
+            employerName={entry.employerName}
+            diagnosisCodes={entry.diagnosisCodes}
+            sickLeave={entry.sickLeave}
+            type={entry.type}
+            id={entry.id}
+          />;
+        case "HealthCheck":
+          return <HealthCheckEntry
+            date={entry.date}
+            specialist={entry.specialist}
+            description={entry.description}
+            healthCheckRating={entry.healthCheckRating}
+            diagnosisCodes={entry.diagnosisCodes}
+            type={entry.type}
+            id={entry.id}
+          />;
+        default:
+          return assertNever(entry);
+      }
+    };
+
     const keys = Object.keys(patients);
 
     if (keys.length && patients[id]) {
-      
-      const assertNever = (value: never): never => {
-        throw new Error(
-          `Unhandled discriminated union member: ${JSON.stringify(value)}`
-        );
-      };
-
-      const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
-        switch (entry.type) {
-          case "Hospital":
-            return <HospitalEntry
-              date={entry.date}
-              specialist={entry.specialist}
-              description={entry.description}
-              discharge={entry.discharge}
-              diagnosisCodes={entry.diagnosisCodes}
-              type={entry.type}
-              id={entry.id}
-            />;
-          case "OccupationalHealthcare":
-            return <OccupationalHealthcareEntry
-              date={entry.date}
-              specialist={entry.specialist}
-              description={entry.description}
-              employerName={entry.employerName}
-              diagnosisCodes={entry.diagnosisCodes}
-              sickLeave={entry.sickLeave}
-              type={entry.type}
-              id={entry.id}
-            />;
-          case "HealthCheck":
-            return <HealthCheckEntry 
-              date={entry.date}
-              specialist={entry.specialist}
-              description={entry.description}
-              healthCheckRating={entry.healthCheckRating}
-              diagnosisCodes={entry.diagnosisCodes}
-              type={entry.type}
-              id={entry.id}
-            />;
-          default:
-            return assertNever(entry);
-        }
-      };
-
       // https://semantic-ui.com/kitchen-sink.html
       return (
         <div>

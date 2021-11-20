@@ -26,26 +26,28 @@ const HealthCheckComponent = ({ date, specialist, description, healthCheckRating
             color = 'black';
     }
 
-    return(
-        <Segment>
-            <h4 className="inline" >{date}</h4>
-            {' '}<Icon name='heartbeat' size="big"/>
-            <p><i>{description}</i></p>
-            <h4>Seen by: <b>{specialist}</b></h4>
-            <h4>Health: <Icon name="heart" color={color} /></h4>
-            {diagnosisCodes
-                ? <>
-                    <h4>Diagnosis Codes:</h4>
-                    <ul>
-                        {diagnosisCodes.map((code) =>
-                        <li key={code}>{code} {diagnoses[code].name}</li>
-                        )}
-                    </ul>
-                  </>
-                : null
-            }
-        </Segment>
-    );
+    if (Object.keys(diagnoses).length) {
+        return(
+            <Segment>
+                <h4 className="inline" >{date}</h4>
+                {' '}<Icon name='heartbeat' size="big"/>
+                <p><i>{description}</i></p>
+                <h4>Seen by: <b>{specialist}</b></h4>
+                <h4>Health: <Icon name="heart" color={color} /></h4>
+                {diagnosisCodes
+                    ? <>
+                        <h4>Diagnosis Codes:</h4>
+                        <ul>
+                            {diagnosisCodes.map((code) =>
+                            <li key={code}>{code} {diagnoses[code].name}</li>
+                            )}
+                        </ul>
+                    </>
+                    : null
+                }
+            </Segment>
+        );
+    } else return null;
 };
 
 export default HealthCheckComponent;

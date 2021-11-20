@@ -87,9 +87,9 @@ const AddEntryForm = () => {
                 // runs before the form is submitted
                 const requiredError = "Field is required";
                 const errors: { [field: string]: string } = {};
-                if (!values.id) errors.id = requiredError;
                 if (!values.description) errors.description = requiredError;
                 if (!values.date) errors.date = requiredError;
+                else if (!Date.parse(values.date)) errors.date = "Please input a valid date";
                 if (!values.specialist) errors.specialist = requiredError;
                 if (entryType === "OccupationalHealthcare" && !values.employerName) errors.employerName = requiredError;
                 return errors;
@@ -107,16 +107,9 @@ const AddEntryForm = () => {
                             setEntryType={setEntryType}
                         />
                         <Field
-                            // Required Field
-                            label="Entry ID"
-                            placeholder="Q2Q-WE1-QQA-S5A"
-                            name="id"
-                            component={TextField}
-                        />
-                        <Field
                             // Required Fields
                             label="Date"
-                            placeholder="19-01-21"
+                            placeholder="YYYY-MM-DD"
                             name="date"
                             component={TextField}
                         />
@@ -130,7 +123,7 @@ const AddEntryForm = () => {
                         <Field
                             // Required Field
                             label="Specialist"
-                            placeholder="MD House"
+                            placeholder="Who was responsible for the patient?"
                             name="specialist"
                             component={TextField}
                         />
@@ -153,14 +146,14 @@ const AddEntryForm = () => {
                                 <Field
                                     // Optional field
                                     label="Start date"
-                                    placeholder="12-09-21"
+                                    placeholder="YYYY-MM-DD"
                                     name="sickLeave.startDate"
                                     component={TextField}
                                 />
                                 <Field
                                     // Optional field
                                     label="End date"
-                                    placeholder="12-11-21"
+                                    placeholder="YYYY-MM-DD"
                                     name="sickLeave.endDate"
                                     component={TextField}
                                 />
@@ -172,7 +165,7 @@ const AddEntryForm = () => {
                                 <Field
                                     // Optional field
                                     label="Date discharged"
-                                    placeholder="12-20-12"
+                                    placeholder="YYYY-MM-DD"
                                     name="discharge.date"
                                     component={TextField}
                                     validate={requiredValidation}
