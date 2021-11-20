@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { apiBaseUrl } from "../constants";
 import { PatientPrivateInfoIncluded, Entry } from '../types';
 import { useStateValue } from '../state';
-import { Icon } from "semantic-ui-react";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 import { updatePatient } from '../state';
 import HospitalEntry from './entryComponents/HospitalEntryComponent';
 import HealthCheckEntry from './entryComponents/HealthEntryComponent';
@@ -86,13 +86,28 @@ const SinglePatient = () => {
     const keys = Object.keys(patients);
 
     if (keys.length && patients[id]) {
+
+      let icon: SemanticICONS;
+
+      switch(patients[id].gender) {
+        case "male":
+          icon = "mars";
+          break;
+        case "female":
+          icon = "venus";
+          break;
+        case "other":
+          icon = "genderless";
+          break;
+        default:
+          icon = "globe";
+      }
+
       // https://semantic-ui.com/kitchen-sink.html
       return (
         <div>
           <h2 className="inline" >{patients[id].name}</h2>
-            {patients[id].gender === "male" ? <Icon className="icon" name="mars" size="big"/> : null}
-            {patients[id].gender === "female" ? <Icon className="icon" name="venus" size="big"/> : null}
-            {patients[id].gender === "other" ? <Icon className="icon" name="genderless" size="big"/> : null}
+          <Icon className="icon" name={icon} size="big"/>
           <ul>
             <li><b>Date of Birth</b>: {patients[id].dateOfBirth}</li>
             <li><b>Occupation</b>: {patients[id].occupation}</li>
