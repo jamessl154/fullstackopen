@@ -7,7 +7,7 @@ const LoginForm = ({ username, password, handleLogin,
 
   return (
     <div>
-      <div className='frontpage-title-text'>Bloglist</div>
+      <div className='frontpage-title-text'>BlogList</div>
       { !frontPage ?
         <div className='frontpage-buttons'>
           <Button onClick={() => setFrontpage('login')} color="secondary">Log in</Button>

@@ -1,10 +1,14 @@
 /* https://stackoverflow.com/a/45271587 */
 
-/* https://www.youtube.com/watch?v=Qhaz36TZG5Y&list=LL&index=5&t=2s */
+/* https://www.youtube.com/watch?v=Qhaz36TZG5Y */
+
+/* https://www.youtube.com/watch?v=xIIJfmDnvPE */
 
 /* :root {
 
 } */
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
 .empty {
     visibility: hidden;
@@ -47,7 +51,7 @@
 }
 
 .frontpage-title-text {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 100px;
     text-align: center;
     color: white;
@@ -65,5 +69,5 @@
 }
 
 html * {
-    font-family: Roboto;
+    font-family: 'Rubik';
 }
