@@ -1,5 +1,11 @@
 /* https://stackoverflow.com/a/45271587 */
 
+/* https://www.youtube.com/watch?v=Qhaz36TZG5Y&list=LL&index=5&t=2s */
+
+/* :root {
+
+} */
+
 .empty {
     visibility: hidden;
 }
@@ -10,6 +16,10 @@
     display: inline-block;
     width: 250px;
     padding: 10px;
+}
+
+.notification {
+    border-radius: 20px;
 }
 
 .bloglist {
@@ -30,10 +40,24 @@
     float: right;
 }
 
-.mainTitle {
-    padding: 40px 20px 40px 20px;
-    background-color: rgb(27, 26, 26);
-    color: white
+.container {
+    background-color: hsl(209, 90%, 30%);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.frontpage-title-text {
+    font-weight: 700;
+    font-size: 100px;
+    text-align: center;
+    color: white;
+    padding: 40px 0 20px 0;
+}
+
+.frontpage-buttons {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
 }
 
 .pageTitle {

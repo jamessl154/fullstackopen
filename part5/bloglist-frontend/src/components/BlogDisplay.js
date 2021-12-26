@@ -1,4 +1,9 @@
 import React, { useEffect, useRef } from 'react'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Typography } from '@material-ui/core'
+
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
 import Togglable from './Togglable'
@@ -7,15 +12,9 @@ import User from './User'
 import SingleBlog from './SingleBlog'
 import LoggedIn from './LoggedIn'
 import NavLink from './NavLink'
-import { Typography } from '@material-ui/core'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Switch, Route
-} from 'react-router-dom'
 
 const BlogDisplay = ({ handleLogout }) => {
   const dispatch = useDispatch()
@@ -53,7 +52,6 @@ const BlogDisplay = ({ handleLogout }) => {
 
   return (
     <div className='bloglist'>
-      <Typography variant='h2' className='mainTitle'>BlogList App</Typography>
       <LoggedIn username={user.username} handleLogout={handleLogout} />
       <Router>
         <Switch>

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import Container from '@material-ui/core/Container'
+import { useDispatch, useSelector } from 'react-redux'
+
 import blogService from './services/blogService'
 import loginService from './services/loginService'
 import LoginForm from './components/LoginForm'
 import BlogDisplay from './components/BlogDisplay'
 import Notification from './components/Notification'
 import { notifyWith } from './reducers/notificationReducer'
-import { useDispatch, useSelector } from 'react-redux'
-import './App.css'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setUser, resetUser } from './reducers/userReducer'
-import Container from '@material-ui/core/Container'
+import './App.css'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -65,22 +66,25 @@ const App = () => {
 
   return (
     <Container>
-      <Notification />
-
-      { user === null
-        ?
-        <LoginForm
-          username={username}
-          password={password}
-          handleLogin={handleLogin}
-          setPassword={setPassword}
-          setUsername={setUsername}
-        />
-        :
-        <BlogDisplay
-          handleLogout={handleLogout}
-        />
-      }
+      <div className="notification">
+        <Notification />
+      </div>
+      <div className="container">
+        { user === null
+          ?
+          <LoginForm
+            username={username}
+            password={password}
+            handleLogin={handleLogin}
+            setPassword={setPassword}
+            setUsername={setUsername}
+          />
+          :
+          <BlogDisplay
+            handleLogout={handleLogout}
+          />
+        }
+      </div>
     </Container>
   )
 }
