@@ -16,8 +16,22 @@ const theme = createTheme({
     button: {
       // #https://stackoverflow.com/a/58222011
       textTransform: 'none',
-      fontSize: '1.5rem'
+      fontSize: '1.2rem',
+      fontWeight: 600,
     }
+  },
+  // https://stackoverflow.com/a/57995968
+  overrides: {
+    MuiInput: {
+      input: {
+        color: 'white'
+      }
+    },
+    MuiFormLabel: {
+      root: {
+        color: 'white'
+      }
+    },
   }
 })
 

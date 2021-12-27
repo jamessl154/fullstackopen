@@ -24,6 +24,7 @@
 
 .notification {
     border-radius: 20px;
+    padding: 20px 0 100px 0;
 }
 
 .bloglist {
@@ -44,7 +45,7 @@
     float: right;
 }
 
-.container {
+.blog-container {
     background-color: hsl(209, 90%, 30%);
     border-radius: 20px;
     padding: 20px;
@@ -52,16 +53,22 @@
 
 .frontpage-title-text {
     font-weight: 600;
-    font-size: 100px;
+    font-size: 4rem;
     text-align: center;
     color: white;
-    padding: 40px 0 20px 0;
+    padding-top: 60px;
+}
+
+.center-form {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
 }
 
 .frontpage-buttons {
     display: flex;
     justify-content: center;
-    padding-bottom: 20px;
+    padding: 30px 0 30px 0;
 }
 
 .pageTitle {

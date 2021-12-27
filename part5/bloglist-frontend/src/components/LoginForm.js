@@ -14,7 +14,7 @@ const LoginForm = ({ username, password, handleLogin,
           <Button onClick={() => setFrontpage('register')} color="secondary">Register</Button>
         </div>
         : frontPage === 'login' ?
-          <div>
+          <div className="center-form">
             <form data-cy='loginForm' onSubmit={handleLogin}>
               <TextField
                 variant="standard"
@@ -36,17 +36,19 @@ const LoginForm = ({ username, password, handleLogin,
                 onChange={({ target }) => setPassword(target.value)}
               />
               <br />
-              <br />
-              <Button color='secondary' size='large' data-cy='loginButton' type="submit">Log in</Button>
-              <br />
-              <Button color='secondary' size='large' onClick={() => setFrontpage(null)}>Back</Button>
+              <div className='frontpage-buttons'>
+                <Button color='secondary' data-cy='loginButton' type="submit">Log in</Button>
+                <Button color='secondary' onClick={() => setFrontpage(null)}>Back</Button>
+              </div>
             </form>
           </div>
           : // register
           <>
             TODO
             <br />
-            <Button color='secondary' size='large' onClick={() => setFrontpage(null)}>Back</Button>
+            <div className="center-form">
+              <Button color='secondary' onClick={() => setFrontpage(null)}>Back</Button>
+            </div>
           </>
       }
     </div>

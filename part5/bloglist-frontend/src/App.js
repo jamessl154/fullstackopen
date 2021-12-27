@@ -60,7 +60,7 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInBloglistUser')
-    dispatch(notifyWith(`${user.username} logged out successfuly!`, 'success'))
+    dispatch(notifyWith(`${user.username} logged out successfully!`, 'success'))
     dispatch(resetUser())
   }
 
@@ -69,7 +69,7 @@ const App = () => {
       <div className="notification">
         <Notification />
       </div>
-      <div className="container">
+      <div className="blog-container">
         { user === null
           ?
           <LoginForm
