@@ -4,6 +4,7 @@ import Alert from '@material-ui/lab/Alert'
 
 const Notification = () => {
   const notification = useSelector(state => state.notification)
+
   if (notification === null) {
     return (
       <Alert className='empty'>
@@ -11,9 +12,6 @@ const Notification = () => {
       </Alert>
     )
   }
-
-  // https://stackoverflow.com/a/37073268
-  // const classes = `${notification.type} notification`
 
   return (
     <Alert severity={notification.type}>

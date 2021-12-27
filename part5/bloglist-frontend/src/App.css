@@ -8,7 +8,7 @@
 
 } */
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&display=swap');
 
 .empty {
     visibility: hidden;
@@ -65,10 +65,23 @@
     padding-top: 20px;
 }
 
+.input-fields {
+    display: flex;
+    width: 500px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .frontpage-buttons {
     display: flex;
     justify-content: center;
     padding: 30px 0 30px 0;
+}
+
+.button-gap {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
 }
 
 .pageTitle {
@@ -76,5 +89,5 @@
 }
 
 html * {
-    font-family: 'Rubik';
+    font-family: 'Inconsolata';
 }

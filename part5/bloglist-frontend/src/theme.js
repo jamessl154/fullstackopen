@@ -1,7 +1,6 @@
 import { createTheme } from '@material-ui/core/styles'
 
 // https://www.youtube.com/watch?v=xIIJfmDnvPE
-// new global font?
 
 const theme = createTheme({
   palette: {
@@ -16,7 +15,7 @@ const theme = createTheme({
     button: {
       // #https://stackoverflow.com/a/58222011
       textTransform: 'none',
-      fontSize: '1.2rem',
+      fontSize: 25,
       fontWeight: 600,
     }
   },
@@ -24,14 +23,35 @@ const theme = createTheme({
   overrides: {
     MuiInput: {
       input: {
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Inconsolata',
+        fontSize: 40,
+      },
+      // https://stackoverflow.com/a/56026253
+      underline: {
+        '&:after': {
+          borderBottom: '2px solid white'
+        }
       }
     },
     MuiFormLabel: {
       root: {
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Inconsolata',
+        fontSize: 20,
+        fontWeight: 600
       }
     },
+    // https://mui.com/api/alert/#css
+    MuiAlert: {
+      root: {
+        fontSize: 25,
+        fontWeight: 900
+      },
+      icon: {
+        fontSize: 35
+      }
+    }
   }
 })
 
