@@ -24,7 +24,7 @@
 
 .notification {
     border-radius: 20px;
-    padding: 20px 0 100px 0;
+    padding: 20px 0 4vh 0;
 }
 
 .bloglist {
@@ -53,7 +53,7 @@
 
 .frontpage-title-text {
     font-weight: 600;
-    font-size: 4rem;
+    font-size: clamp(50px, 6vw, 80px);
     text-align: center;
     color: white;
     padding-top: 60px;
@@ -67,9 +67,9 @@
 
 .input-fields {
     display: flex;
-    width: 500px;
     justify-content: center;
     flex-wrap: wrap;
+    width: clamp(10em, 50vw, 20em);
 }
 
 .frontpage-buttons {
@@ -81,7 +81,7 @@
 .button-gap {
     display: flex;
     justify-content: space-between;
-    width: 300px;
+    width: 250px;
 }
 
 .pageTitle {
