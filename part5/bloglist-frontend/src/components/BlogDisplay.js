@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, useHistory } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography } from '@material-ui/core'
@@ -15,9 +15,11 @@ import NavLink from './NavLink'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
+import { resetUser } from '../reducers/userReducer'
 
-const BlogDisplay = ({ handleLogout }) => {
+const BlogDisplay = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
   const users = useSelector(state => state.users)
@@ -50,13 +52,20 @@ const BlogDisplay = ({ handleLogout }) => {
     dispatch(notifyWith(`Liked "${blog.title}"!`, 'success'))
   }
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedInBloglistUser')
+    dispatch(notifyWith(`${user.username} logged out successfully!`, 'success'))
+    dispatch(resetUser())
+    history.push('/')
+  }
+
   return (
     <div className='bloglist'>
       <LoggedIn username={user.username} handleLogout={handleLogout} />
       <Router>
         <Switch>
-          <Route exact path="/">
-            <NavLink disabledButton='/' />
+          <Route exact path="/blogs">
+            <NavLink disabledButton='/blogs' />
             <Typography variant='h3' className='pageTitle'>Blogs</Typography>
             {blogs.map(blog =>
               <Blog

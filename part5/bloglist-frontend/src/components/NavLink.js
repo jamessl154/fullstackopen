@@ -6,14 +6,14 @@ const NavLink = ({ disabledButton }) => {
   if (disabledButton) {
     return (
       <>
-        {disabledButton === '/' ?
+        {disabledButton === '/blogs' ?
           <div className='navigationBar'>
             <Button variant='outlined' size='small' color='inherit' disabled>Blogs</Button>{' '}
             <Button component={Link} variant='outlined' size='small' color='inherit' to="/users">Users</Button>
           </div>
           :
           <div className='navigationBar'>
-            <Button component={Link} variant='outlined' size='small' color='inherit' to="/">Blogs</Button>{' '}
+            <Button component={Link} variant='outlined' size='small' color='inherit' to="/blogs">Blogs</Button>{' '}
             <Button variant='outlined' size='small' color='inherit' disabled>Users</Button>
           </div>
         }
@@ -22,7 +22,7 @@ const NavLink = ({ disabledButton }) => {
   } else {
     return (
       <div className='navigationBar'>
-        <Button component={Link} variant='outlined' size='small' color='inherit' to="/">Blogs</Button>{' '}
+        <Button component={Link} variant='outlined' size='small' color='inherit' to="/blogs">Blogs</Button>{' '}
         <Button component={Link} variant='outlined' size='small' color='inherit' to="/users">Users</Button>
       </div>
     )}
