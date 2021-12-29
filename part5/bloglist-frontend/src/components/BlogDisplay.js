@@ -63,14 +63,16 @@ const BlogDisplay = () => {
         <Switch>
           <Route exact path="/blogs">
             <div className='pageTitle'>Blogs</div>
-            {blogs.map(blog =>
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user}
-                handleLike={() => handleLike(blog)}
-                handleRemove={() => handleRemove(blog)}
-              />)}
+            <div className='blogGrid'>
+              {blogs.map(blog =>
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  user={user}
+                  handleLike={() => handleLike(blog)}
+                  handleRemove={() => handleRemove(blog)}
+                />)}
+            </div>
             <Togglable
               buttonLabel="Add a new Blog"
               ref={toggleRef}

@@ -58,7 +58,7 @@ const AddBlogForm = ({ handleAdd, toggleRef }) => {
           />
         </div>
         <br />
-        <Button variant='contained' type='submit' color="primary" >Add</Button>
+        <Button color="secondary" type='submit'>Add</Button>
       </form>
       <br />
     </div>

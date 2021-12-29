@@ -11,20 +11,29 @@
 }
 
 .blog {
+    display: flex;
+    flex-direction: column;
     border: 0.5rem outset rgb(134, 134, 134);
     line-height: 1.5rem;
-    display: inline-block;
-    width: 250px;
+    width: 230px;
     padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.blogHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.blogTitle {
+    font-size: 20px;
 }
 
 .notification {
     border-radius: 20px;
     padding: 20px 0 4vh 0;
-}
-
-.addBlogButton {
-    margin-top: 20px;
 }
 
 .rightAlignButton {
@@ -86,9 +95,8 @@ html * {
     justify-content: space-between;
     flex-wrap: wrap;
     max-width: 500px;
-    background-color: rgb(158, 158, 158);
+    background-color: rgb(134, 134, 134);
     padding: 0 15px 0 15px;
-    border-radius: 15px;
     font-weight: 900;
     font-size: 18px;
 }
@@ -109,4 +117,10 @@ html * {
     padding: 15px 0 15px 0;
     display: flex;
     flex-wrap: nowrap;
+}
+
+.blogGrid {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 60px;
 }
