@@ -40,10 +40,10 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
             Added by: {blog.user.username}<br />
             Total Likes: {blog.likes}{' '}
           <Button data-cy='likeButton' onClick={handleLike} type="submit">&#128077;</Button><br />
-            Url: <HyperLink color="secondary" underline="always" href={`/blogs/${blog.id}`}>{blog.url}</HyperLink><br />
+            Url: <HyperLink color="secondary" underline="always" href={blog.url}>{blog.url}</HyperLink><br /><br />
           { /* conditional render */
             blog.user.username === user.username
-              ? <button data-cy='removeButton' onClick={handleRemove}>Remove</button>
+              ? <Button variant="contained" size="large" color="secondary" data-cy='removeButton' onClick={handleRemove}>Remove</Button>
               : null}
         </div>
       }

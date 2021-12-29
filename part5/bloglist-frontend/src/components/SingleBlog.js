@@ -18,10 +18,6 @@ const SingleBlog = ({ blogs, handleLike }) => {
     event.target.comment.value = ''
   }
 
-  // bug here, disappearing blog.user.username, user.username not returning populated field
-  console.log(blog)
-  console.log(blog.user)
-
   if (blogs && blog) {
     return (
       <div className='whiteText'>

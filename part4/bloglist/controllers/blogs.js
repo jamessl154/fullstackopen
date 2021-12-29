@@ -134,6 +134,7 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
         { comments: blog.comments.concat(comment) },
         { new: true }
       )
+      .populate('user', { username: 1, name: 1 })
     response.json(result)
   } catch(exception) {
     next(exception)
