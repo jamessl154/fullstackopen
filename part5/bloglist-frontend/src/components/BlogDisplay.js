@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Switch, useHistory } from 'react-router-dom'
-import { Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, useHistory, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography } from '@material-ui/core'
 
 import Blog from './Blog'
 import AddBlogForm from './AddBlogForm'
@@ -10,8 +8,7 @@ import Togglable from './Togglable'
 import UserDisplay from './UserDisplay'
 import User from './User'
 import SingleBlog from './SingleBlog'
-import LoggedIn from './LoggedIn'
-import NavLink from './NavLink'
+import NavBar from './NavBar'
 import { postBlog, deleteBlog, likeBlog } from '../reducers/blogsReducer'
 import { notifyWith } from '../reducers/notificationReducer'
 import { initializeUsers, removeFromBlogsArray } from '../reducers/usersReducer'
@@ -60,13 +57,12 @@ const BlogDisplay = () => {
   }
 
   return (
-    <div className='bloglist'>
-      <LoggedIn username={user.username} handleLogout={handleLogout} />
+    <div>
       <Router>
+        <NavBar username={user.username} handleLogout={handleLogout} />
         <Switch>
           <Route exact path="/blogs">
-            <NavLink disabledButton='/blogs' />
-            <Typography variant='h3' className='pageTitle'>Blogs</Typography>
+            <div className='pageTitle'>Blogs</div>
             {blogs.map(blog =>
               <Blog
                 key={blog.id}
@@ -90,7 +86,6 @@ const BlogDisplay = () => {
             <SingleBlog blogs={blogs} handleLike={handleLike} />
           </Route>
           <Route exact path="/users">
-            <NavLink disabledButton='/users' />
             <UserDisplay users={users}/>
           </Route>
           <Route exact path="/users/:id">
