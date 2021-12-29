@@ -29,7 +29,6 @@ const usersReducer = (state = null, action) => {
     let foundUser = state.find((x) => x.id === b.user.id)
     foundUser = { ...foundUser, blogs: foundUser.blogs.concat(newBlog) }
     let newUsers = state.map((x) => foundUser.id === x.id ? foundUser : x)
-    console.log(newUsers)
     return newUsers
   }
   default:

@@ -3,7 +3,8 @@ const baseUrl = '/api/blogs'
 
 let token = null
 
-// Format correctly for use
+// Format correctly for use.
+// Stored here in memory, used in add and remove blog requests
 const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }

@@ -25,8 +25,9 @@ const App = () => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInBloglistUser')
     if (loggedInUserJSON) {
       const user = JSON.parse(loggedInUserJSON)
+      // put user object, token included, in the redux store
       dispatch(setUser(user))
-      // Re-save the token to a variable for the blogService
+      // save the token to a variable for the blogService
       blogService.setToken(user.token)
     }
   }, [])
