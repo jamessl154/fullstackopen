@@ -6,8 +6,8 @@ const NavBar = ({ username, handleLogout }) => {
   return (
     <div className='navigationBar'>
       <div className='navButtons'>
-        <Button variant="contained" style={{ 'marginRight': '10px' }} component={Link} to="/blogs" disabled={false /* inject state for disabled here*/} size="large">Blogs</Button>
-        <Button variant="contained" component={Link} to="/users" disabled={false /* inject state for disabled here*/} size="large">Users</Button>
+        <Button variant="contained" style={{ 'marginRight': '10px' }} component={Link} to="/blogs" disabled={false /* inject state for disabled here*/}>Blogs</Button>
+        <Button variant="contained" component={Link} to="/users" disabled={false /* inject state for disabled here*/}>Users</Button>
       </div>
       <div className='logout'>
         <div className='logoutText'>
@@ -15,7 +15,6 @@ const NavBar = ({ username, handleLogout }) => {
         </div>
         <Button
           color="secondary"
-          size="large"
           variant="outlined"
           onClick={handleLogout}
         >

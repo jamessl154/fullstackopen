@@ -1,32 +1,53 @@
 import React from 'react'
 import { useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
+import { Button, Link, TextField } from '@material-ui/core'
 
 import { addComment } from '../reducers/blogsReducer'
+import { notifyWith } from '../reducers/notificationReducer'
 
 const SingleBlog = ({ blogs, handleLike }) => {
   const dispatch = useDispatch()
   let id = useParams().id
   let blog = blogs.find((x) => x.id === id)
+
   const handleAddComment = (event) => {
     event.preventDefault()
     dispatch(addComment(blog.id, event.target.comment.value))
+    dispatch(notifyWith(`Added a new comment to ${blog.title}!`, 'success'))
     event.target.comment.value = ''
   }
 
+  // bug here, disappearing blog.user.username, user.username not returning populated field
+  console.log(blog)
+  console.log(blog.user)
+
   if (blogs && blog) {
     return (
-      <>
-        <h2>Blog: &quot;{blog.title}&quot; by {blog.author}</h2>
-        Url:{' '}<a href={blog.url}>{blog.url}</a><br />
+      <div className='whiteText'>
+        <div className="smallPageTitle">&quot;{blog.title}&quot; by {blog.author}</div>
+        Url:{' '}<Link underline='always' color="secondary" href={blog.url}>{blog.url}</Link><br />
         Total Likes: {blog.likes}{' '}
-        <button onClick={() => handleLike(blog)}>Like</button>
+        <Button onClick={() => handleLike(blog)}>&#128077;</Button>
         <br />
         <span>added by {blog.user.username}</span><br />
-        <h4>Comments</h4>
-        <form onSubmit={handleAddComment}>
-          <input name="comment" />
-          <button type="submit">Add Comment</button>
+        <div className="smallPageTitle">Comments</div>
+        <form className="commentForm" onSubmit={handleAddComment}>
+          <TextField
+            variant="filled"
+            label="New Comment"
+            color="secondary"
+            name="comment"
+            multiline
+          />
+          <div className="commentButton">
+            <Button
+              color="secondary"
+              type="submit"
+            >
+              Add Comment
+            </Button>
+          </div>
         </form>
         {blog.comments.length ?
           <ul>
@@ -39,7 +60,7 @@ const SingleBlog = ({ blogs, handleLike }) => {
           </ul>
           : <p>No comments found...</p>
         }
-      </>
+      </div>
     )
   } else {
     return (

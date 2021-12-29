@@ -29,6 +29,12 @@
 
 .blogTitle {
     font-size: 20px;
+    font-weight: 600;
+}
+
+.expandedBlog {
+    color: white;
+    font-size: 15px;
 }
 
 .notification {
@@ -81,7 +87,7 @@
 
 .pageTitle {
     font-weight: 600;
-    font-size: clamp(40px, 6vw, 70px);
+    font-size: clamp(70px, 8vw, 80px);
     color: white;
     padding: 60px 0 60px 0;
 }
@@ -94,7 +100,7 @@ html * {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    max-width: 500px;
+    max-width: 600px;
     background-color: rgb(134, 134, 134);
     padding: 0 15px 0 15px;
     font-weight: 900;
@@ -123,4 +129,35 @@ html * {
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 60px;
+}
+
+.usersTable {
+    color: white;
+    font-size: 20px;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+.whiteText {
+    color: white;
+}
+
+.smallPageTitle {
+    font-weight: 600;
+    padding: 40px 0 40px 0;
+    font-size: 30px
+}
+
+.commentForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin-bottom: 10px;
+}
+
+.commentButton {
+    padding: 40px 0 40px
 }

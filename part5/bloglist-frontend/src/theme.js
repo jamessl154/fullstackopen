@@ -34,6 +34,13 @@ const theme = createTheme({
         }
       }
     },
+    MuiFilledInput: {
+      input: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'Inconsolata',
+      }
+    },
     MuiFormLabel: {
       root: {
         color: 'white',

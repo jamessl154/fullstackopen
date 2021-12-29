@@ -7,9 +7,9 @@ const User = ({ users }) => {
     const id = useParams().id
     let selectedUser = users.filter((x) => x.id === id)
     return (
-      <>
-        <h2>User: {selectedUser[0].username}</h2>
-        <h3>Blogs added</h3>
+      <div className='whiteText'>
+        <div className='smallPageTitle'>User: {selectedUser[0].username}</div>
+        <h3>Blogs added:</h3>
         {selectedUser[0].blogs.length ?
           <ul>
             {selectedUser[0].blogs.map(x =>
@@ -20,7 +20,7 @@ const User = ({ users }) => {
           </ul>
           : <p>No blogs found...</p>
         }
-      </>
+      </div>
     )
   }
   else return null
