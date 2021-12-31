@@ -84,7 +84,7 @@ const RegisterForm = () => {
           </div>
           <div className='frontpage-buttons'>
             <div className='button-gap'>
-              <Button color='secondary' type="submit">Register</Button>
+              <Button color='secondary' data-cy='registerButton' type="submit">Register</Button>
               <Button component={Link} to="/" color="secondary">Back</Button>
             </div>
           </div>
