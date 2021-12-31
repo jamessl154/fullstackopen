@@ -13,6 +13,10 @@ const SingleBlog = ({ blogs, handleLike }) => {
 
   const handleAddComment = (event) => {
     event.preventDefault()
+    if (!event.target.comment.value) {
+      dispatch(notifyWith('Comment field is blank', 'error'))
+      return
+    }
     dispatch(addComment(blog.id, event.target.comment.value))
     dispatch(notifyWith(`Added a new comment to ${blog.title}!`, 'success'))
     event.target.comment.value = ''

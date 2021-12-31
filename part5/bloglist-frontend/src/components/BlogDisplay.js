@@ -35,6 +35,11 @@ const BlogDisplay = () => {
   }
 
   const handleAdd = (newBlog) => {
+    const { title, author, url } = newBlog
+    if (!title || !author || !url) {
+      dispatch(notifyWith('Please fill in all fields', 'error'))
+      return
+    }
     dispatch(postBlog(newBlog))
     dispatch(notifyWith(`"${newBlog.title}" by ${newBlog.author} added`, 'success'))
   }
