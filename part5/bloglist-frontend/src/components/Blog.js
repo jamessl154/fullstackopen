@@ -39,7 +39,7 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
         <div className="expandedBlog">
             Added by: {blog.user.username}<br />
             Total Likes: {blog.likes}{' '}
-          <Button data-cy='likeButton' onClick={handleLike} type="submit">&#128077;</Button><br />
+          <Button data-cy='likeButton' data-testid='likeButton' onClick={handleLike} type="submit">&#128077;</Button><br />
             Url: <HyperLink color="secondary" underline="always" href={blog.url}>{blog.url}</HyperLink><br /><br />
           { /* conditional render */
             blog.user.username === user.username

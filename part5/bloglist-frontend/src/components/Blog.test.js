@@ -1,6 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
+import { BrowserRouter as Router } from 'react-router-dom'
+
 import Blog from './Blog'
 
 describe('On first render,', () => {
@@ -16,7 +18,9 @@ describe('On first render,', () => {
     }
 
     const component = render(
-      <Blog blog={blog} />
+      <Router>
+        <Blog blog={blog} />
+      </Router>
     )
 
     const foundBlog = component.container.querySelector('.blog')
@@ -49,10 +53,12 @@ describe('When View button is clicked for a blog,', () => {
     }
 
     component = render(
-      <Blog blog={blog} user={user} handleLike={mockLikes}/>
+      <Router>
+        <Blog blog={blog} user={user} handleLike={mockLikes}/>
+      </Router>
     )
 
-    const viewButton = component.getByText('View')
+    const viewButton = component.getByText('+')
     fireEvent.click(viewButton)
   })
 
@@ -63,7 +69,7 @@ describe('When View button is clicked for a blog,', () => {
   test('If the like button is clicked twice, the event handler from' +
   ' its props is called twice', () => {
 
-    const likeButton = component.getByText('Like')
+    const likeButton = component.getByTestId('likeButton')
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
 

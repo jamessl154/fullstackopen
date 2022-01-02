@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
+
 import AddBlogForm from './AddBlogForm'
 
 test('The event handler passed as a prop receives the correct ' +
@@ -17,9 +18,9 @@ test('The event handler passed as a prop receives the correct ' +
   )
 
   const form = component.container.querySelector('form')
-  const title = component.container.querySelector('.title')
-  const author = component.container.querySelector('.author')
-  const url = component.container.querySelector('.url')
+  const title = component.container.querySelector('#title')
+  const author = component.container.querySelector('#author')
+  const url = component.container.querySelector('#url')
 
   fireEvent.change(title, {
     target: { value: 'testTitle' }
