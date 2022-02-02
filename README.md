@@ -6,6 +6,7 @@ This is my main submission repository for the course.
 - part0
     - Fundamentals of web apps
 - part1
+    - Introduction to React
 - part2
 - part4
 - part5
