@@ -8,6 +8,7 @@ This is my main submission repository for the course.
 - part1
     - Introduction to React
 - part2
+    - Communicating with a server
 - part4
 - part5
 - part6
