@@ -1,7 +1,7 @@
 ## part4
 https://fullstackopen.com/en/part4
 
-This part focused on learning and applying knowledge about testing using the [Jest](https://jestjs.io/) testing framework whilst developing a backend for a blog-saving frontend app built in the next part. The first exercises required writing simple unit tests that are located in ```tests/blogs.test.js``` that rely on helper functions from ```utils/test_functions.js``` that I wrote with help of the [Lodash](https://lodash.com/) library.
+This part focused on learning and applying knowledge about software testing using the [Jest](https://jestjs.io/) testing framework whilst developing a backend for a blog-saving frontend app built in the next part. The first exercises required writing simple unit tests that are located in ```tests/blogs.test.js``` that rely on helper functions from ```utils/test_functions.js``` that I wrote with help of the [Lodash](https://lodash.com/) library.
 
 We then wrote integration tests, found in ```tests/```, using [supertest](https://github.com/visionmedia/supertest) that enabled us to make HTTP requests to our API, then write tests that verified the expected result. We configured our ```npm run test``` script to set ```NODE_ENV=test``` that changes the MONGODB_URI in ```utils/config.js``` which allowed us to run the backend with a separate database for testing. We also specified the ```--runInBand``` option which made our tests run sequentially because they manipulate the database and so cannot run in parallel. In this part I also learned to develop using [TDD](https://en.wikipedia.org/wiki/Test-driven_development), the later exercises required writing tests before implementation in the code, then refactoring so that the tests would pass.
 
