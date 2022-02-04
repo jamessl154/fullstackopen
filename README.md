@@ -10,6 +10,7 @@ This is my main submission repository for the course.
 - part2
     - Communicating with a server
 - part4
+    - Testing Express servers, user administration
 - part5
 - part6
 - part7
