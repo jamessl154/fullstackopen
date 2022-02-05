@@ -1,7 +1,7 @@
 ## part2
 https://fullstackopen.com/en/part2
 
-This part built on introducing React from part1. It explored creating forms, controlled components and the useEffect hook to manage side-effects. It also introduced some basic server-side functionality using [json-server](https://github.com/typicode/json-server) and connnecting the frontend to backend using [axios](https://github.com/axios/axios). Learned about REST and RESTful design. These are all frontend apps built with the create-react-app tool.
+This part built on introducing React from part1. It explored creating forms, controlled components and the useEffect hook to manage side-effects. It also introduced basic server-side functionality using [json-server](https://github.com/typicode/json-server) and connnecting the frontend to backend using [axios](https://github.com/axios/axios). Learned about REST and RESTful design. These are all frontend apps built with the create-react-app tool.
 
 - courseinfo
   - Extended the courseinfo frontend app from part1. Applied learning how to refactor components into modules. Practiced higher-order methods map and reduce to render collections in different ways.
