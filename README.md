@@ -14,6 +14,7 @@ This is my main submission repository for the course.
 - part5
     - Testing React apps
 - part6
+    - State management with Redux
 - part7
 - part8
 - part9
