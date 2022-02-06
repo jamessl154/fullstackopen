@@ -16,5 +16,6 @@ This is my main submission repository for the course.
 - part6
     - State management with Redux
 - part7
+    - React Router, custom hooks, CSS styling and Webpack
 - part8
 - part9

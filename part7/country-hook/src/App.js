@@ -62,6 +62,9 @@ const App = () => {
   const nameInput = useField('text')
   const [name, setName] = useState('')
   const country = useCountry(name)
+  // state 'name' passed to useCountry, when name changes triggers re-evaluation of country
+  // due to the dependency array of the useEffect including the 'name' prop on Line 30
+  // https://reactjs.org/docs/hooks-custom.html#tip-pass-information-between-hooks
 
   const fetch = (e) => {
     e.preventDefault()
