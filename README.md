@@ -18,4 +18,5 @@ This is my main submission repository for the course.
 - part7
     - React Router, custom hooks, CSS styling and Webpack
 - part8
+    - GraphQL
 - part9
