@@ -50,6 +50,12 @@ const resolvers = {
         if (!context.currentUser) throw new AuthenticationError('You must be logged in to add a book')
         // Find author ID from string args.author
         let author = await Author.findOne({ name: args.author })
+
+        if (!author) {
+          const newAuthor = new Author({ name: args.author })
+          author = await newAuthor.save()
+        }
+
         // Append author ID to document
         let book = new Book({ ...args, author: author._id.toString() })
 

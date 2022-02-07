@@ -38,8 +38,11 @@ const App = () => {
 
     // find the matching author object of the addedBook in cache
     let foundAuthor = allAuthorStore.allAuthors.find((x) => x.name === addedBook.author.name)
+
+    if (!foundAuthor) return null
+
     // proceed only if the addedBook ID is not yet in the author's books array
-    if (!foundAuthor.books.map((x) => x.id).includes(addedBook.id)) {
+    if (foundAuthor.books && !foundAuthor.books.map((x) => x.id).includes(addedBook.id)) {
       client.writeQuery({
         query: ALL_AUTHORS,
         data: {
