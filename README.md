@@ -20,3 +20,4 @@ This is my main submission repository for the course.
 - part8
     - GraphQL
 - part9
+    - TypeScript

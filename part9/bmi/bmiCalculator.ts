@@ -12,8 +12,8 @@ const cliBmi = (height: number, weight: number) => {
 
     if (process.argv.length < 4 || process.argv.length > 4) {
         throw new Error("Correct usage:\n" +
-        "npm run calculateBmi <height> <weight>\n" +
-        "npm run calculateBmi 180 74\n" +
+        "npm run cliBmi <height> <weight>\n" +
+        "npm run cliBmi 180 74\n" +
         "height in centimetres, weight in kilograms");
     }
     
