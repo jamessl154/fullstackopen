@@ -1,7 +1,7 @@
 ## part1
 https://fullstackopen.com/en/part1
 
-This part focused on creating basic React applications using the create-react-app tool
+This part focused on creating basic [React](https://reactjs.org/docs/getting-started.html) applications using the [create-react-app](https://create-react-app.dev/docs/getting-started/) tool
 
 - courseinfo
   - Basic props passing, familiarizing with JSX, application structure/component hierarchy
