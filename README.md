@@ -11,6 +11,8 @@ This is my main submission repository for the course.
     - Introduction to React
 - part2
     - Communicating with a server
+- [part3](https://github.com/jamessl154/fullstackopen-part3)
+    - Programming a server with NodeJS and Express
 - part4
     - Testing Express servers, user administration
 - part5
@@ -23,3 +25,11 @@ This is my main submission repository for the course.
     - GraphQL
 - part9
     - TypeScript
+- [part10](https://github.com/jamessl154/repo-review-app)
+    - React Native
+- [part11](https://github.com/jamessl154/full-stack-open-pokedex)
+    - CI/CD
+- [part12](https://github.com/jamessl154/fullstackopen-part12)
+    - Containers
+- [part13](https://github.com/jamessl154/fullstackopen-part13)
+    - Using relational databases
