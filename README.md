@@ -3,6 +3,8 @@ https://fullstackopen.com/en/about
 
 This is my main submission repository for the course.
 
+![certificate-fullstack](https://user-images.githubusercontent.com/64977718/154258784-db90e1b1-4bbb-4c40-a10b-749fcaf6c90e.png)
+
 - part0
     - Fundamentals of web apps
 - part1
