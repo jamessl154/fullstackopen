@@ -1,6 +1,8 @@
 ## part1
 https://fullstackopen.com/en/part1
 
+https://egghead.io/courses/the-beginner-s-guide-to-react
+
 This part focused on creating basic [React](https://reactjs.org/docs/getting-started.html) applications using the [create-react-app](https://create-react-app.dev/docs/getting-started/) tool
 
 - courseinfo
