@@ -1,10 +1,10 @@
 ## part2
 https://fullstackopen.com/en/part2
 
-This part built on introducing React from part1. It explored creating forms, controlled components and the useEffect hook to manage side-effects. It also introduced basic server-side functionality using [json-server](https://github.com/typicode/json-server) and connnecting the frontend to backend using [axios](https://github.com/axios/axios). Learned about REST and RESTful design. These are all frontend apps built with the create-react-app tool.
+This part built on introducing React from part [1](https://github.com/jamessl154/fullstackopen/tree/main/part1). It explored creating forms, controlled components and the useEffect hook to manage side-effects. It also introduced basic server-side functionality using [json-server](https://github.com/typicode/json-server) and connnecting the frontend to backend using [axios](https://github.com/axios/axios). Learned about REST and RESTful design. These are all frontend apps built with the create-react-app tool.
 
 - courseinfo
-  - Extended the courseinfo frontend app from part1. Applied learning how to refactor components into modules. Practiced higher-order methods map and reduce to render collections in different ways.
+  - Extended the courseinfo frontend app from part 1. Applied learning how to refactor components into modules. Practiced higher-order methods map and reduce to render collections in different ways.
 - phonebook
   - Developed a phonebook frontend app that displays names and phone numbers. Additionally it has the features: notify on actions, search filter by name, delete entries and add/update entries via a form. The data is persisted to the phonebook/db.json file using [axios](https://github.com/axios/axios) and the [json-server](https://github.com/typicode/json-server) npm package that runs with the command ```json-server -p3001 --watch db.json```. This creates a basic functional REST API from a json file. Implemented combining useEffect hook with setState to control side-effects and manage rendering.
 - dataforcountries
